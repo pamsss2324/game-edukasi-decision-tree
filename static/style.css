@@ -1,0 +1,340 @@
+/* Gunakan Comic Neue */
+body {
+    margin: 0;
+    font-family: 'Comic Neue', cursive;
+    background: url('/static/images/Bg1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+/* Layer gelap di atas background supaya teks lebih jelas */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+}
+
+.welcome-container {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+button {
+    background: #ff4ecd;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background: #e43ec5;
+    transform: scale(1.1);
+}
+
+.guru-btn {
+    background: #4eafff;
+}
+
+.guru-btn:hover {
+    background: #3c90e0;
+}
+
+.datetime-box {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    z-index: 999;
+}
+
+/* Popup style */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.popup-content {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow: 0 8px 16px rgba(13, 236, 143, 0.3);
+    color: rgb(8, 8, 8);
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.popup-content:hover {
+    transform: translateY(-5px);
+}
+
+.popup-content h2 {
+    margin-bottom: 20px;
+}
+
+.popup-content input,
+.popup-content select {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ff4e4e;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    min-width: 250px;
+}
+
+.custom-alert p {
+    margin: 0 0 10px 0;
+}
+
+.custom-alert button {
+    background: white;
+    color: #ff4e4e;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Tambahan efek fade-in */
+.custom-alert.show {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.popup-buttons button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px; right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.quiz-body {
+    font-family: 'Comic Relief', sans-serif;
+    background: url('/static/images/Bg1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 500px;
+    max-width: 90%;
+    margin: 40px auto;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 1;
+}
+
+.pilihan-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pilihanBox {
+    background: white;
+    color: black;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.pilihanBox:hover {
+    background: #f0f0f0;
+    transform: scale(1.02);
+}
+
+.pilihanBox.benar {
+    background: #4caf50 !important; /* hijau */
+    color: white;
+}
+
+.pilihanBox.salah {
+    background: #f44336 !important; /* merah */
+    color: white;
+}
+
+.progress-info {
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    background: #ddd;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #4eafff;
+    width: 0%;
+    transition: width 0.3s;
+}
+
+.timer-box {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 2;
+}
+
+/* style.css - Tambahan untuk halaman hasil */
+.hasil-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f4f6;
+    font-family: 'Arial', sans-serif;
+    flex-direction: column;
+}
+
+.container-hasil {
+    text-align: center;
+    padding: 20px;
+}
+
+.card-hasil {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    max-width: 500px;
+    margin: auto;
+}
+
+.motivasi-box {
+    margin: 20px 0;
+}
+
+.speech-bubble {
+    position: relative;
+    background: #fcd34d;
+    border-radius: .4em;
+    padding: 15px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-top-color: #fcd34d;
+    border-bottom: 0;
+    margin-left: -20px;
+    margin-bottom: -20px;
+}
+
+.btn-kembali {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-kembali:hover {
+    background-color: #2563eb;
+}

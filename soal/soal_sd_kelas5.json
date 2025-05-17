@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Berapa hasil dari 3/4 + 2/4?",
+    "pilihan": ["1/2", "5/4", "3/2", "7/4"],
+    "jawaban": "5/4",
+    "topik": "Bilangan Pecahan"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Hasil dari 5/8 - 3/8 adalah...",
+    "pilihan": ["1/2", "2/8", "1/4", "3/8"],
+    "jawaban": "1/4",
+    "topik": "Bilangan Pecahan"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Jika harga baju adalah 150.000 dan potongan diskon 20%, berapa harga setelah diskon?",
+    "pilihan": ["120.000", "130.000", "140.000", "100.000"],
+    "jawaban": "120.000",
+    "topik": "Persentase"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Luas sebuah persegi panjang dengan panjang 6 cm dan lebar 4 cm adalah...",
+    "pilihan": ["10 cm²", "20 cm²", "24 cm²", "30 cm²"],
+    "jawaban": "24 cm²",
+    "topik": "Pengukuran Luas"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Volume sebuah balok dengan panjang 5 cm, lebar 4 cm, dan tinggi 3 cm adalah...",
+    "pilihan": ["30 cm³", "60 cm³", "12 cm³", "15 cm³"],
+    "jawaban": "60 cm³",
+    "topik": "Pengukuran Volume"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Sistem peredaran darah manusia terdiri dari...",
+    "pilihan": ["Jantung, Pembuluh Darah, dan Limfa", "Jantung, Paru-paru, dan Pembuluh Darah", "Jantung, Paru-paru, dan Oksigen", "Jantung, Pembuluh Darah, dan Sel Darah"],
+    "jawaban": "Jantung, Pembuluh Darah, dan Sel Darah",
+    "topik": "Sistem Peredaran Darah"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Pembuluh darah yang membawa darah kaya oksigen ke seluruh tubuh adalah...",
+    "pilihan": ["Arteri", "Vena", "Kapiler", "Limfa"],
+    "jawaban": "Arteri",
+    "topik": "Sistem Peredaran Darah"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Cahaya dapat dibiasakan oleh...",
+    "pilihan": ["Lensa", "Cermin", "Air", "Batu"],
+    "jawaban": "Lensa",
+    "topik": "Sifat-sifat Cahaya"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Proses pembiasan cahaya terjadi ketika cahaya...",
+    "pilihan": ["Melewati udara", "Berpindah dari satu medium ke medium lainnya", "Dipantulkan oleh benda", "Dibagi menjadi beberapa bagian"],
+    "jawaban": "Berpindah dari satu medium ke medium lainnya",
+    "topik": "Sifat-sifat Cahaya"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Kalimat berikut yang benar dan efektif adalah...",
+    "pilihan": ["Mereka bermain sepak bola di lapangan dengan bola besar.", "Sepak bola mereka bermain di lapangan besar.", "Di lapangan besar bola mereka sepak bermain.", "Lapangan besar bola sepak mereka di bermain."],
+    "jawaban": "Mereka bermain sepak bola di lapangan dengan bola besar.",
+    "topik": "Kalimat Efektif"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Teks deskripsi berfungsi untuk...",
+    "pilihan": ["Menceritakan cerita atau kisah", "Menggambarkan suatu benda, tempat, atau keadaan", "Memberikan instruksi atau petunjuk", "Menjelaskan konsep atau ide"],
+    "jawaban": "Menggambarkan suatu benda, tempat, atau keadaan",
+    "topik": "Teks Deskripsi"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Kalimat deskripsi yang tepat untuk menggambarkan suasana pantai adalah...",
+    "pilihan": ["Pantai itu berpasir putih dan air lautnya sangat jernih.", "Saya pergi ke pantai dan bermain bola.", "Pantai itu ada di selatan kota.", "Banyak orang pergi ke pantai untuk berlibur."],
+    "jawaban": "Pantai itu berpasir putih dan air lautnya sangat jernih.",
+    "topik": "Teks Deskripsi"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Lawan kata dari 'cepat' adalah...",
+    "pilihan": ["Lambat", "Cepat", "Kecil", "Tinggi"],
+    "jawaban": "Lambat",
+    "topik": "Sinonim/Antonim"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Sinonim dari 'besar' adalah...",
+    "pilihan": ["Tinggi", "Kecil", "Luput", "Agung"],
+    "jawaban": "Agung",
+    "topik": "Sinonim/Antonim"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Kalimat berikut yang menggunakan kata yang sesuai adalah...",
+    "pilihan": ["Buku ini sangat menarik dan bagus.", "Kami pergi ke rumah teman yang baik.", "Dia sangat pandai dalam bidang olahraga.", "Mereka datang dari kota yang jauh."],
+    "jawaban": "Buku ini sangat menarik dan bagus.",
+    "topik": "Sinonim/Antonim"
+  }
+]

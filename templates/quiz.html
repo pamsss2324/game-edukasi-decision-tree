@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Halaman Kuis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="quiz-body">
+    <!-- Pop-up Instruksi -->
+    <div class="popup" id="popupInstruksi">
+        <div class="popup-content">
+            <span class="close-btn" id="closeInstruksi">&times;</span>
+            <h2>Instruksi Permainan</h2>
+            <p>Jawablah semua pertanyaan dengan sebaik mungkin. Kamu hanya punya satu kali kesempatan untuk menjawab tiap soal!</p>
+            <button id="mulaiBtn">Mulai</button>
+        </div>
+    </div>
+
+    <!-- Konten kuis -->
+    <div id="quizContent" class="card" style="display: none;">
+        <h1>Selamat Mengerjakan Kuis!</h1>
+            <div class="progress-info">
+                <p id="progressText" style="color: black;"></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill">0%</div>
+                </div>
+            </div>
+            <h3 id="pertanyaan" style="color: black;"></h3>
+            <div class="pilihan-container" id="pilihanContainer"></div>
+            <div class="timer-box" id="timer"></div>
+        </div>
+
+    <script src="{{ url_for('static', filename='scriptsKuis.js') }}"></script>
+</body>
+</html>

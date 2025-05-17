@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Berapa hasil dari 6 x 4?",
+    "pilihan": ["20", "24", "26", "30"],
+    "jawaban": "24",
+    "topik": "Perkalian"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Ibu membeli 3 bungkus roti. Setiap bungkus berisi 5 roti. Berapa jumlah roti seluruhnya?",
+    "pilihan": ["15", "10", "8", "18"],
+    "jawaban": "15",
+    "topik": "Perkalian"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Ani memiliki 4 kotak. Tiap kotak berisi 7 pensil. Berapa pensil yang dimiliki Ani?",
+    "pilihan": ["28", "21", "24", "30"],
+    "jawaban": "28",
+    "topik": "Perkalian"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Bentuk pecahan dari satu setengah adalah...",
+    "pilihan": ["1/2", "2/2", "3/2", "1/3"],
+    "jawaban": "3/2",
+    "topik": "Pecahan"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Mana yang merupakan pecahan setengah?",
+    "pilihan": ["1/2", "1/4", "3/4", "2/3"],
+    "jawaban": "1/2",
+    "topik": "Pecahan"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "1 jam sama dengan ... menit.",
+    "pilihan": ["30", "45", "60", "90"],
+    "jawaban": "60",
+    "topik": "Satuan Waktu"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Jika sekarang pukul 3 sore, 2 jam kemudian pukul berapa?",
+    "pilihan": ["4 sore", "5 sore", "6 sore", "7 sore"],
+    "jawaban": "5 sore",
+    "topik": "Satuan Waktu"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Ayam, bebek, dan burung termasuk hewan yang dapat...",
+    "pilihan": ["Terbang", "Berenang", "Melompat", "Tidur"],
+    "jawaban": "Terbang",
+    "topik": "Klasifikasi hewan"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Ikan dan lumba-lumba hidup di...",
+    "pilihan": ["Darat", "Air", "Udara", "Hutan"],
+    "jawaban": "Air",
+    "topik": "Klasifikasi hewan"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Organ tubuh yang digunakan untuk melihat adalah...",
+    "pilihan": ["Telinga", "Hidung", "Mata", "Lidah"],
+    "jawaban": "Mata",
+    "topik": "Organ tubuh"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Kita bernapas menggunakan...",
+    "pilihan": ["Mata", "Hidung", "Tangan", "Kaki"],
+    "jawaban": "Hidung",
+    "topik": "Organ tubuh"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Kalimat yang benar adalah...",
+    "pilihan": ["Saya pergi ke sekolah.", "Pergi saya ke sekolah.", "Sekolah ke saya pergi.", "Saya sekolah pergi ke."],
+    "jawaban": "Saya pergi ke sekolah.",
+    "topik": "Menulis Kalimat"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Manakah kalimat yang menggunakan kata ganti orang yang benar?",
+    "pilihan": ["Ibu sedang masak nasi.", "Saya sedang membaca buku.", "Budi dan saya pergi ke pasar.", "Buku saya sedang dipinjam."],
+    "jawaban": "Saya sedang membaca buku.",
+    "topik": "Menulis Kalimat"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Lawan kata dari besar adalah...",
+    "pilihan": ["Tinggi", "Kecil", "Pendek", "Luas"],
+    "jawaban": "Kecil",
+    "topik": "Sinonim/Antonim"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Persamaan kata dari bahagia adalah...",
+    "pilihan": ["Sedih", "Senang", "Marah", "Takut"],
+    "jawaban": "Senang",
+    "topik": "Sinonim/Antonim"
+  }
+]

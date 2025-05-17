@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Website</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Halaman utama -->
+    <div class="welcome-container">
+        <h1>Selamat Datang di Quiz Edukasi</h1>
+        <p>Ayo uji kemampuanmu di bidang Bahasa Inggris, Matematika, dan Sains!</p>
+
+        <div class="button-group">
+            <button id="siswaBtn">Siswa</button>
+            <a href="dashboard.html"><button class="guru-btn">Guru</button></a>
+        </div>
+    </div>
+
+    <!-- Popup form siswa -->
+    <div class="popup" id="popupForm">
+        <div class="popup-content">
+            <h2>Masukkan Data Siswa</h2>
+            <form>
+                <input type="text" id="namaSiswa" placeholder="Nama Lengkap" required>
+                <select id="kelasSiswa">
+                    <option value="">Pilih Kelas</option>
+                    <option value="3">Kelas 3</option>
+                    <option value="4">Kelas 4</option>
+                    <option value="5">Kelas 5</option>
+                </select>
+                <div class="popup-buttons">
+                    <button type="button" id="lanjutBtn">Lanjut</button>
+                    <button type="button" id="closePopup">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="alertBox" class="custom-alert" style="display: none;">
+        <p id="alertMessage"></p>
+        <button id="alertClose">Tutup</button>
+    </div>
+
+    <div id="dateTimeBox" class="datetime-box"></div>
+
+
+    <!-- Link ke JavaScript -->
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+</body>
+</html>

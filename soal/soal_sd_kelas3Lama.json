@@ -1,0 +1,107 @@
+[
+    {
+        "nomor": 1,
+        "kategori": "Matematika",
+        "pertanyaan": "Berapa hasil dari 12 + 8?",
+        "pilihan": ["18", "20", "22", "24"],
+        "jawabanBenar": "20"
+    },
+    {
+        "nomor": 2,
+        "kategori": "Matematika",
+        "pertanyaan": "Berapakah setengah dari 50?",
+        "pilihan": ["20", "25", "30", "35"],
+        "jawabanBenar": "25"
+    },
+    {
+        "nomor": 3,
+        "kategori": "Matematika",
+        "pertanyaan": "Jika Ani punya 15 apel dan memberi 5 ke temannya, berapa sisa apel Ani?",
+        "pilihan": ["5", "10", "15", "20"],
+        "jawabanBenar": "10"
+    },
+    {
+        "nomor": 4,
+        "kategori": "Bahasa Inggris",
+        "pertanyaan": "What is the English word for 'anjing'?",
+        "pilihan": ["Cat", "Dog", "Bird", "Fish"],
+        "jawabanBenar": "Dog"
+    },
+    {
+        "nomor": 5,
+        "kategori": "Bahasa Inggris",
+        "pertanyaan": "Choose the correct spelling: 'apel' in English.",
+        "pilihan": ["Apple", "Apel", "Aple", "Apil"],
+        "jawabanBenar": "Apple"
+    },
+    {
+        "nomor": 6,
+        "kategori": "Bahasa Inggris",
+        "pertanyaan": "What color is the sky on a clear day?",
+        "pilihan": ["Red", "Blue", "Green", "Yellow"],
+        "jawabanBenar": "Blue"
+    },
+    {
+        "nomor": 7,
+        "kategori": "Sains",
+        "pertanyaan": "Apa organ utama yang digunakan manusia untuk bernapas?",
+        "pilihan": ["Jantung", "Paru-paru", "Hati", "Ginjal"],
+        "jawabanBenar": "Paru-paru"
+    },
+    {
+        "nomor": 8,
+        "kategori": "Sains",
+        "pertanyaan": "Apa yang terjadi jika es dibiarkan di tempat panas?",
+        "pilihan": ["Membeku", "Mencair", "Mengembang", "Menghilang"],
+        "jawabanBenar": "Mencair"
+    },
+    {
+        "nomor": 9,
+        "kategori": "Sains",
+        "pertanyaan": "Tumbuhan membutuhkan apa untuk membuat makanan?",
+        "pilihan": ["Air", "Garam", "Gula", "Udara"],
+        "jawabanBenar": "Air"
+    },
+    {
+        "nomor": 10,
+        "kategori": "Matematika",
+        "pertanyaan": "Berapakah 9 dikali 3?",
+        "pilihan": ["18", "21", "24", "27"],
+        "jawabanBenar": "27"
+    },
+    {
+        "nomor": 11,
+        "kategori": "Bahasa Inggris",
+        "pertanyaan": "What is the opposite of 'big'?",
+        "pilihan": ["Small", "Tall", "Long", "Short"],
+        "jawabanBenar": "Small"
+    },
+    {
+        "nomor": 12,
+        "kategori": "Sains",
+        "pertanyaan": "Binatang apa yang hidup di air?",
+        "pilihan": ["Burung", "Ikan", "Kucing", "Anjing"],
+        "jawabanBenar": "Ikan"
+    },
+    {
+        "nomor": 13,
+        "kategori": "Matematika",
+        "pertanyaan": "Berapakah hasil 100 - 45?",
+        "pilihan": ["45", "50", "55", "60"],
+        "jawabanBenar": "55"
+    },
+    {
+        "nomor": 14,
+        "kategori": "Bahasa Inggris",
+        "pertanyaan": "Translate to English: 'matahari'.",
+        "pilihan": ["Moon", "Star", "Sun", "Sky"],
+        "jawabanBenar": "Sun"
+    },
+    {
+        "nomor": 15,
+        "kategori": "Sains",
+        "pertanyaan": "Apa yang digunakan telinga untuk membantu kita?",
+        "pilihan": ["Melihat", "Mendengar", "Merasakan", "Mencium"],
+        "jawabanBenar": "Mendengar"
+    }
+]
