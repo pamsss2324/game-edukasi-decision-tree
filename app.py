@@ -55,13 +55,14 @@ def simpan_hasil():
 
         query = """
             INSERT INTO hasil_kuis
-            (id_siswa, mapel, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            (id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         cursor.execute(query, (
             data['id_siswa'],
             data['mapel'],
+            data['daftar_soal_dikerjakan'],
             data['jumlah_benar'],
             data['jumlah_salah'],
             data['waktu_rata2_per_soal'],

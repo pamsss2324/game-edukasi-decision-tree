@@ -1,0 +1,164 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Hasil dari 75 - 28 adalah...",
+    "pilihan": ["45", "47", "48", "50"],
+    "jawaban": "47",
+    "topik": "Pengurangan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Hasil dari 8 x 7 adalah...",
+    "pilihan": ["54", "56", "58", "60"],
+    "jawaban": "56",
+    "topik": "Perkalian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Sebuah kotak berisi 100 kelereng. Jika diberikan 25 kelereng kepada teman, sisa kelereng adalah...",
+    "pilihan": ["65", "70", "75", "80"],
+    "jawaban": "75",
+    "topik": "Pengurangan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Hasil dari 45 + 32 adalah...",
+    "pilihan": ["75", "76", "77", "78"],
+    "jawaban": "77",
+    "topik": "Penjumlahan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Manakah bilangan yang merupakan kelipatan 6?",
+    "pilihan": ["10", "12", "16", "18"],
+    "jawaban": "12",
+    "topik": "Kelipatan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Urutan pecahan dari yang terkecil adalah...",
+    "pilihan": ["1/2, 1/3, 1/4", "1/4, 1/3, 1/2", "1/3, 1/4, 1/2", "1/2, 1/4, 1/3"],
+    "jawaban": "1/4, 1/3, 1/2",
+    "topik": "Pecahan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Fungsi daun pada tumbuhan adalah...",
+    "pilihan": ["Menguatkan akar", "Menopang batang", "Melakukan fotosintesis", "Menarik serangga"],
+    "jawaban": "Melakukan fotosintesis",
+    "topik": "Bagian Tumbuhan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Contoh perubahan wujud benda dari cair menjadi gas adalah...",
+    "pilihan": ["Air menjadi es", "Es mencair", "Air menguap", "Uap menjadi air"],
+    "jawaban": "Air menguap",
+    "topik": "Perubahan Wujud",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Hewan yang berkembang biak dengan bertelur disebut...",
+    "pilihan": ["Vivipar", "Ovipar", "Ovovivipar", "Mamalia"],
+    "jawaban": "Ovipar",
+    "topik": "Perkembangbiakan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Sumber energi listrik yang umum digunakan di rumah adalah...",
+    "pilihan": ["Baterai", "Genset", "PLN", "Panel surya"],
+    "jawaban": "PLN",
+    "topik": "Energi",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Alat pernapasan pada manusia adalah...",
+    "pilihan": ["Hidung", "Paru-paru", "Jantung", "Lidah"],
+    "jawaban": "Paru-paru",
+    "topik": "Organ Pernapasan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Apa yang harus dilakukan agar tubuh tetap sehat?",
+    "pilihan": ["Makan permen", "Tidur siang", "Olahraga teratur", "Bermain game"],
+    "jawaban": "Olahraga teratur",
+    "topik": "Kesehatan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Antonim dari kata 'dingin' adalah...",
+    "pilihan": ["Panas", "Sejuk", "Lembab", "Kering"],
+    "jawaban": "Panas",
+    "topik": "Antonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Manakah yang merupakan kalimat ajakan?",
+    "pilihan": ["Ayo kita membersihkan kelas!", "Dia sedang belajar.", "Saya ke pasar.", "Apakah kamu sudah makan?"],
+    "jawaban": "Ayo kita membersihkan kelas!",
+    "topik": "Kalimat Ajakan",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Kata baku dari 'aktifitas' adalah...",
+    "pilihan": ["Aktifitas", "Aktivitas", "Agtifitas", "Aktipitas"],
+    "jawaban": "Aktivitas",
+    "topik": "Kata Baku",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 16,
+    "pertanyaan": "Kalimat berikut yang menggunakan imbuhan dengan benar adalah...",
+    "pilihan": ["Dia berlari cepat.", "Kami menyapu-an halaman.", "Mereka memakan nasi.", "Ibu membersihkan rumah."],
+    "jawaban": "Dia berlari cepat.",
+    "topik": "Imbuhan",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 17,
+    "pertanyaan": "Sinonim dari kata 'gembira' adalah...",
+    "pilihan": ["Sedih", "Senang", "Lelah", "Takut"],
+    "jawaban": "Senang",
+    "topik": "Sinonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 18,
+    "pertanyaan": "Manakah kalimat yang merupakan kalimat perintah?",
+    "pilihan": ["Kamu pergi ke sekolah.", "Tolong tutup pintu itu.", "Dia sedang duduk.", "Saya membaca buku."],
+    "jawaban": "Tolong tutup pintu itu.",
+    "topik": "Kalimat Perintah",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  }
+]

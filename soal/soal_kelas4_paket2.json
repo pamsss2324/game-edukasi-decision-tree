@@ -1,0 +1,164 @@
+[
+    {
+        "id": 1,
+        "pertanyaan": "Santi memiliki 3 kotak. Setiap kotak berisi 8 pensil. Berapa jumlah pensil seluruhnya?",
+        "pilihan": ["18", "21", "24", "27"],
+        "jawaban": "24",
+        "topik": "Perkalian",
+        "pelajaran": "Matematika",
+        "tingkat_kesulitan": "mudah"
+    },
+    {
+        "id": 2,
+        "pertanyaan": "Hasil dari 42 : 6 adalah ....",
+        "pilihan": ["6", "7", "8", "9"],
+        "jawaban": "7",
+        "topik": "Pembagian",
+        "pelajaran": "Matematika",
+        "tingkat_kesulitan": "mudah"
+    },
+    {
+        "id": 3,
+        "pertanyaan": "Ibu membeli 2 kg gula dan 3 kg beras. Berapa total berat belanjaan ibu?",
+        "pilihan": ["4 kg", "5 kg", "6 kg", "7 kg"],
+        "jawaban": "5 kg",
+        "topik": "Penjumlahan Bilangan",
+        "pelajaran": "Matematika",
+        "tingkat_kesulitan": "sedang"
+    },
+    {
+        "id": 4,
+        "pertanyaan": "0,25 jika diubah menjadi pecahan biasa adalah ....",
+        "pilihan": ["1/2", "1/4", "2/5", "3/4"],
+        "jawaban": "1/4",
+        "topik": "Desimal ke Pecahan",
+        "pelajaran": "Matematika",
+        "tingkat_kesulitan": "sulit"
+    },
+    {
+        "id": 5,
+        "pertanyaan": "Hasil dari 125 - 58 = ....",
+        "pilihan": ["66", "67", "68", "69"],
+        "jawaban": "67",
+        "topik": "Pengurangan Bilangan",
+        "pelajaran": "Matematika",
+        "tingkat_kesulitan": "sedang"
+    },
+    {
+        "id": 6,
+        "pertanyaan": "Sebuah kolam renang panjangnya 25 meter dan lebarnya 10 meter. Luas kolam renang adalah ....",
+        "pilihan": ["150 m²", "200 m²", "250 m²", "275 m²"],
+        "jawaban": "250 m²",
+        "topik": "Luas Persegi Panjang",
+        "pelajaran": "Matematika",
+        "tingkat_kesulitan": "sulit"
+    },
+    {
+        "id": 7,
+        "pertanyaan": "Organ tubuh yang berfungsi memompa darah adalah ....",
+        "pilihan": ["Hati", "Jantung", "Lambung", "Paru-paru"],
+        "jawaban": "Jantung",
+        "topik": "Organ Tubuh",
+        "pelajaran": "IPA",
+        "tingkat_kesulitan": "mudah"
+    },
+    {
+        "id": 8,
+        "pertanyaan": "Alat yang digunakan untuk mengukur suhu tubuh adalah ....",
+        "pilihan": ["Barometer", "Higrometer", "Termometer", "Voltmeter"],
+        "jawaban": "Termometer",
+        "topik": "Alat Ukur",
+        "pelajaran": "IPA",
+        "tingkat_kesulitan": "mudah"
+    },
+    {
+        "id": 9,
+        "pertanyaan": "Air berubah menjadi uap air ketika dipanaskan. Perubahan ini disebut ....",
+        "pilihan": ["Mencair", "Membeku", "Menguap", "Menyublim"],
+        "jawaban": "Menguap",
+        "topik": "Perubahan Wujud",
+        "pelajaran": "IPA",
+        "tingkat_kesulitan": "sedang"
+    },
+    {
+        "id": 10,
+        "pertanyaan": "Contoh sumber energi terbarukan adalah ....",
+        "pilihan": ["Batu bara", "Gas alam", "Matahari", "Minyak bumi"],
+        "jawaban": "Matahari",
+        "topik": "Energi",
+        "pelajaran": "IPA",
+        "tingkat_kesulitan": "sedang"
+    },
+    {
+        "id": 11,
+        "pertanyaan": "Fungsi akar pada tumbuhan adalah ....",
+        "pilihan": ["Bernapas", "Membuat makanan", "Menyerap air", "Menyerap cahaya"],
+        "jawaban": "Menyerap air",
+        "topik": "Tumbuhan",
+        "pelajaran": "IPA",
+        "tingkat_kesulitan": "mudah"
+    },
+    {
+        "id": 12,
+        "pertanyaan": "Proses hewan menghasilkan keturunan disebut ....",
+        "pilihan": ["Perkembangan", "Pertumbuhan", "Reproduksi", "Respirasi"],
+        "jawaban": "Reproduksi",
+        "topik": "Perkembangbiakan",
+        "pelajaran": "IPA",
+        "tingkat_kesulitan": "sulit"
+    },
+    {
+        "id": 13,
+        "pertanyaan": "Sinonim dari kata 'cerdas' adalah ....",
+        "pilihan": ["Bodoh", "Lelah", "Malas", "Pandai"],
+        "jawaban": "Pandai",
+        "topik": "Sinonim",
+        "pelajaran": "Bahasa Indonesia",
+        "tingkat_kesulitan": "mudah"
+    },
+    {
+        "id": 14,
+        "pertanyaan": "Kata yang tepat untuk melengkapi kalimat: 'Adik sedang ... bola di taman' adalah ....",
+        "pilihan": ["bermain", "membaca", "menulis", "tidur"],
+        "jawaban": "bermain",
+        "topik": "Kalimat",
+        "pelajaran": "Bahasa Indonesia",
+        "tingkat_kesulitan": "mudah"
+    },
+    {
+        "id": 15,
+        "pertanyaan": "Kalimat yang menggunakan tanda seru (!) adalah ....",
+        "pilihan": ["Di mana kamu tinggal?", "Saya makan nasi", "Siapa namamu", "Wah, indah sekali pemandangannya!"],
+        "jawaban": "Wah, indah sekali pemandangannya!",
+        "topik": "Tanda Baca",
+        "pelajaran": "Bahasa Indonesia",
+        "tingkat_kesulitan": "sedang"
+    },
+    {
+        "id": 16,
+        "pertanyaan": "Antonim dari kata 'tinggi' adalah ....",
+        "pilihan": ["Lurus", "Luas", "Panjang", "Pendek"],
+        "jawaban": "Pendek",
+        "topik": "Antonim",
+        "pelajaran": "Bahasa Indonesia",
+        "tingkat_kesulitan": "mudah"
+    },
+    {
+        "id": 17,
+        "pertanyaan": "Kalimat yang termasuk kalimat perintah adalah ....",
+        "pilihan": ["Ambilkan buku itu!", "Dia pergi ke sekolah", "Mereka bermain bola", "Saya senang belajar"],
+        "jawaban": "Ambilkan buku itu!",
+        "topik": "Jenis Kalimat",
+        "pelajaran": "Bahasa Indonesia",
+        "tingkat_kesulitan": "sulit"
+    },
+    {
+        "id": 18,
+        "pertanyaan": "Kata 'berlari' termasuk jenis kata ....",
+        "pilihan": ["Benda", "Bilangan", "Kata Kerja", "Sifat"],
+        "jawaban": "Kata Kerja",
+        "topik": "Jenis Kata",
+        "pelajaran": "Bahasa Indonesia",
+        "tingkat_kesulitan": "sedang"
+    }
+]

@@ -1,0 +1,191 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Keliling persegi dengan panjang sisi 5 cm adalah...",
+    "pilihan": ["15 cm", "20 cm", "25 cm", "30 cm"],
+    "jawaban": "20 cm",
+    "topik": "Keliling Bangun Datar",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Hasil dari 2/3 x 3/4 adalah...",
+    "pilihan": ["1/2", "5/6", "1/4", "3/7"],
+    "jawaban": "1/2",
+    "topik": "Operasi Pecahan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Pada peta, jarak 4 cm mewakili jarak sebenarnya 200 km. Skala peta tersebut adalah...",
+    "pilihan": ["1:5.000.000", "1:4.000.000", "1:2.000.000", "1:1.000.000"],
+    "jawaban": "1:5.000.000",
+    "topik": "Skala",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Hasil dari -3 + 5 adalah...",
+    "pilihan": ["-8", "-2", "2", "8"],
+    "jawaban": "2",
+    "topik": "Bilangan Bulat",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Sebuah mobil melaju dengan kecepatan 60 km/jam. Berapa jarak yang ditempuh dalam 2 jam?",
+    "pilihan": ["100 km", "120 km", "140 km", "160 km"],
+    "jawaban": "120 km",
+    "topik": "Kecepatan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Rata-rata dari data berikut: 5, 7, 3, 9, 6 adalah...",
+    "pilihan": ["5", "6", "7", "8"],
+    "jawaban": "6",
+    "topik": "Statistika",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Jika 2x + 5 = 15, nilai x adalah...",
+    "pilihan": ["5", "6", "7", "8"],
+    "jawaban": "5",
+    "topik": "Persamaan Sederhana",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Makhluk hidup yang berperan sebagai konsumen dalam ekosistem adalah...",
+    "pilihan": ["Tumbuhan", "Bakteri", "Hewan", "Jamur"],
+    "jawaban": "Hewan",
+    "topik": "Ekosistem",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Gaya yang menyebabkan benda bergerak adalah...",
+    "pilihan": ["Gaya gesek", "Gaya dorong", "Gaya gravitasi", "Gaya magnet"],
+    "jawaban": "Gaya dorong",
+    "topik": "Gaya",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Alat yang mengubah energi angin menjadi energi listrik adalah...",
+    "pilihan": ["Panel surya", "Kincir angin", "Turbin air", "Baterai"],
+    "jawaban": "Kincir angin",
+    "topik": "Energi",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Organ utama dalam sistem pernapasan manusia adalah...",
+    "pilihan": ["Jantung", "Paru-paru", "Hati", "Ginjal"],
+    "jawaban": "Paru-paru",
+    "topik": "Sistem Pernapasan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Benda yang dapat ditarik oleh magnet adalah...",
+    "pilihan": ["Kayu", "Plastik", "Besi", "Kaca"],
+    "jawaban": "Besi",
+    "topik": "Sifat Benda",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Proses perubahan uap air menjadi air karena pendinginan disebut...",
+    "pilihan": ["Evaporasi", "Kondensasi", "Presipitasi", "Transpirasi"],
+    "jawaban": "Kondensasi",
+    "topik": "Siklus Air",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Hewan yang memiliki kemampuan mengubah warna tubuh untuk menyesuaikan lingkungan adalah...",
+    "pilihan": ["Kucing", "Bunglon", "Anjing", "Kuda"],
+    "jawaban": "Bunglon",
+    "topik": "Adaptasi Makhluk Hidup",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Teks persuasi bertujuan untuk...",
+    "pilihan": ["Menceritakan peristiwa", "Menggambarkan sesuatu", "Mengajak atau meyakinkan", "Memberikan informasi"],
+    "jawaban": "Mengajak atau meyakinkan",
+    "topik": "Teks Persuasi",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 16,
+    "pertanyaan": "Kalimat berikut yang paling efektif adalah...",
+    "pilihan": ["Adik bermain bola di lapangan besar.", "Di lapangan besar adik bola bermain.", "Bermain bola adik di lapangan besar.", "Lapangan besar adik bermain bola di."],
+    "jawaban": "Adik bermain bola di lapangan besar.",
+    "topik": "Kalimat Efektif",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 17,
+    "pertanyaan": "Kata baku dari 'praktik' adalah...",
+    "pilihan": ["Praktik", "Praktek", "Peraktik", "Peraktek"],
+    "jawaban": "Praktik",
+    "topik": "Kata Baku",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 18,
+    "pertanyaan": "Lawan kata dari 'panjang' adalah...",
+    "pilihan": ["Pendiam", "Pendek", "Panjang", "Panjat"],
+    "jawaban": "Pendek",
+    "topik": "Antonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 19,
+    "pertanyaan": "Ciri-ciri teks narasi adalah...",
+    "pilihan": ["Menggunakan langkah-langkah", "Menceritakan peristiwa atau cerita", "Menggambarkan suasana", "Mengajak pembaca"],
+    "jawaban": "Menceritakan peristiwa atau cerita",
+    "topik": "Teks Narasi",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 20,
+    "pertanyaan": "Kalimat tanya yang benar untuk menanyakan alasan adalah...",
+    "pilihan": ["Kapan kamu pergi?", "Di mana kamu tinggal?", "Mengapa kamu terlambat?", "Apa yang kamu lakukan?"],
+    "jawaban": "Mengapa kamu terlambat?",
+    "topik": "Kalimat Tanya",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 21,
+    "pertanyaan": "Kata 'menyanyi' menggunakan imbuhan...",
+    "pilihan": ["me-", "ber-", "di-", "ter-"],
+    "jawaban": "me-",
+    "topik": "Imbuhan",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  }
+]

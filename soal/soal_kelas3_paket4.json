@@ -1,0 +1,137 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Hasil dari 25 + 37 adalah...",
+    "pilihan": ["52", "62", "63", "64"],
+    "jawaban": "62",
+    "topik": "Penjumlahan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Berapakah 48 - 19?",
+    "pilihan": ["27", "28", "29", "30"],
+    "jawaban": "29",
+    "topik": "Pengurangan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Ibu membeli 3 dus berisi 12 botol minuman. Total botol yang dibeli ibu adalah...",
+    "pilihan": ["36", "30", "24", "32"],
+    "jawaban": "36",
+    "topik": "Perkalian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Bangun datar yang memiliki 4 sisi sama panjang dan 4 sudut sama besar disebut...",
+    "pilihan": ["Persegi panjang", "Segitiga", "Persegi", "Jajar genjang"],
+    "jawaban": "Persegi",
+    "topik": "Bangun Datar",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Budi membagi 18 permen kepada 3 teman, lalu masing-masing teman memberikan 2 permen kepada adiknya. Berapa permen yang tersisa pada setiap teman?",
+    "pilihan": ["4", "6", "8", "10"],
+    "jawaban": "4",
+    "topik": "Operasi Campuran",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Bagian tubuh tumbuhan yang berfungsi untuk menyerap air adalah...",
+    "pilihan": ["Batang", "Daun", "Akar", "Bunga"],
+    "jawaban": "Akar",
+    "topik": "Bagian Tumbuhan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Benda berikut yang termasuk benda padat adalah...",
+    "pilihan": ["Air", "Es batu", "Uap", "Minyak"],
+    "jawaban": "Es batu",
+    "topik": "Sifat Benda",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Contoh perubahan wujud dari gas menjadi cair adalah...",
+    "pilihan": ["Air mendidih", "Uap menjadi embun", "Es mencair", "Air membeku"],
+    "jawaban": "Uap menjadi embun",
+    "topik": "Perubahan Wujud Benda",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Alat indera yang digunakan untuk merasakan makanan adalah...",
+    "pilihan": ["Mata", "Telinga", "Lidah", "Hidung"],
+    "jawaban": "Lidah",
+    "topik": "Indera Manusia",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Jika sebuah benda tidak diberi gaya dorong atau tarik, apa yang akan terjadi?",
+    "pilihan": ["Benda akan bergerak cepat", "Benda akan tetap diam atau bergerak lurus", "Benda akan berubah bentuk", "Benda akan menghilang"],
+    "jawaban": "Benda akan tetap diam atau bergerak lurus",
+    "topik": "Gaya dan Gerak",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Kalimat berikut yang merupakan kalimat tanya adalah...",
+    "pilihan": ["Kamu sedang apa?", "Saya pergi ke sekolah.", "Dia sedang membaca.", "Hari ini cerah."],
+    "jawaban": "Kamu sedang apa?",
+    "topik": "Jenis Kalimat",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Manakah kalimat yang menggunakan kata sifat 'besar' dengan tepat?",
+    "pilihan": ["Rumah itu besar.", "Besar rumah itu.", "Rumah besar itu.", "Rumah itu besar sekali."],
+    "jawaban": "Rumah itu besar.",
+    "topik": "Jenis Kata",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Manakah kalimat yang benar?",
+    "pilihan": ["Andi bermain bola di lapangan.", "andi bermain Bola di Lapangan.", "Andi Bermain bola di Lapangan.", "Andi bermain bola di Lapangan"],
+    "jawaban": "Andi bermain bola di lapangan.",
+    "topik": "Penulisan Kalimat",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Antonim dari kata 'besar' adalah...",
+    "pilihan": ["Panjang", "Tinggi", "Kecil", "Cepat"],
+    "jawaban": "Kecil",
+    "topik": "Sinonim/Antonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Kalimat berikut yang menggunakan tanda baca tanya dengan tepat adalah...",
+    "pilihan": ["Siapa yang datang tadi?", "Siapa yang datang tadi", "Siapa yang datang tadi.", "Siapa, yang datang tadi?"],
+    "jawaban": "Siapa yang datang tadi?",
+    "topik": "Tanda Baca",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  }
+]

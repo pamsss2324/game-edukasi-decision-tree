@@ -1,0 +1,164 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Hasil dari 56 : 7 adalah...",
+    "pilihan": ["6", "7", "8", "9"],
+    "jawaban": "8",
+    "topik": "Pembagian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Berapa hasil dari 123 + 89?",
+    "pilihan": ["202", "212", "213", "222"],
+    "jawaban": "212",
+    "topik": "Penjumlahan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Jika 5 kotak masing-masing berisi 24 kelereng, berapa total kelerengnya?",
+    "pilihan": ["100", "110", "120", "130"],
+    "jawaban": "120",
+    "topik": "Perkalian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Sebuah tali panjangnya 3,5 meter. Jika dipotong 0,5 meter, berapa panjang sisa tali?",
+    "pilihan": ["3 meter", "2,5 meter", "3,2 meter", "2 meter"],
+    "jawaban": "3 meter",
+    "topik": "Pengurangan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Berapa hasil dari 36 + 12 x 2?",
+    "pilihan": ["72", "60", "84", "88"],
+    "jawaban": "60",
+    "topik": "Operasi Campuran",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Pecahan mana yang lebih besar dari 1/2?",
+    "pilihan": ["1/4", "2/3", "1/3", "1/5"],
+    "jawaban": "2/3",
+    "topik": "Pecahan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Bagian tumbuhan yang berfungsi menyerap air dan zat hara dari tanah adalah...",
+    "pilihan": ["Batang", "Daun", "Akar", "Bunga"],
+    "jawaban": "Akar",
+    "topik": "Bagian Tumbuhan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Apa yang terjadi jika kita tidak membuang sampah pada tempatnya?",
+    "pilihan": ["Lingkungan bersih", "Hewan menjadi sehat", "Terjadi pencemaran", "Air menjadi jernih"],
+    "jawaban": "Terjadi pencemaran",
+    "topik": "Lingkungan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Apa alat indra yang digunakan untuk mendengar?",
+    "pilihan": ["Mata", "Telinga", "Hidung", "Kulit"],
+    "jawaban": "Telinga",
+    "topik": "Indra Manusia",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Contoh sumber energi terbarukan adalah...",
+    "pilihan": ["Minyak bumi", "Batu bara", "Matahari", "Gas alam"],
+    "jawaban": "Matahari",
+    "topik": "Energi",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Alat yang digunakan untuk mengukur suhu adalah...",
+    "pilihan": ["Termometer", "Barometer", "Penggaris", "Timbangan"],
+    "jawaban": "Termometer",
+    "topik": "Pengukuran",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Mengapa kita harus mencuci tangan sebelum makan?",
+    "pilihan": ["Supaya cepat makan", "Supaya kenyang", "Menghilangkan kuman", "Agar tidak haus"],
+    "jawaban": "Menghilangkan kuman",
+    "topik": "Kesehatan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Kalimat tanya yang tepat adalah...",
+    "pilihan": ["Kamu pergi sekolah.", "Kamu sekolah dimana?", "Di mana kamu sekolah?", "Sekolah kamu di."],
+    "jawaban": "Di mana kamu sekolah?",
+    "topik": "Kalimat Tanya",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Sinonim dari kata 'pandai' adalah...",
+    "pilihan": ["Bodoh", "Pintar", "Sombong", "Lemah"],
+    "jawaban": "Pintar",
+    "topik": "Sinonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Manakah kalimat yang menggunakan imbuhan me- dengan benar?",
+    "pilihan": ["Dia melari sangat cepat.", "Ibu memasak nasi.", "Adik meminum air.", "Kami memfoto pemandangan."],
+    "jawaban": "Ibu memasak nasi.",
+    "topik": "Imbuhan",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 16,
+    "pertanyaan": "Kalimat berikut yang menggunakan tanda seru dengan tepat adalah...",
+    "pilihan": ["Ayo kita pergi ke sekolah!", "Dia sangat senang!", "Ibu memasak nasi?", "Mengapa kamu sedih."],
+    "jawaban": "Dia sangat senang!",
+    "topik": "Tanda Baca",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 17,
+    "pertanyaan": "Lawan kata dari 'kuat' adalah...",
+    "pilihan": ["Hebat", "Lemah", "Besar", "Cerdas"],
+    "jawaban": "Lemah",
+    "topik": "Antonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 18,
+    "pertanyaan": "Manakah kalimat yang memiliki struktur subjek dan predikat lengkap?",
+    "pilihan": ["Anak bermain di taman.", "Pergi ke sekolah.", "Sedang bermain bola.", "Di taman bunga."],
+    "jawaban": "Anak bermain di taman.",
+    "topik": "Struktur Kalimat",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  }
+]

@@ -16,15 +16,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tampilkan pop-up instruksi saat halaman dimuat
     popupInstruksi.style.display = 'flex';
 
+    // Tentukan daftar paket yang tersedia (1-4)
+    const totalPaket = 4;
+    // Pilih paket secara acak (1-4)
+    const paket = Math.floor(Math.random() * totalPaket) + 1;
     let fileSoal = '';
 
-    // Tentukan file soal berdasarkan kelas
+    // Tentukan file soal berdasarkan kelas dan paket yang diacak
     if (kelasSiswa === '3') {
-        fileSoal = 'soal/soal_sd_kelas3.json';
+        fileSoal = `soal/soal_kelas3_paket${paket}.json`;
     } else if (kelasSiswa === '4') {
-        fileSoal = 'soal/soal_sd_kelas4.json';
+        fileSoal = `soal/soal_kelas4_paket${paket}.json`;
     } else if (kelasSiswa === '5') {
-        fileSoal = 'soal/soal_sd_kelas5.json';
+        fileSoal = `soal/soal_kelas5_paket${paket}.json`;
     } else {
         alert('Kelas tidak dikenal!');
         return;
@@ -38,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let jumlahSalah = 0;
     let waktuTotal = 0;
     let waktuMulai = null;
-
+    let daftarSoalDikerjakan = [];
     //let score = 0;
 
     mulaiBtn.addEventListener('click', () => {
@@ -50,9 +54,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function fetchSoal() {
         fetch(fileSoal)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('File soal tidak ditemukan');
+                }
+                return res.json();
+            })
             .then(data => {
                 soalData = data;
+                // Acak urutan soal
+                soalData = shuffleArray([...soalData]);
+                // Simpan daftar ID soal yang diacak dan informasi paket
+                daftarSoalDikerjakan = {
+                    paket: paket.toString(),
+                    soal: soalData.map(soal => soal.id.toString())
+                };
                 tampilkanSoal();
             })
             .catch(err => {
@@ -87,7 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     jumlah_salah: jumlahSalah,
                     waktu_rata2_per_soal: parseFloat(waktuRata2.toFixed(2)),
                     dideteksi_asal: 0,
-                    kesulitan_diduga: "-"
+                    kesulitan_diduga: "-",
+                    daftar_soal_dikerjakan: JSON.stringify(daftarSoalDikerjakan)
                 })
             })
             .then(res => res.json())
@@ -167,6 +184,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 tampilkanSoal();
             }
         }, 1000);
+    }
+
+    // Fungsi untuk mengacak array (Fisher-Yates shuffle)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
     }
 
     /*function kirimHasil(score) {

@@ -1,0 +1,137 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Hasil dari 36 : 6 adalah...",
+    "pilihan": ["5", "6", "7", "8"],
+    "jawaban": "6",
+    "topik": "Pembagian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Santi memiliki 45 kelereng dan ingin membagikannya kepada 5 teman secara merata. Setiap teman akan mendapat ... kelereng.",
+    "pilihan": ["7", "8", "9", "10"],
+    "jawaban": "9",
+    "topik": "Pembagian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Berapa hasil dari 4 + (3 x 2)?",
+    "pilihan": ["10", "12", "14", "16"],
+    "jawaban": "10",
+    "topik": "Operasi Campuran",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Bentuk bangun datar yang memiliki tiga sisi adalah...",
+    "pilihan": ["Persegi", "Lingkaran", "Segitiga", "Persegi panjang"],
+    "jawaban": "Segitiga",
+    "topik": "Bangun Datar",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Sebuah persegi memiliki panjang sisi 4 cm. Berapa kelilingnya?",
+    "pilihan": ["12 cm", "14 cm", "16 cm", "18 cm"],
+    "jawaban": "16 cm",
+    "topik": "Geometri Sederhana",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Apa yang terjadi jika air dimasukkan ke dalam lemari es?",
+    "pilihan": ["Menguap", "Mendidih", "Membeku", "Mengering"],
+    "jawaban": "Membeku",
+    "topik": "Perubahan Wujud Benda",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Contoh benda yang dapat ditarik magnet adalah...",
+    "pilihan": ["Kayu", "Kain", "Besi", "Kertas"],
+    "jawaban": "Besi",
+    "topik": "Gaya dan Magnet",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Bagian tubuh manusia yang digunakan untuk melihat adalah...",
+    "pilihan": ["Telinga", "Hidung", "Mata", "Tangan"],
+    "jawaban": "Mata",
+    "topik": "Indera Manusia",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Gaya dorong dan gaya tarik digunakan untuk...",
+    "pilihan": ["Menambah berat", "Mengurangi warna", "Mengubah gerak benda", "Menyerap air"],
+    "jawaban": "Mengubah gerak benda",
+    "topik": "Gaya dan Gerak",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Apa yang terjadi jika tanaman tidak mendapat air dalam waktu lama?",
+    "pilihan": ["Tumbuh tinggi", "Layu dan mati", "Berbunga banyak", "Berdaun lebat"],
+    "jawaban": "Layu dan mati",
+    "topik": "Kebutuhan Tumbuhan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Kalimat berikut yang menggunakan tanda baca titik dengan benar adalah...",
+    "pilihan": ["Aku suka makan es krim", "Aku suka makan es krim.", "aku suka makan es krim.", "aku suka makan es krim"],
+    "jawaban": "Aku suka makan es krim.",
+    "topik": "Tanda Baca",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Kata yang menunjukkan tempat adalah...",
+    "pilihan": ["Kemarin", "Sekolah", "Cepat", "Besar"],
+    "jawaban": "Sekolah",
+    "topik": "Kata Benda dan Tempat",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Manakah kalimat perintah yang benar?",
+    "pilihan": ["Tolong tutup pintu.", "Saya membuka pintu.", "Pintu ditutup angin.", "Pintu itu besar."],
+    "jawaban": "Tolong tutup pintu.",
+    "topik": "Jenis Kalimat",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Sinonim dari kata ‘indah’ adalah...",
+    "pilihan": ["Cantik", "Kecil", "Luas", "Cepat"],
+    "jawaban": "Cantik",
+    "topik": "Sinonim/Antonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Manakah kalimat yang menggunakan tanda baca koma dengan benar?",
+    "pilihan": ["Aku, dan adik pergi ke pasar.", "Aku dan adik pergi ke pasar", "Aku dan, adik pergi ke pasar.", "Aku dan adik, pergi ke pasar"],
+    "jawaban": "Aku, dan adik pergi ke pasar.",
+    "topik": "Tanda Baca",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  }
+]

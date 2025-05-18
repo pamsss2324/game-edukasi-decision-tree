@@ -1,0 +1,164 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Berapa hasil dari 45 x 6?",
+    "pilihan": ["270", "280", "290", "300"],
+    "jawaban": "270",
+    "topik": "Perkalian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Jika 144 dibagi 12, berapa hasilnya?",
+    "pilihan": ["10", "11", "12", "13"],
+    "jawaban": "12",
+    "topik": "Pembagian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Sebuah mobil menempuh jarak 180 km dalam 3 jam. Berapa kecepatan rata-ratanya?",
+    "pilihan": ["30 km/jam", "60 km/jam", "90 km/jam", "100 km/jam"],
+    "jawaban": "60 km/jam",
+    "topik": "Pengukuran",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Nilai pecahan dari 3/4 + 1/4 adalah...",
+    "pilihan": ["1/2", "1", "3/2", "2"],
+    "jawaban": "1",
+    "topik": "Pecahan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Berapakah hasil dari 125 - 47?",
+    "pilihan": ["68", "78", "88", "98"],
+    "jawaban": "78",
+    "topik": "Pengurangan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Hasil dari 7 x 8 + 4 adalah...",
+    "pilihan": ["60", "64", "68", "72"],
+    "jawaban": "60",
+    "topik": "Operasi Campuran",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Apa yang terjadi saat cahaya mengenai cermin?",
+    "pilihan": ["Diserap", "Dibiaskan", "Dipantulkan", "Menghilang"],
+    "jawaban": "Dipantulkan",
+    "topik": "Cahaya dan Sifatnya",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Proses pencernaan makanan dimulai dari...",
+    "pilihan": ["Mulut", "Lambung", "Usus", "Kerongkongan"],
+    "jawaban": "Mulut",
+    "topik": "Sistem Pencernaan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Organ yang berfungsi memompa darah ke seluruh tubuh adalah...",
+    "pilihan": ["Paru-paru", "Ginjal", "Hati", "Jantung"],
+    "jawaban": "Jantung",
+    "topik": "Organ Tubuh",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Selain menyerap air, apa fungsi lain dari akar pada tumbuhan?",
+    "pilihan": ["Menyerap cahaya", "Mengangkut makanan", "Menopang tumbuhan", "Melakukan fotosintesis"],
+    "jawaban": "Menopang tumbuhan",
+    "topik": "Bagian Tumbuhan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Benda yang dapat mengubah energi listrik menjadi cahaya adalah...",
+    "pilihan": ["Kipas angin", "Kompor", "Lampu", "Radio"],
+    "jawaban": "Lampu",
+    "topik": "Energi",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Jika seseorang tidak makan dalam waktu lama, apa yang terjadi pada tubuhnya dan mengapa?",
+    "pilihan": ["Tubuh menjadi kuat karena istirahat", "Tubuh lemah karena kekurangan energi", "Tubuh tetap sehat karena cadangan lemak", "Tubuh tidak ngantuk karena tidak makan"],
+    "jawaban": "Tubuh lemah karena kekurangan energi",
+    "topik": "Kesehatan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Kalimat berikut yang efektif adalah...",
+    "pilihan": ["Dia pergi ke sekolah dan bermain bola.", "Sekolah dia pergi bola bermain.", "Dia bola ke sekolah bermain.", "Pergi dia bola sekolah."],
+    "jawaban": "Dia pergi ke sekolah dan bermain bola.",
+    "topik": "Kalimat Efektif",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Sinonim dari kata 'cepat' adalah...",
+    "pilihan": ["Lambat", "Pelan", "Cepat-cepat", "Gesit"],
+    "jawaban": "Gesit",
+    "topik": "Sinonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Lawan kata dari 'panjang' adalah...",
+    "pilihan": ["Luas", "Lebar", "Pendek", "Tipis"],
+    "jawaban": "Pendek",
+    "topik": "Antonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 16,
+    "pertanyaan": "Kalimat berikut yang menggunakan tanda baca koma dan titik dua dengan tepat adalah...",
+    "pilihan": ["Ibu membeli: apel, jeruk, dan mangga.", "Ibu membeli apel, jeruk dan mangga", "Ibu membeli apel: jeruk, dan mangga.", "Ibu membeli, apel, jeruk, dan mangga"],
+    "jawaban": "Ibu membeli: apel, jeruk, dan mangga.",
+    "topik": "Tanda Baca",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 17,
+    "pertanyaan": "Kata berimbuhan pada kalimat 'Adik sedang menyapu lantai' adalah...",
+    "pilihan": ["Adik", "Sedang", "Menyapu", "Lantai"],
+    "jawaban": "Menyapu",
+    "topik": "Imbuhan",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 18,
+    "pertanyaan": "Manakah kalimat majemuk berikut yang benar?",
+    "pilihan": ["Andi membaca buku, tetapi adik menonton TV.", "Andi membaca buku adik menonton TV.", "Andi membaca, buku tetapi adik, menonton TV.", "Andi membaca buku tetapi, adik menonton TV"],
+    "jawaban": "Andi membaca buku, tetapi adik menonton TV.",
+    "topik": "Kalimat Majemuk",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  }
+]

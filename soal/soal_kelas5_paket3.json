@@ -1,0 +1,191 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Jumlah sisi pada sebuah segitiga adalah...",
+    "pilihan": ["2", "3", "4", "5"],
+    "jawaban": "3",
+    "topik": "Geometri",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Hasil dari 15 + 5 x 3 adalah...",
+    "pilihan": ["30", "60", "45", "20"],
+    "jawaban": "30",
+    "topik": "Operasi Campuran",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Jika 2,5 km sama dengan berapa meter?",
+    "pilihan": ["250 m", "2.500 m", "25.000 m", "250.000 m"],
+    "jawaban": "2.500 m",
+    "topik": "Konversi Satuan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Hasil dari 4,5 + 2,5 adalah...",
+    "pilihan": ["6,0", "7,0", "8,0", "9,0"],
+    "jawaban": "7,0",
+    "topik": "Bilangan Desimal",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Jika sekarang pukul 09.00, berapa jam lagi sampai pukul 14.00?",
+    "pilihan": ["3 jam", "4 jam", "5 jam", "6 jam"],
+    "jawaban": "5 jam",
+    "topik": "Waktu",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Jika dalam diagram batang, jumlah siswa yang menyukai warna biru adalah 8, merah 5, dan hijau 7, warna yang paling disukai adalah...",
+    "pilihan": ["Biru", "Merah", "Hijau", "Sama"],
+    "jawaban": "Biru",
+    "topik": "Diagram",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Pecahan 3/5 jika diubah menjadi desimal adalah...",
+    "pilihan": ["0,5", "0,6", "0,7", "0,8"],
+    "jawaban": "0,6",
+    "topik": "Pecahan Desimal",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Fase awal daur hidup kupu-kupu adalah...",
+    "pilihan": ["Kupu-kupu", "Ulat", "Telur", "Kepompong"],
+    "jawaban": "Telur",
+    "topik": "Daur Hidup Hewan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Organ yang berfungsi mencerna lemak adalah...",
+    "pilihan": ["Mulut", "Lambung", "Hati", "Usus"],
+    "jawaban": "Hati",
+    "topik": "Sistem Pencernaan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Sumber daya alam yang tidak dapat diperbarui adalah...",
+    "pilihan": ["Air", "Minyak bumi", "Tanah", "Angin"],
+    "jawaban": "Minyak bumi",
+    "topik": "Sumber Daya Alam",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Bagian tumbuhan yang berfungsi untuk fotosintesis adalah...",
+    "pilihan": ["Akar", "Batang", "Daun", "Bunga"],
+    "jawaban": "Daun",
+    "topik": "Organ Tumbuhan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Bayangan terjadi karena cahaya...",
+    "pilihan": ["Dibelokkan", "Dipantulkan", "Diblokir oleh benda", "Diserap"],
+    "jawaban": "Diblokir oleh benda",
+    "topik": "Cahaya",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Hubungan antara bunga dan lebah termasuk simbiosis...",
+    "pilihan": ["Parasitisme", "Mutualisme", "Kommensalisme", "Predasi"],
+    "jawaban": "Mutualisme",
+    "topik": "Interaksi Makhluk Hidup",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Bahan yang dapat menghantarkan panas dengan baik disebut...",
+    "pilihan": ["Konduktor", "Isolator", "Semikonduktor", "Nonkonduktor"],
+    "jawaban": "Konduktor",
+    "topik": "Bahan Konduktor",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Teks eksplanasi bertujuan untuk...",
+    "pilihan": ["Menceritakan peristiwa", "Menjelaskan proses atau fenomena", "Mengajak pembaca", "Menggambarkan suasana"],
+    "jawaban": "Menjelaskan proses atau fenomena",
+    "topik": "Teks Eksplanasi",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 16,
+    "pertanyaan": "Kalimat berikut yang merupakan kalimat aktif adalah...",
+    "pilihan": ["Buku itu dibaca oleh Ani.", "Ani membaca buku itu.", "Buku itu telah dibaca.", "Buku itu sedang dibaca Ani."],
+    "jawaban": "Ani membaca buku itu.",
+    "topik": "Kalimat Aktif",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 17,
+    "pertanyaan": "Kata 'televisi' merupakan kata serapan dari bahasa...",
+    "pilihan": ["Belanda", "Inggris", "Arab", "Jepang"],
+    "jawaban": "Inggris",
+    "topik": "Kata Serapan",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 18,
+    "pertanyaan": "Sinonim dari 'cerdas' adalah...",
+    "pilihan": ["Bodoh", "Pintar", "Malas", "Lambat"],
+    "jawaban": "Pintar",
+    "topik": "Sinonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 19,
+    "pertanyaan": "Teks laporan biasanya berisi...",
+    "pilihan": ["Langkah-langkah", "Hasil pengamatan", "Cerita fiksi", "Ajakan"],
+    "jawaban": "Hasil pengamatan",
+    "topik": "Teks Laporan",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 20,
+    "pertanyaan": "Kalimat berikut yang merupakan kalimat pasif adalah...",
+    "pilihan": ["Ibu membuat kue.", "Kue dibuat oleh ibu.", "Ibu sedang membuat kue.", "Kue itu sangat enak."],
+    "jawaban": "Kue dibuat oleh ibu.",
+    "topik": "Kalimat Pasif",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 21,
+    "pertanyaan": "Kalimat 'Wajahnya seperti bulan purnama' menggunakan majas...",
+    "pilihan": ["Metafora", "Personifikasi", "Hiperbola", "Litotes"],
+    "jawaban": "Metafora",
+    "topik": "Majas",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  }
+]

@@ -1,0 +1,137 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Berapakah hasil dari 7 x 3?",
+    "pilihan": ["20", "21", "24", "18"],
+    "jawaban": "21",
+    "topik": "Perkalian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Andi membeli 4 bungkus permen. Setiap bungkus berisi 6 permen. Berapa jumlah seluruh permen Andi?",
+    "pilihan": ["24", "20", "18", "16"],
+    "jawaban": "24",
+    "topik": "Perkalian",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Pecahan dari dua setengah adalah...",
+    "pilihan": ["2/2", "3/2", "5/2", "1/2"],
+    "jawaban": "5/2",
+    "topik": "Pecahan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "1 minggu terdiri dari ... hari.",
+    "pilihan": ["5", "6", "7", "8"],
+    "jawaban": "7",
+    "topik": "Satuan Waktu",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Jika sekarang pukul 10 pagi, maka 3 jam kemudian adalah pukul...",
+    "pilihan": ["12 siang", "1 siang", "11 siang", "2 siang"],
+    "jawaban": "1 siang",
+    "topik": "Satuan Waktu",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Tumbuhan hijau dapat membuat makanan sendiri dengan bantuan...",
+    "pilihan": ["Air", "Cahaya matahari", "Tanah", "Angin"],
+    "jawaban": "Cahaya matahari",
+    "topik": "Fotosintesis",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Bagian tumbuhan yang berfungsi menyerap air dari tanah adalah...",
+    "pilihan": ["Daun", "Batang", "Akar", "Bunga"],
+    "jawaban": "Akar",
+    "topik": "Bagian Tumbuhan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Manakah yang termasuk hewan mamalia?",
+    "pilihan": ["Ikan", "Katak", "Burung", "Kucing"],
+    "jawaban": "Kucing",
+    "topik": "Klasifikasi Hewan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Apa fungsi dari paru-paru dalam tubuh manusia?",
+    "pilihan": ["Mencerna makanan", "Bernapas", "Mengalirkan darah", "Membantu berpikir"],
+    "jawaban": "Bernapas",
+    "topik": "Organ Tubuh",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Air berubah menjadi uap ketika...",
+    "pilihan": ["Didinginkan", "Dibekukan", "Dipanaskan", "Dibekukan lalu dicairkan"],
+    "jawaban": "Dipanaskan",
+    "topik": "Perubahan Wujud Benda",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Manakah kalimat yang ditulis dengan benar?",
+    "pilihan": ["ayah pergi ke pasar.", "Ayah pergi ke pasar.", "ayah Pergi ke pasar.", "Ayah Pergi ke Pasar."],
+    "jawaban": "Ayah pergi ke pasar.",
+    "topik": "Menulis Kalimat",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Manakah kalimat yang menggunakan kata ganti 'kami' dengan tepat?",
+    "pilihan": ["Budi dan saya pergi ke sekolah.", "Saya makan nasi.", "Ibu menyapu halaman.", "Kami bermain di taman."],
+    "jawaban": "Kami bermain di taman.",
+    "topik": "Kata Ganti Orang",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Lawan kata dari tinggi adalah...",
+    "pilihan": ["Pendek", "Kecil", "Rendah", "Dekat"],
+    "jawaban": "Pendek",
+    "topik": "Sinonim/Antonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Persamaan kata dari pintar adalah...",
+    "pilihan": ["Rajin", "Bodoh", "Cerdas", "Malas"],
+    "jawaban": "Cerdas",
+    "topik": "Sinonim/Antonim",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Kata 'berlari' termasuk ke dalam jenis kata apa?",
+    "pilihan": ["Kata benda", "Kata kerja", "Kata sifat", "Kata keterangan"],
+    "jawaban": "Kata kerja",
+    "topik": "Jenis Kata",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  }
+]

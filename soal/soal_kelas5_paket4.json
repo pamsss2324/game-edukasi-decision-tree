@@ -1,0 +1,191 @@
+[
+  {
+    "id": 1,
+    "pertanyaan": "Jumlah sisi pada sebuah kubus adalah...",
+    "pilihan": ["6", "8", "12", "10"],
+    "jawaban": "12",
+    "topik": "Bangun Ruang",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 2,
+    "pertanyaan": "Hasil dari 6 ÷ 2/3 adalah...",
+    "pilihan": ["9", "12", "15", "18"],
+    "jawaban": "9",
+    "topik": "Pembagian Pecahan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 3,
+    "pertanyaan": "Rata-rata nilai 80 (2x) dan 90 (3x) adalah...",
+    "pilihan": ["84", "85", "86", "87"],
+    "jawaban": "86",
+    "topik": "Rata-rata Tertimbang",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 4,
+    "pertanyaan": "Hasil dari 7,8 - 3,2 adalah...",
+    "pilihan": ["4,4", "4,6", "5,0", "5,6"],
+    "jawaban": "4,6",
+    "topik": "Pengurangan Desimal",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 5,
+    "pertanyaan": "Kelipatan persekutuan terkecil dari 4 dan 6 adalah...",
+    "pilihan": ["12", "18", "24", "36"],
+    "jawaban": "12",
+    "topik": "Kelipatan Bersama",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 6,
+    "pertanyaan": "Jika sudut dalam segitiga adalah 60°, 70°, dan x, nilai x adalah...",
+    "pilihan": ["40°", "50°", "60°", "70°"],
+    "jawaban": "50°",
+    "topik": "Sudut",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 7,
+    "pertanyaan": "Jika harga beli 500.000 dan harga jual 600.000, persentase keuntungan adalah...",
+    "pilihan": ["10%", "15%", "20%", "25%"],
+    "jawaban": "20%",
+    "topik": "Persentase Keuntungan",
+    "pelajaran": "Matematika",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 8,
+    "pertanyaan": "Penyebab utama perubahan iklim adalah...",
+    "pilihan": ["Hujan", "Pemanasan global", "Angin", "Salju"],
+    "jawaban": "Pemanasan global",
+    "topik": "Perubahan Iklim",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 9,
+    "pertanyaan": "Proses pengeluaran sisa makanan dari tubuh disebut...",
+    "pilihan": ["Pencernaan", "Penyerapan", "Defekasi", "Respirasi"],
+    "jawaban": "Defekasi",
+    "topik": "Peredaran Makanan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 10,
+    "pertanyaan": "Proses di mana tumbuhan menggunakan energi matahari untuk membuat makanan disebut...",
+    "pilihan": ["Respirasi", "Fotosintesis", "Fermentasi", "Transpirasi"],
+    "jawaban": "Fotosintesis",
+    "topik": "Energi Matahari",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 11,
+    "pertanyaan": "Organ yang berfungsi memompa darah adalah...",
+    "pilihan": ["Paru-paru", "Jantung", "Hati", "Ginjal"],
+    "jawaban": "Jantung",
+    "topik": "Organ Manusia",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 12,
+    "pertanyaan": "Gaya yang menghambat gerakan benda adalah...",
+    "pilihan": ["Gaya dorong", "Gaya tarik", "Gaya gesek", "Gaya gravitasi"],
+    "jawaban": "Gaya gesek",
+    "topik": "Gaya Gesek",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 13,
+    "pertanyaan": "Daur ulang dapat mengurangi dampak...",
+    "pilihan": ["Pencemaran udara", "Pencemaran air", "Pencemaran tanah", "Semua jawaban benar"],
+    "jawaban": "Semua jawaban benar",
+    "topik": "Lingkungan Hidup",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Tumbuhan kaktus memiliki duri untuk...",
+    "pilihan": ["Menarik air", "Melindungi diri", "Menyimpan makanan", "Berfotosintesis"],
+    "jawaban": "Melindungi diri",
+    "topik": "Adaptasi Tumbuhan",
+    "pelajaran": "IPA",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 15,
+    "pertanyaan": "Ciri puisi yang menggunakan rima adalah...",
+    "pilihan": ["Bahasa baku", "Persajakan", "Kalimat panjang", "Paragraf"],
+    "jawaban": "Persajakan",
+    "topik": "Puisi",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 16,
+    "pertanyaan": "Kalimat berikut yang merupakan kalimat perintah adalah...",
+    "pilihan": ["Saya pergi ke sekolah.", "Tolong buka jendela!", "Dia sedang makan.", "Buku itu bagus."],
+    "jawaban": "Tolong buka jendela!",
+    "topik": "Kalimat Perintah",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 17,
+    "pertanyaan": "Kata yang ditulis sesuai EYD adalah...",
+    "pilihan": ["Belajar", "Belajjar", "Blajar", "Belaajar"],
+    "jawaban": "Belajar",
+    "topik": "Ejaan",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 18,
+    "pertanyaan": "Kalimat berikut yang merupakan kalimat ajakan adalah...",
+    "pilihan": ["Ayo kita belajar!", "Saya suka membaca.", "Dia pergi ke taman.", "Buku itu tebal."],
+    "jawaban": "Ayo kita belajar!",
+    "topik": "Kalimat Ajakan",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 19,
+    "pertanyaan": "Teks argumentasi bertujuan untuk...",
+    "pilihan": ["Menceritakan kisah", "Menyakinkan pembaca", "Menggambarkan tempat", "Memberikan langkah"],
+    "jawaban": "Menyakinkan pembaca",
+    "topik": "Teks Argumentasi",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sedang"
+  },
+  {
+    "id": 20,
+    "pertanyaan": "Pantun yang benar memiliki jumlah baris...",
+    "pilihan": ["2", "4", "6", "8"],
+    "jawaban": "4",
+    "topik": "Pantun",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  },
+  {
+    "id": 21,
+    "pertanyaan": "Tanda baca yang digunakan untuk menutup kalimat tanya adalah...",
+    "pilihan": ["Titik (.)", "Tanda Tanya (?)", "Koma (,)", "Titik Dua (:)"],
+    "jawaban": "Tanda Tanya (?)",
+    "topik": "Tanda Baca",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "sulit"
+  }
+]
