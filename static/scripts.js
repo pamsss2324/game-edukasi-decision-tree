@@ -61,8 +61,8 @@ lanjutBtn.addEventListener('click', () => {
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        showCustomAlert('Terjadi kesalahan koneksi.');
+    console.error('Error:', error);
+    showCustomAlert(data?.pesan || 'Terjadi kesalahan koneksi.');
     });
 });
 
