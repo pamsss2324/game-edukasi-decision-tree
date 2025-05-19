@@ -79,16 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function tampilkanSoal() {
         if (currentIndex >= soalData.length) {
-            quizContent.innerHTML = '<h2>Selamat, kamu telah menyelesaikan kuis!</h2>';
-            clearInterval(timerInterval);
-            const waktuRata2 = waktuTotal / soalData.length;
-
             quizContent.innerHTML = `
                 <div class="card">
                     <h2>Selamat, ${namaSiswa}!</h2>
                     <p>Kamu telah menyelesaikan kuis.</p>
                 </div>
             `;
+            clearInterval(timerInterval);
+            const waktuRata2 = waktuTotal / soalData.length;
 
             const mapel = soalData[0].topik || "Tidak Diketahui";
 
@@ -121,12 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const soal = soalData[currentIndex];
         const progressPercent = Math.round(((currentIndex + 1) / soalData.length) * 100);
 
-        progressText.textContent = `Soal ke-${currentIndex + 1} dari ${soalData.length}`;
         progressFill.style.width = `${progressPercent}%`;
         progressFill.textContent = `${progressPercent}%`;
         pertanyaanEl.textContent = soal.pertanyaan;
 
         let pilihanHTML = '';
+        const pilihanAcak = shuffleArray([...soal.pilihan]);
         soal.pilihan.forEach((pil) => {
             pilihanHTML += `<div class="pilihanBox" data-jawaban="${pil}">${pil}</div>`;
         });
@@ -144,16 +142,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 waktuTotal += durasi;
 
                 const jawaban = e.target.getAttribute('data-jawaban');
-                if (jawaban === soal.jawabanBenar) {
+                if (jawaban === soal.jawaban) {
                     e.target.classList.add('benar');
                     jumlahBenar++;
                     //score++;
                 } else {
                     e.target.classList.add('salah');
                     jumlahSalah++;
-                    document.querySelectorAll('.pilihanBox').forEach(box => {
-                        if (box.getAttribute('data-jawaban') === soal.jawabanBenar) {
-                            box.classList.add('benar');
+                    document.querySelectorAll('.pilihanBox').forEach(b => {
+                        if (b.getAttribute('data-jawaban') === soal.jawaban) {
+                            b.classList.add('benar');
                         }
                     });
                 }
