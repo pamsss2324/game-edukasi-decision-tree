@@ -5,6 +5,7 @@
     "pilihan": ["45", "47", "48", "50"],
     "jawaban": "47",
     "topik": "Pengurangan",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -14,6 +15,7 @@
     "pilihan": ["54", "56", "58", "60"],
     "jawaban": "56",
     "topik": "Perkalian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -23,6 +25,7 @@
     "pilihan": ["65", "70", "75", "80"],
     "jawaban": "75",
     "topik": "Pengurangan",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -32,24 +35,27 @@
     "pilihan": ["75", "76", "77", "78"],
     "jawaban": "77",
     "topik": "Penjumlahan",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
   {
     "id": 5,
-    "pertanyaan": "Manakah bilangan yang merupakan kelipatan 6?",
-    "pilihan": ["10", "12", "16", "18"],
-    "jawaban": "12",
-    "topik": "Kelipatan",
+    "pertanyaan": "Seorang pelari menempuh jarak 150 meter dalam 30 detik. Berapa kecepatan rata-ratanya?",
+    "pilihan": ["4 m/detik", "5 m/detik", "6 m/detik", "7 m/detik"],
+    "jawaban": "5 m/detik",
+    "topik": "Pengukuran",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "sulit"
   },
   {
     "id": 6,
-    "pertanyaan": "Urutan pecahan dari yang terkecil adalah...",
-    "pilihan": ["1/2, 1/3, 1/4", "1/4, 1/3, 1/2", "1/3, 1/4, 1/2", "1/2, 1/4, 1/3"],
-    "jawaban": "1/4, 1/3, 1/2",
-    "topik": "Pecahan",
+    "pertanyaan": "Sebuah mobil menempuh jarak 240 km dalam 4 jam. Berapa kecepatan rata-ratanya?",
+    "pilihan": ["50 km/jam", "60 km/jam", "70 km/jam", "80 km/jam"],
+    "jawaban": "60 km/jam",
+    "topik": "Pengukuran",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -59,6 +65,7 @@
     "pilihan": ["Menguatkan akar", "Menopang batang", "Melakukan fotosintesis", "Menarik serangga"],
     "jawaban": "Melakukan fotosintesis",
     "topik": "Bagian Tumbuhan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -68,6 +75,7 @@
     "pilihan": ["Air menjadi es", "Es mencair", "Air menguap", "Uap menjadi air"],
     "jawaban": "Air menguap",
     "topik": "Perubahan Wujud",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -77,6 +85,7 @@
     "pilihan": ["Vivipar", "Ovipar", "Ovovivipar", "Mamalia"],
     "jawaban": "Ovipar",
     "topik": "Perkembangbiakan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -86,6 +95,7 @@
     "pilihan": ["Baterai", "Genset", "PLN", "Panel surya"],
     "jawaban": "PLN",
     "topik": "Energi",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -95,6 +105,7 @@
     "pilihan": ["Hidung", "Paru-paru", "Jantung", "Lidah"],
     "jawaban": "Paru-paru",
     "topik": "Organ Pernapasan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -104,6 +115,7 @@
     "pilihan": ["Makan permen", "Tidur siang", "Olahraga teratur", "Bermain game"],
     "jawaban": "Olahraga teratur",
     "topik": "Kesehatan",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -113,6 +125,7 @@
     "pilihan": ["Panas", "Sejuk", "Lembab", "Kering"],
     "jawaban": "Panas",
     "topik": "Antonim",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -122,6 +135,7 @@
     "pilihan": ["Ayo kita membersihkan kelas!", "Dia sedang belajar.", "Saya ke pasar.", "Apakah kamu sudah makan?"],
     "jawaban": "Ayo kita membersihkan kelas!",
     "topik": "Kalimat Ajakan",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Aktifitas", "Aktivitas", "Agtifitas", "Aktipitas"],
     "jawaban": "Aktivitas",
     "topik": "Kata Baku",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -140,6 +155,7 @@
     "pilihan": ["Dia berlari cepat.", "Kami menyapu-an halaman.", "Mereka memakan nasi.", "Ibu membersihkan rumah."],
     "jawaban": "Dia berlari cepat.",
     "topik": "Imbuhan",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -149,6 +165,7 @@
     "pilihan": ["Sedih", "Senang", "Lelah", "Takut"],
     "jawaban": "Senang",
     "topik": "Sinonim",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -158,6 +175,7 @@
     "pilihan": ["Kamu pergi ke sekolah.", "Tolong tutup pintu itu.", "Dia sedang duduk.", "Saya membaca buku."],
     "jawaban": "Tolong tutup pintu itu.",
     "topik": "Kalimat Perintah",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   }

@@ -5,17 +5,19 @@
     "pilihan": ["20", "24", "26", "30"],
     "jawaban": "24",
     "topik": "Perkalian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
   {
     "id": 2,
-    "pertanyaan": "Bentuk pecahan dari satu setengah adalah...",
-    "pilihan": ["1/2", "2/2", "3/2", "1/3"],
-    "jawaban": "3/2",
-    "topik": "Pecahan",
+    "pertanyaan": "Berapa hasil dari 3 x 5?",
+    "pilihan": ["12", "15", "18", "20"],
+    "jawaban": "15",
+    "topik": "Perkalian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 3,
@@ -23,6 +25,7 @@
     "pilihan": ["30", "45", "60", "90"],
     "jawaban": "60",
     "topik": "Satuan Waktu",
+    "kategori": "Satuan dan Pengukuran",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -32,6 +35,7 @@
     "pilihan": ["Rabu", "Kamis", "Jumat", "Sabtu"],
     "jawaban": "Kamis",
     "topik": "Satuan Waktu",
+    "kategori": "Satuan dan Pengukuran",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -41,15 +45,17 @@
     "pilihan": ["13", "15", "12", "10"],
     "jawaban": "13",
     "topik": "Perhitungan Campuran",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
   {
     "id": 6,
-    "pertanyaan": "Hewan apa yang menggunakan kulitnya untuk bernapas?",
-    "pilihan": ["Katak", "Ikan", "Burung", "Kucing"],
-    "jawaban": "Katak",
-    "topik": "Cara Bernapas Hewan",
+    "pertanyaan": "Organ tubuh yang digunakan untuk mendengar adalah...",
+    "pilihan": ["Mata", "Telinga", "Hidung", "Mulut"],
+    "jawaban": "Telinga",
+    "topik": "Organ Tubuh",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -59,6 +65,7 @@
     "pilihan": ["Telinga", "Hidung", "Mata", "Lidah"],
     "jawaban": "Mata",
     "topik": "Organ Tubuh",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -68,6 +75,7 @@
     "pilihan": ["Air", "Udara", "Cahaya matahari", "Tanah"],
     "jawaban": "Cahaya matahari",
     "topik": "Fotosintesis",
+    "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -77,6 +85,7 @@
     "pilihan": ["Mata", "Hidung", "Paru-paru", "Kaki"],
     "jawaban": "Hidung",
     "topik": "Organ Pernapasan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -86,6 +95,7 @@
     "pilihan": ["Tumbuhan akan layu", "Tumbuhan akan berbunga", "Tumbuhan akan berbuah", "Tumbuhan akan tinggi"],
     "jawaban": "Tumbuhan akan layu",
     "topik": "Fotosintesis",
+    "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
@@ -95,6 +105,7 @@
     "pilihan": ["Saya pergi ke sekolah.", "Pergi saya ke sekolah.", "Sekolah ke saya pergi.", "Saya sekolah pergi ke."],
     "jawaban": "Saya pergi ke sekolah.",
     "topik": "Kalimat Benar",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -104,6 +115,7 @@
     "pilihan": ["Senang", "Marah", "Sedih", "Takut"],
     "jawaban": "Senang",
     "topik": "Kosa Kata",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -113,6 +125,7 @@
     "pilihan": ["Tinggi", "Kecil", "Pendek", "Luas"],
     "jawaban": "Kecil",
     "topik": "Antonim",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -122,6 +135,7 @@
     "pilihan": ["Kamu harus belajar!", "Belajar kamu harus!", "Harus kamu belajar!", "Belajar harus kamu!"],
     "jawaban": "Kamu harus belajar!",
     "topik": "Kalimat Perintah",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Ayo kita belajar!", "Ayo kita belajar", "Ayo kita belajar?", "Ayo kita belajar,"],
     "jawaban": "Ayo kita belajar!",
     "topik": "Tanda Baca",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   }

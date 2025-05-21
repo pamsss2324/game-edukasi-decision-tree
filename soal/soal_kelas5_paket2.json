@@ -5,6 +5,7 @@
     "pilihan": ["15 cm", "20 cm", "25 cm", "30 cm"],
     "jawaban": "20 cm",
     "topik": "Keliling Bangun Datar",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -14,6 +15,7 @@
     "pilihan": ["1/2", "5/6", "1/4", "3/7"],
     "jawaban": "1/2",
     "topik": "Operasi Pecahan",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -23,6 +25,7 @@
     "pilihan": ["1:5.000.000", "1:4.000.000", "1:2.000.000", "1:1.000.000"],
     "jawaban": "1:5.000.000",
     "topik": "Skala",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -32,6 +35,7 @@
     "pilihan": ["-8", "-2", "2", "8"],
     "jawaban": "2",
     "topik": "Bilangan Bulat",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -41,6 +45,7 @@
     "pilihan": ["100 km", "120 km", "140 km", "160 km"],
     "jawaban": "120 km",
     "topik": "Kecepatan",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -50,6 +55,7 @@
     "pilihan": ["5", "6", "7", "8"],
     "jawaban": "6",
     "topik": "Statistika",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -59,6 +65,7 @@
     "pilihan": ["5", "6", "7", "8"],
     "jawaban": "5",
     "topik": "Persamaan Sederhana",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -68,6 +75,7 @@
     "pilihan": ["Tumbuhan", "Bakteri", "Hewan", "Jamur"],
     "jawaban": "Hewan",
     "topik": "Ekosistem",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -77,6 +85,7 @@
     "pilihan": ["Gaya gesek", "Gaya dorong", "Gaya gravitasi", "Gaya magnet"],
     "jawaban": "Gaya dorong",
     "topik": "Gaya",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -86,6 +95,7 @@
     "pilihan": ["Panel surya", "Kincir angin", "Turbin air", "Baterai"],
     "jawaban": "Kincir angin",
     "topik": "Energi",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
@@ -95,6 +105,7 @@
     "pilihan": ["Jantung", "Paru-paru", "Hati", "Ginjal"],
     "jawaban": "Paru-paru",
     "topik": "Sistem Pernapasan",
+    "kategori": "Sistem Tubuh Manusia",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -104,6 +115,7 @@
     "pilihan": ["Kayu", "Plastik", "Besi", "Kaca"],
     "jawaban": "Besi",
     "topik": "Sifat Benda",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -113,15 +125,17 @@
     "pilihan": ["Evaporasi", "Kondensasi", "Presipitasi", "Transpirasi"],
     "jawaban": "Kondensasi",
     "topik": "Siklus Air",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
   {
     "id": 14,
-    "pertanyaan": "Hewan yang memiliki kemampuan mengubah warna tubuh untuk menyesuaikan lingkungan adalah...",
-    "pilihan": ["Kucing", "Bunglon", "Anjing", "Kuda"],
-    "jawaban": "Bunglon",
-    "topik": "Adaptasi Makhluk Hidup",
+    "pertanyaan": "Fungsi utama lambung dalam sistem pencernaan adalah...",
+    "pilihan": ["Menyaring udara", "Mencerna makanan", "Mengangkut oksigen", "Menyimpan air"],
+    "jawaban": "Mencerna makanan",
+    "topik": "Sistem Pencernaan",
+    "kategori": "Sistem Tubuh Manusia",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Menceritakan peristiwa", "Menggambarkan sesuatu", "Mengajak atau meyakinkan", "Memberikan informasi"],
     "jawaban": "Mengajak atau meyakinkan",
     "topik": "Teks Persuasi",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -140,6 +155,7 @@
     "pilihan": ["Adik bermain bola di lapangan besar.", "Di lapangan besar adik bola bermain.", "Bermain bola adik di lapangan besar.", "Lapangan besar adik bermain bola di."],
     "jawaban": "Adik bermain bola di lapangan besar.",
     "topik": "Kalimat Efektif",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -149,6 +165,7 @@
     "pilihan": ["Praktik", "Praktek", "Peraktik", "Peraktek"],
     "jawaban": "Praktik",
     "topik": "Kata Baku",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   },
@@ -158,6 +175,7 @@
     "pilihan": ["Pendiam", "Pendek", "Panjang", "Panjat"],
     "jawaban": "Pendek",
     "topik": "Antonim",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -167,6 +185,7 @@
     "pilihan": ["Menggunakan langkah-langkah", "Menceritakan peristiwa atau cerita", "Menggambarkan suasana", "Mengajak pembaca"],
     "jawaban": "Menceritakan peristiwa atau cerita",
     "topik": "Teks Narasi",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -176,6 +195,7 @@
     "pilihan": ["Kapan kamu pergi?", "Di mana kamu tinggal?", "Mengapa kamu terlambat?", "Apa yang kamu lakukan?"],
     "jawaban": "Mengapa kamu terlambat?",
     "topik": "Kalimat Tanya",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   },
@@ -185,6 +205,7 @@
     "pilihan": ["me-", "ber-", "di-", "ter-"],
     "jawaban": "me-",
     "topik": "Imbuhan",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   }

@@ -5,6 +5,7 @@
     "pilihan": ["6", "7", "8", "9"],
     "jawaban": "8",
     "topik": "Pembagian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -14,6 +15,7 @@
     "pilihan": ["202", "212", "213", "222"],
     "jawaban": "212",
     "topik": "Penjumlahan",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -23,6 +25,7 @@
     "pilihan": ["100", "110", "120", "130"],
     "jawaban": "120",
     "topik": "Perkalian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -32,26 +35,29 @@
     "pilihan": ["3 meter", "2,5 meter", "3,2 meter", "2 meter"],
     "jawaban": "3 meter",
     "topik": "Pengurangan",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
   {
     "id": 5,
-    "pertanyaan": "Berapa hasil dari 36 + 12 x 2?",
-    "pilihan": ["72", "60", "84", "88"],
-    "jawaban": "60",
-    "topik": "Operasi Campuran",
+    "pertanyaan": "Seorang pelari menempuh jarak 200 meter dalam 40 detik. Berapa kecepatan rata-ratanya?",
+    "pilihan": ["5 m/detik", "6 m/detik", "7 m/detik", "8 m/detik"],
+    "jawaban": "5 m/detik",
+    "topik": "Pengukuran",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
   {
     "id": 6,
-    "pertanyaan": "Pecahan mana yang lebih besar dari 1/2?",
-    "pilihan": ["1/4", "2/3", "1/3", "1/5"],
-    "jawaban": "2/3",
-    "topik": "Pecahan",
+    "pertanyaan": "Sebuah pesawat terbang menempuh jarak 600 km dalam 2 jam. Berapa kecepatan rata-ratanya?",
+    "pilihan": ["200 km/jam", "300 km/jam", "400 km/jam", "500 km/jam"],
+    "jawaban": "300 km/jam",
+    "topik": "Pengukuran",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "sulit"
   },
   {
     "id": 7,
@@ -59,6 +65,7 @@
     "pilihan": ["Batang", "Daun", "Akar", "Bunga"],
     "jawaban": "Akar",
     "topik": "Bagian Tumbuhan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -68,6 +75,7 @@
     "pilihan": ["Lingkungan bersih", "Hewan menjadi sehat", "Terjadi pencemaran", "Air menjadi jernih"],
     "jawaban": "Terjadi pencemaran",
     "topik": "Lingkungan",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -77,6 +85,7 @@
     "pilihan": ["Mata", "Telinga", "Hidung", "Kulit"],
     "jawaban": "Telinga",
     "topik": "Indra Manusia",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -86,6 +95,7 @@
     "pilihan": ["Minyak bumi", "Batu bara", "Matahari", "Gas alam"],
     "jawaban": "Matahari",
     "topik": "Energi",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -95,6 +105,7 @@
     "pilihan": ["Termometer", "Barometer", "Penggaris", "Timbangan"],
     "jawaban": "Termometer",
     "topik": "Pengukuran",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -104,6 +115,7 @@
     "pilihan": ["Supaya cepat makan", "Supaya kenyang", "Menghilangkan kuman", "Agar tidak haus"],
     "jawaban": "Menghilangkan kuman",
     "topik": "Kesehatan",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -113,6 +125,7 @@
     "pilihan": ["Kamu pergi sekolah.", "Kamu sekolah dimana?", "Di mana kamu sekolah?", "Sekolah kamu di."],
     "jawaban": "Di mana kamu sekolah?",
     "topik": "Kalimat Tanya",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -122,6 +135,7 @@
     "pilihan": ["Bodoh", "Pintar", "Sombong", "Lemah"],
     "jawaban": "Pintar",
     "topik": "Sinonim",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Dia melari sangat cepat.", "Ibu memasak nasi.", "Adik meminum air.", "Kami memfoto pemandangan."],
     "jawaban": "Ibu memasak nasi.",
     "topik": "Imbuhan",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -140,6 +155,7 @@
     "pilihan": ["Ayo kita pergi ke sekolah!", "Dia sangat senang!", "Ibu memasak nasi?", "Mengapa kamu sedih."],
     "jawaban": "Dia sangat senang!",
     "topik": "Tanda Baca",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -149,6 +165,7 @@
     "pilihan": ["Hebat", "Lemah", "Besar", "Cerdas"],
     "jawaban": "Lemah",
     "topik": "Antonim",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -158,6 +175,7 @@
     "pilihan": ["Anak bermain di taman.", "Pergi ke sekolah.", "Sedang bermain bola.", "Di taman bunga."],
     "jawaban": "Anak bermain di taman.",
     "topik": "Struktur Kalimat",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   }

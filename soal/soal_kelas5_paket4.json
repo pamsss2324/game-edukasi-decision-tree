@@ -1,10 +1,11 @@
 [
   {
     "id": 1,
-    "pertanyaan": "Jumlah sisi pada sebuah kubus adalah...",
+    "pertanyaan": "Jumlah rusuk pada sebuah kubus adalah...",
     "pilihan": ["6", "8", "12", "10"],
     "jawaban": "12",
     "topik": "Bangun Ruang",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -14,6 +15,7 @@
     "pilihan": ["9", "12", "15", "18"],
     "jawaban": "9",
     "topik": "Pembagian Pecahan",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -23,6 +25,7 @@
     "pilihan": ["84", "85", "86", "87"],
     "jawaban": "86",
     "topik": "Rata-rata Tertimbang",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -32,6 +35,7 @@
     "pilihan": ["4,4", "4,6", "5,0", "5,6"],
     "jawaban": "4,6",
     "topik": "Pengurangan Desimal",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -41,6 +45,7 @@
     "pilihan": ["12", "18", "24", "36"],
     "jawaban": "12",
     "topik": "Kelipatan Bersama",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -50,6 +55,7 @@
     "pilihan": ["40°", "50°", "60°", "70°"],
     "jawaban": "50°",
     "topik": "Sudut",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -59,6 +65,7 @@
     "pilihan": ["10%", "15%", "20%", "25%"],
     "jawaban": "20%",
     "topik": "Persentase Keuntungan",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -68,6 +75,7 @@
     "pilihan": ["Hujan", "Pemanasan global", "Angin", "Salju"],
     "jawaban": "Pemanasan global",
     "topik": "Perubahan Iklim",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -77,6 +85,7 @@
     "pilihan": ["Pencernaan", "Penyerapan", "Defekasi", "Respirasi"],
     "jawaban": "Defekasi",
     "topik": "Peredaran Makanan",
+    "kategori": "Sistem Tubuh dan Tumbuhan",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -86,6 +95,7 @@
     "pilihan": ["Respirasi", "Fotosintesis", "Fermentasi", "Transpirasi"],
     "jawaban": "Fotosintesis",
     "topik": "Energi Matahari",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
@@ -95,6 +105,7 @@
     "pilihan": ["Paru-paru", "Jantung", "Hati", "Ginjal"],
     "jawaban": "Jantung",
     "topik": "Organ Manusia",
+    "kategori": "Sistem Tubuh dan Tumbuhan",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -104,6 +115,7 @@
     "pilihan": ["Gaya dorong", "Gaya tarik", "Gaya gesek", "Gaya gravitasi"],
     "jawaban": "Gaya gesek",
     "topik": "Gaya Gesek",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -113,6 +125,7 @@
     "pilihan": ["Pencemaran udara", "Pencemaran air", "Pencemaran tanah", "Semua jawaban benar"],
     "jawaban": "Semua jawaban benar",
     "topik": "Lingkungan Hidup",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
@@ -122,6 +135,7 @@
     "pilihan": ["Menarik air", "Melindungi diri", "Menyimpan makanan", "Berfotosintesis"],
     "jawaban": "Melindungi diri",
     "topik": "Adaptasi Tumbuhan",
+    "kategori": "Sistem Tubuh dan Tumbuhan",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Bahasa baku", "Persajakan", "Kalimat panjang", "Paragraf"],
     "jawaban": "Persajakan",
     "topik": "Puisi",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -140,6 +155,7 @@
     "pilihan": ["Saya pergi ke sekolah.", "Tolong buka jendela!", "Dia sedang makan.", "Buku itu bagus."],
     "jawaban": "Tolong buka jendela!",
     "topik": "Kalimat Perintah",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -149,6 +165,7 @@
     "pilihan": ["Belajar", "Belajjar", "Blajar", "Belaajar"],
     "jawaban": "Belajar",
     "topik": "Ejaan",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   },
@@ -158,6 +175,7 @@
     "pilihan": ["Ayo kita belajar!", "Saya suka membaca.", "Dia pergi ke taman.", "Buku itu tebal."],
     "jawaban": "Ayo kita belajar!",
     "topik": "Kalimat Ajakan",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -167,6 +185,7 @@
     "pilihan": ["Menceritakan kisah", "Menyakinkan pembaca", "Menggambarkan tempat", "Memberikan langkah"],
     "jawaban": "Menyakinkan pembaca",
     "topik": "Teks Argumentasi",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -176,6 +195,7 @@
     "pilihan": ["2", "4", "6", "8"],
     "jawaban": "4",
     "topik": "Pantun",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   },
@@ -185,6 +205,7 @@
     "pilihan": ["Titik (.)", "Tanda Tanya (?)", "Koma (,)", "Titik Dua (:)"],
     "jawaban": "Tanda Tanya (?)",
     "topik": "Tanda Baca",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   }

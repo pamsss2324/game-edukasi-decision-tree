@@ -5,6 +5,7 @@
     "pilihan": ["20", "21", "24", "18"],
     "jawaban": "21",
     "topik": "Perkalian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -14,15 +15,17 @@
     "pilihan": ["24", "20", "18", "16"],
     "jawaban": "24",
     "topik": "Perkalian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
   {
     "id": 3,
-    "pertanyaan": "Pecahan dari dua setengah adalah...",
-    "pilihan": ["2/2", "3/2", "5/2", "1/2"],
-    "jawaban": "5/2",
+    "pertanyaan": "Berapakah pecahan dari satu per tiga ditambah satu per tiga?",
+    "pilihan": ["1/3", "2/3", "1", "3/3"],
+    "jawaban": "2/3",
     "topik": "Pecahan",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -32,6 +35,7 @@
     "pilihan": ["5", "6", "7", "8"],
     "jawaban": "7",
     "topik": "Satuan Waktu",
+    "kategori": "Satuan dan Pengukuran",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -41,6 +45,7 @@
     "pilihan": ["12 siang", "1 siang", "11 siang", "2 siang"],
     "jawaban": "1 siang",
     "topik": "Satuan Waktu",
+    "kategori": "Satuan dan Pengukuran",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -50,15 +55,17 @@
     "pilihan": ["Air", "Cahaya matahari", "Tanah", "Angin"],
     "jawaban": "Cahaya matahari",
     "topik": "Fotosintesis",
+    "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
   {
     "id": 7,
-    "pertanyaan": "Bagian tumbuhan yang berfungsi menyerap air dari tanah adalah...",
-    "pilihan": ["Daun", "Batang", "Akar", "Bunga"],
-    "jawaban": "Akar",
-    "topik": "Bagian Tumbuhan",
+    "pertanyaan": "Organ tubuh yang digunakan untuk mencium bau adalah...",
+    "pilihan": ["Mata", "Hidung", "Telinga", "Mulut"],
+    "jawaban": "Hidung",
+    "topik": "Organ Tubuh",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -68,6 +75,7 @@
     "pilihan": ["Ikan", "Katak", "Burung", "Kucing"],
     "jawaban": "Kucing",
     "topik": "Klasifikasi Hewan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -77,6 +85,7 @@
     "pilihan": ["Mencerna makanan", "Bernapas", "Mengalirkan darah", "Membantu berpikir"],
     "jawaban": "Bernapas",
     "topik": "Organ Tubuh",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -86,6 +95,7 @@
     "pilihan": ["Didinginkan", "Dibekukan", "Dipanaskan", "Dibekukan lalu dicairkan"],
     "jawaban": "Dipanaskan",
     "topik": "Perubahan Wujud Benda",
+    "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -95,6 +105,7 @@
     "pilihan": ["ayah pergi ke pasar.", "Ayah pergi ke pasar.", "ayah Pergi ke pasar.", "Ayah Pergi ke Pasar."],
     "jawaban": "Ayah pergi ke pasar.",
     "topik": "Menulis Kalimat",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -104,6 +115,7 @@
     "pilihan": ["Budi dan saya pergi ke sekolah.", "Saya makan nasi.", "Ibu menyapu halaman.", "Kami bermain di taman."],
     "jawaban": "Kami bermain di taman.",
     "topik": "Kata Ganti Orang",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -113,6 +125,7 @@
     "pilihan": ["Pendek", "Kecil", "Rendah", "Dekat"],
     "jawaban": "Pendek",
     "topik": "Sinonim/Antonim",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -122,6 +135,7 @@
     "pilihan": ["Rajin", "Bodoh", "Cerdas", "Malas"],
     "jawaban": "Cerdas",
     "topik": "Sinonim/Antonim",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Kata benda", "Kata kerja", "Kata sifat", "Kata keterangan"],
     "jawaban": "Kata kerja",
     "topik": "Jenis Kata",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   }

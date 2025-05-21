@@ -5,6 +5,7 @@
     "pilihan": ["2", "3", "4", "5"],
     "jawaban": "3",
     "topik": "Geometri",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -14,6 +15,7 @@
     "pilihan": ["30", "60", "45", "20"],
     "jawaban": "30",
     "topik": "Operasi Campuran",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -23,6 +25,7 @@
     "pilihan": ["250 m", "2.500 m", "25.000 m", "250.000 m"],
     "jawaban": "2.500 m",
     "topik": "Konversi Satuan",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -32,6 +35,7 @@
     "pilihan": ["6,0", "7,0", "8,0", "9,0"],
     "jawaban": "7,0",
     "topik": "Bilangan Desimal",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -41,6 +45,7 @@
     "pilihan": ["3 jam", "4 jam", "5 jam", "6 jam"],
     "jawaban": "5 jam",
     "topik": "Waktu",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -50,6 +55,7 @@
     "pilihan": ["Biru", "Merah", "Hijau", "Sama"],
     "jawaban": "Biru",
     "topik": "Diagram",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -59,6 +65,7 @@
     "pilihan": ["0,5", "0,6", "0,7", "0,8"],
     "jawaban": "0,6",
     "topik": "Pecahan Desimal",
+    "kategori": "Operasi Matematika dan Statistika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -68,6 +75,7 @@
     "pilihan": ["Kupu-kupu", "Ulat", "Telur", "Kepompong"],
     "jawaban": "Telur",
     "topik": "Daur Hidup Hewan",
+    "kategori": "Sistem Tubuh dan Tumbuhan",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -77,6 +85,7 @@
     "pilihan": ["Mulut", "Lambung", "Hati", "Usus"],
     "jawaban": "Hati",
     "topik": "Sistem Pencernaan",
+    "kategori": "Sistem Tubuh dan Tumbuhan",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -86,6 +95,7 @@
     "pilihan": ["Air", "Minyak bumi", "Tanah", "Angin"],
     "jawaban": "Minyak bumi",
     "topik": "Sumber Daya Alam",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
@@ -95,6 +105,7 @@
     "pilihan": ["Akar", "Batang", "Daun", "Bunga"],
     "jawaban": "Daun",
     "topik": "Organ Tumbuhan",
+    "kategori": "Sistem Tubuh dan Tumbuhan",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -104,6 +115,7 @@
     "pilihan": ["Dibelokkan", "Dipantulkan", "Diblokir oleh benda", "Diserap"],
     "jawaban": "Diblokir oleh benda",
     "topik": "Cahaya",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -113,6 +125,7 @@
     "pilihan": ["Parasitisme", "Mutualisme", "Kommensalisme", "Predasi"],
     "jawaban": "Mutualisme",
     "topik": "Interaksi Makhluk Hidup",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
@@ -122,6 +135,7 @@
     "pilihan": ["Konduktor", "Isolator", "Semikonduktor", "Nonkonduktor"],
     "jawaban": "Konduktor",
     "topik": "Bahan Konduktor",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Menceritakan peristiwa", "Menjelaskan proses atau fenomena", "Mengajak pembaca", "Menggambarkan suasana"],
     "jawaban": "Menjelaskan proses atau fenomena",
     "topik": "Teks Eksplanasi",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -140,6 +155,7 @@
     "pilihan": ["Buku itu dibaca oleh Ani.", "Ani membaca buku itu.", "Buku itu telah dibaca.", "Buku itu sedang dibaca Ani."],
     "jawaban": "Ani membaca buku itu.",
     "topik": "Kalimat Aktif",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -149,6 +165,7 @@
     "pilihan": ["Belanda", "Inggris", "Arab", "Jepang"],
     "jawaban": "Inggris",
     "topik": "Kata Serapan",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   },
@@ -158,6 +175,7 @@
     "pilihan": ["Bodoh", "Pintar", "Malas", "Lambat"],
     "jawaban": "Pintar",
     "topik": "Sinonim",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -167,6 +185,7 @@
     "pilihan": ["Langkah-langkah", "Hasil pengamatan", "Cerita fiksi", "Ajakan"],
     "jawaban": "Hasil pengamatan",
     "topik": "Teks Laporan",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -176,6 +195,7 @@
     "pilihan": ["Ibu membuat kue.", "Kue dibuat oleh ibu.", "Ibu sedang membuat kue.", "Kue itu sangat enak."],
     "jawaban": "Kue dibuat oleh ibu.",
     "topik": "Kalimat Pasif",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   },
@@ -185,6 +205,7 @@
     "pilihan": ["Metafora", "Personifikasi", "Hiperbola", "Litotes"],
     "jawaban": "Metafora",
     "topik": "Majas",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   }

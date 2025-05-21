@@ -70,6 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     paket: paket.toString(),
                     soal: soalData.map(soal => ({
                         id: soal.id.toString(),
+                        pelajaran: soal.pelajaran,
+                        kategori: soal.kategori,
                         topik: soal.topik,
                         benar: false,
                         waktu: 0
@@ -93,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             clearInterval(timerInterval);
             const waktuRata2 = waktuTotal / soalData.length;
-            const mapel = soalData[0].topik || "Tidak Diketahui";
+            const mapel = soalData[0].pelajaran || "Tidak Diketahui";
 
             // Hitung variansi waktu
             const variansiWaktu = calculateVariance(waktuPerSoalList);
@@ -118,13 +120,17 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 console.log('✅ Hasil kuis disimpan:', data);
                 localStorage.setItem('hasilKuis', JSON.stringify({
-                    namaSiswa: namaSiswa,
-                    jumlahBenar: jumlahBenar,
-                    jumlahSalah: jumlahSalah,
-                    totalSoal: soalData.length,
-                    dideteksiAsal: data.dideteksi_asal,
-                    kesulitanDiduga: data.kesulitan_diduga,
-                    rekomendasi: data.rekomendasi
+                    nama: namaSiswa,
+                    kelas: kelasSiswa,
+                    mapel: mapel,
+                    jumlah_benar: jumlahBenar,
+                    jumlah_salah: jumlahSalah,
+                    total_soal: soalData.length,
+                    waktu_rata2_per_soal: parseFloat(waktuRata2.toFixed(2)),
+                    dideteksi_asal: data.dideteksi_asal,
+                    kesulitan_diduga: data.kesulitan_diduga,
+                    rekomendasi: data.rekomendasi,
+                    analisis_bertingkat: data.analisis_bertingkat // Simpan analisis bertingkat
                 }));
                 window.location.href = '/hasil';
             })

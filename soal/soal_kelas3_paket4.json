@@ -5,6 +5,7 @@
     "pilihan": ["52", "62", "63", "64"],
     "jawaban": "62",
     "topik": "Penjumlahan",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -14,6 +15,7 @@
     "pilihan": ["27", "28", "29", "30"],
     "jawaban": "29",
     "topik": "Pengurangan",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -23,6 +25,7 @@
     "pilihan": ["36", "30", "24", "32"],
     "jawaban": "36",
     "topik": "Perkalian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -32,17 +35,19 @@
     "pilihan": ["Persegi panjang", "Segitiga", "Persegi", "Jajar genjang"],
     "jawaban": "Persegi",
     "topik": "Bangun Datar",
+    "kategori": "Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
   {
     "id": 5,
-    "pertanyaan": "Budi membagi 18 permen kepada 3 teman, lalu masing-masing teman memberikan 2 permen kepada adiknya. Berapa permen yang tersisa pada setiap teman?",
-    "pilihan": ["4", "6", "8", "10"],
-    "jawaban": "4",
-    "topik": "Operasi Campuran",
+    "pertanyaan": "Bangun datar yang memiliki 3 sisi dan 3 sudut disebut...",
+    "pilihan": ["Persegi", "Segitiga", "Lingkaran", "Trapesium"],
+    "jawaban": "Segitiga",
+    "topik": "Bangun Datar",
+    "kategori": "Geometri",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sulit"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 6,
@@ -50,6 +55,7 @@
     "pilihan": ["Batang", "Daun", "Akar", "Bunga"],
     "jawaban": "Akar",
     "topik": "Bagian Tumbuhan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -59,6 +65,7 @@
     "pilihan": ["Air", "Es batu", "Uap", "Minyak"],
     "jawaban": "Es batu",
     "topik": "Sifat Benda",
+    "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -68,6 +75,7 @@
     "pilihan": ["Air mendidih", "Uap menjadi embun", "Es mencair", "Air membeku"],
     "jawaban": "Uap menjadi embun",
     "topik": "Perubahan Wujud Benda",
+    "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -77,6 +85,7 @@
     "pilihan": ["Mata", "Telinga", "Lidah", "Hidung"],
     "jawaban": "Lidah",
     "topik": "Indera Manusia",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -86,6 +95,7 @@
     "pilihan": ["Benda akan bergerak cepat", "Benda akan tetap diam atau bergerak lurus", "Benda akan berubah bentuk", "Benda akan menghilang"],
     "jawaban": "Benda akan tetap diam atau bergerak lurus",
     "topik": "Gaya dan Gerak",
+    "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
@@ -95,6 +105,7 @@
     "pilihan": ["Kamu sedang apa?", "Saya pergi ke sekolah.", "Dia sedang membaca.", "Hari ini cerah."],
     "jawaban": "Kamu sedang apa?",
     "topik": "Jenis Kalimat",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -104,6 +115,7 @@
     "pilihan": ["Rumah itu besar.", "Besar rumah itu.", "Rumah besar itu.", "Rumah itu besar sekali."],
     "jawaban": "Rumah itu besar.",
     "topik": "Jenis Kata",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -113,6 +125,7 @@
     "pilihan": ["Andi bermain bola di lapangan.", "andi bermain Bola di Lapangan.", "Andi Bermain bola di Lapangan.", "Andi bermain bola di Lapangan"],
     "jawaban": "Andi bermain bola di lapangan.",
     "topik": "Penulisan Kalimat",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -122,6 +135,7 @@
     "pilihan": ["Panjang", "Tinggi", "Kecil", "Cepat"],
     "jawaban": "Kecil",
     "topik": "Sinonim/Antonim",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Siapa yang datang tadi?", "Siapa yang datang tadi", "Siapa yang datang tadi.", "Siapa, yang datang tadi?"],
     "jawaban": "Siapa yang datang tadi?",
     "topik": "Tanda Baca",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   }

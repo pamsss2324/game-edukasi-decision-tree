@@ -59,29 +59,51 @@ def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah,
     total_soal_topik = sum(1 for soal in soal_list if soal.get('topik') == topik_kesulitan)
     persentase_salah = (jumlah_salah_topik / total_soal_topik) * 100 if total_soal_topik > 0 else 0
 
+    # Memuat rekomendasi dari file JSON
+    with open('static/rekomendasi.json', 'r', encoding='utf-8') as f:
+        rekomendasi_map = json.load(f)
+
 # Prediksi kesulitan dengan CART
     input_data = pd.DataFrame([[jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal]],
                               columns=['jumlah_benar', 'jumlah_salah', 'waktu_rata2_per_soal', 'dideteksi_asal'])
     kesulitan_encoded = cart_kesulitan_model.predict(input_data)[0]
     kesulitan_diduga = label_encoder_kesulitan.inverse_transform([kesulitan_encoded])[0]
 
-    rekomendasi_map = {
-        "Perkalian": "Ayo belajar perkalian lagi, kamu pasti bisa!",
-        "Pembagian": "Latihan lebih banyak soal pembagian ya!",
-        "Satuan Waktu": "Coba ulang materi satuan waktu.",
-        "Perhitungan Campuran": "Pahami lagi soal perhitungan campuran dengan sabar!",
-        "Fotosintesis": "Pelajari lagi proses fotosintesis.",
-        "Organ Tubuh": "Ayo ulang materi organ tubuh!",
-        "Organ Pernapasan": "Latihan lagi tentang pernapasan.",
-        "Kalimat Benar": "Coba perbaiki kalimatmu lagi!",
-        "Kosa Kata": "Tambah kosakata dengan latihan lebih banyak!",
-        "Antonim": "Pelajari lagi lawan kata.",
-        "Kalimat Perintah": "Latihan lagi kalimat perintah.",
-        "Tanda Baca": "Perhatikan lagi penggunaan tanda baca."
-    }
-    rekomendasi = rekomendasi_map.get(topik_kesulitan, "Terus berlatih ya!")
+    rekomendasi = rekomendasi_map.get(topik_kesulitan, rekomendasi_map.get('default', "Terus berlatih ya!"))
 
     return kesulitan_diduga, rekomendasi
+
+# Fungsi analisis bertingkat berdasarkan pelajaran dan kategori
+def analyze_bertingkat(daftar_soal_dikerjakan):
+    soal_list = json.loads(daftar_soal_dikerjakan)['soal']
+    
+    # Inisialisasi struktur analisis
+    analisis = {
+        "Matematika": {"total_benar": 0, "total_salah": 0, "kategori": {}},
+        "IPA": {"total_benar": 0, "total_salah": 0, "kategori": {}},
+        "Bahasa Indonesia": {"total_benar": 0, "total_salah": 0, "kategori": {}}
+    }
+
+    # Proses setiap soal
+    for soal in soal_list:
+        pelajaran = soal.get("pelajaran", "Tidak Diketahui")
+        kategori = soal.get("kategori", "Tidak Diketahui")
+        benar = soal.get("benar", False)
+
+        # Inisialisasi kategori jika belum ada
+        if pelajaran in analisis:
+            if kategori not in analisis[pelajaran]["kategori"]:
+                analisis[pelajaran]["kategori"][kategori] = {"benar": 0, "salah": 0}
+
+            # Update jumlah benar/salah
+            if benar:
+                analisis[pelajaran]["total_benar"] += 1
+                analisis[pelajaran]["kategori"][kategori]["benar"] += 1
+            else:
+                analisis[pelajaran]["total_salah"] += 1
+                analisis[pelajaran]["kategori"][kategori]["salah"] += 1
+
+    return analisis
 
 # Fungsi hitung variansi
 def calculate_variance(waktu_list):
@@ -140,6 +162,10 @@ def simpan_hasil():
             kesulitan_diduga, rekomendasi = analyze_kesulitan(data['daftar_soal_dikerjakan'], data['mapel'],
                                                              data['jumlah_benar'], data['jumlah_salah'],
                                                              data['waktu_rata2_per_soal'], dideteksi_asal)
+            
+
+        # Analisis bertingkat
+        analisis_bertingkat = analyze_bertingkat(data['daftar_soal_dikerjakan'])
                                                              
         query = """
             INSERT INTO hasil_kuis
@@ -165,7 +191,8 @@ def simpan_hasil():
             'status': 'sukses',
             'kesulitan_diduga': kesulitan_diduga,
             'rekomendasi': rekomendasi,
-            'dideteksi_asal': dideteksi_asal
+            'dideteksi_asal': dideteksi_asal,
+            'analisis_bertingkat': analisis_bertingkat  # Tambahkan analisis bertingkat ke respons
         })
     except Exception as e:
         print('❌ Gagal simpan hasil kuis:', e)

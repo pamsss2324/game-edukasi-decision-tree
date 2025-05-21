@@ -5,6 +5,7 @@
     "pilihan": ["1/2", "5/4", "3/2", "7/4"],
     "jawaban": "5/4",
     "topik": "Bilangan Pecahan",
+    "kategori": "Operasi Matematika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -14,6 +15,7 @@
     "pilihan": ["1/2", "2/8", "1/4", "3/8"],
     "jawaban": "1/4",
     "topik": "Bilangan Pecahan",
+    "kategori": "Operasi Matematika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -23,6 +25,7 @@
     "pilihan": ["120.000", "130.000", "140.000", "100.000"],
     "jawaban": "120.000",
     "topik": "Persentase",
+    "kategori": "Operasi Matematika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "tinggi"
   },
@@ -32,6 +35,7 @@
     "pilihan": ["10 cm²", "20 cm²", "24 cm²", "30 cm²"],
     "jawaban": "24 cm²",
     "topik": "Pengukuran Luas",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -41,6 +45,7 @@
     "pilihan": ["30 cm³", "60 cm³", "12 cm³", "15 cm³"],
     "jawaban": "60 cm³",
     "topik": "Pengukuran Volume",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "tinggi"
   },
@@ -50,6 +55,7 @@
     "pilihan": ["Jantung, Pembuluh Darah, dan Limfa", "Jantung, Paru-paru, dan Pembuluh Darah", "Jantung, Paru-paru, dan Oksigen", "Jantung, Pembuluh Darah, dan Sel Darah"],
     "jawaban": "Jantung, Pembuluh Darah, dan Sel Darah",
     "topik": "Sistem Peredaran Darah",
+    "kategori": "Sistem Tubuh Manusia",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -59,6 +65,7 @@
     "pilihan": ["Arteri", "Vena", "Kapiler", "Limfa"],
     "jawaban": "Arteri",
     "topik": "Sistem Peredaran Darah",
+    "kategori": "Sistem Tubuh Manusia",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -68,6 +75,7 @@
     "pilihan": ["Lensa", "Cermin", "Air", "Batu"],
     "jawaban": "Lensa",
     "topik": "Sifat-sifat Cahaya",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -77,6 +85,7 @@
     "pilihan": ["Melewati udara", "Berpindah dari satu medium ke medium lainnya", "Dipantulkan oleh benda", "Dibagi menjadi beberapa bagian"],
     "jawaban": "Berpindah dari satu medium ke medium lainnya",
     "topik": "Sifat-sifat Cahaya",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "tinggi"
   },
@@ -86,6 +95,7 @@
     "pilihan": ["Mereka bermain sepak bola di lapangan dengan bola besar.", "Sepak bola mereka bermain di lapangan besar.", "Di lapangan besar bola mereka sepak bermain.", "Lapangan besar bola sepak mereka di bermain."],
     "jawaban": "Mereka bermain sepak bola di lapangan dengan bola besar.",
     "topik": "Kalimat Efektif",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -95,6 +105,7 @@
     "pilihan": ["Menceritakan cerita atau kisah", "Menggambarkan suatu benda, tempat, atau keadaan", "Memberikan instruksi atau petunjuk", "Menjelaskan konsep atau ide"],
     "jawaban": "Menggambarkan suatu benda, tempat, atau keadaan",
     "topik": "Teks Deskripsi",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -104,6 +115,7 @@
     "pilihan": ["Pantai itu berpasir putih dan air lautnya sangat jernih.", "Saya pergi ke pantai dan bermain bola.", "Pantai itu ada di selatan kota.", "Banyak orang pergi ke pantai untuk berlibur."],
     "jawaban": "Pantai itu berpasir putih dan air lautnya sangat jernih.",
     "topik": "Teks Deskripsi",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -113,6 +125,7 @@
     "pilihan": ["Lambat", "Cepat", "Kecil", "Tinggi"],
     "jawaban": "Lambat",
     "topik": "Sinonim/Antonim",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -122,6 +135,7 @@
     "pilihan": ["Tinggi", "Kecil", "Luput", "Agung"],
     "jawaban": "Agung",
     "topik": "Sinonim/Antonim",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Buku ini sangat menarik dan bagus.", "Kami pergi ke rumah teman yang baik.", "Dia sangat pandai dalam bidang olahraga.", "Mereka datang dari kota yang jauh."],
     "jawaban": "Buku ini sangat menarik dan bagus.",
     "topik": "Sinonim/Antonim",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
@@ -140,6 +155,7 @@
     "pilihan": ["125°", "130°", "135°", "140°"],
     "jawaban": "135°",
     "topik": "Sudut",
+    "kategori": "Pengukuran dan Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -149,6 +165,7 @@
     "pilihan": ["1, 2, 3, 4, 6, 8, 12", "1, 2, 4, 6, 8, 12, 24", "1, 3, 6, 12, 24", "2, 4, 6, 8, 12"],
     "jawaban": "1, 2, 3, 4, 6, 8, 12, 24",
     "topik": "Faktor Bilangan",
+    "kategori": "Operasi Matematika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "tinggi"
   },
@@ -158,6 +175,7 @@
     "pilihan": ["Singa", "Tumbuhan", "Ular", "Elang"],
     "jawaban": "Tumbuhan",
     "topik": "Rantai Makanan",
+    "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -167,6 +185,7 @@
     "pilihan": ["Lambung", "Usus", "Mulut", "Hati"],
     "jawaban": "Mulut",
     "topik": "Pencernaan",
+    "kategori": "Sistem Tubuh Manusia",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
@@ -176,6 +195,7 @@
     "pilihan": ["Menceritakan kisah", "Memberikan langkah-langkah", "Menggambarkan tempat", "Menjelaskan konsep"],
     "jawaban": "Memberikan langkah-langkah",
     "topik": "Teks Prosedur",
+    "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -185,6 +205,7 @@
     "pilihan": ["Saya pergi ke pasar dan membeli buku.", "Dia lari cepat.", "Mereka bermain di taman.", "Ibu memasak nasi."],
     "jawaban": "Saya pergi ke pasar dan membeli buku.",
     "topik": "Kalimat Majemuk",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "tinggi"
   }

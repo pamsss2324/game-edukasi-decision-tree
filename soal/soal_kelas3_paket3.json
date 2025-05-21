@@ -5,6 +5,7 @@
     "pilihan": ["5", "6", "7", "8"],
     "jawaban": "6",
     "topik": "Pembagian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -14,6 +15,7 @@
     "pilihan": ["7", "8", "9", "10"],
     "jawaban": "9",
     "topik": "Pembagian",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -23,6 +25,7 @@
     "pilihan": ["10", "12", "14", "16"],
     "jawaban": "10",
     "topik": "Operasi Campuran",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
@@ -32,6 +35,7 @@
     "pilihan": ["Persegi", "Lingkaran", "Segitiga", "Persegi panjang"],
     "jawaban": "Segitiga",
     "topik": "Bangun Datar",
+    "kategori": "Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "mudah"
   },
@@ -41,6 +45,7 @@
     "pilihan": ["12 cm", "14 cm", "16 cm", "18 cm"],
     "jawaban": "16 cm",
     "topik": "Geometri Sederhana",
+    "kategori": "Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -50,6 +55,7 @@
     "pilihan": ["Menguap", "Mendidih", "Membeku", "Mengering"],
     "jawaban": "Membeku",
     "topik": "Perubahan Wujud Benda",
+    "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -59,6 +65,7 @@
     "pilihan": ["Kayu", "Kain", "Besi", "Kertas"],
     "jawaban": "Besi",
     "topik": "Gaya dan Magnet",
+    "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -68,17 +75,19 @@
     "pilihan": ["Telinga", "Hidung", "Mata", "Tangan"],
     "jawaban": "Mata",
     "topik": "Indera Manusia",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
   {
     "id": 9,
-    "pertanyaan": "Gaya dorong dan gaya tarik digunakan untuk...",
-    "pilihan": ["Menambah berat", "Mengurangi warna", "Mengubah gerak benda", "Menyerap air"],
-    "jawaban": "Mengubah gerak benda",
-    "topik": "Gaya dan Gerak",
+    "pertanyaan": "Bagian tubuh manusia yang digunakan untuk mencium adalah...",
+    "pilihan": ["Mata", "Hidung", "Telinga", "Mulut"],
+    "jawaban": "Hidung",
+    "topik": "Indera Manusia",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 10,
@@ -86,6 +95,7 @@
     "pilihan": ["Tumbuh tinggi", "Layu dan mati", "Berbunga banyak", "Berdaun lebat"],
     "jawaban": "Layu dan mati",
     "topik": "Kebutuhan Tumbuhan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
@@ -95,33 +105,37 @@
     "pilihan": ["Aku suka makan es krim", "Aku suka makan es krim.", "aku suka makan es krim.", "aku suka makan es krim"],
     "jawaban": "Aku suka makan es krim.",
     "topik": "Tanda Baca",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
   {
     "id": 12,
-    "pertanyaan": "Kata yang menunjukkan tempat adalah...",
-    "pilihan": ["Kemarin", "Sekolah", "Cepat", "Besar"],
-    "jawaban": "Sekolah",
-    "topik": "Kata Benda dan Tempat",
-    "pelajaran": "Bahasa Indonesia",
-    "tingkat_kesulitan": "mudah"
-  },
-  {
-    "id": 13,
     "pertanyaan": "Manakah kalimat perintah yang benar?",
     "pilihan": ["Tolong tutup pintu.", "Saya membuka pintu.", "Pintu ditutup angin.", "Pintu itu besar."],
     "jawaban": "Tolong tutup pintu.",
     "topik": "Jenis Kalimat",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 14,
+    "id": 13,
     "pertanyaan": "Sinonim dari kata ‘indah’ adalah...",
     "pilihan": ["Cantik", "Kecil", "Luas", "Cepat"],
     "jawaban": "Cantik",
     "topik": "Sinonim/Antonim",
+    "kategori": "Kosa Kata dan Makna",
+    "pelajaran": "Bahasa Indonesia",
+    "tingkat_kesulitan": "mudah"
+  },
+  {
+    "id": 14,
+    "pertanyaan": "Antonim dari kata ‘cerah’ adalah...",
+    "pilihan": ["Terang", "Gelap", "Bersih", "Kotor"],
+    "jawaban": "Gelap",
+    "topik": "Sinonim/Antonim",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
@@ -131,6 +145,7 @@
     "pilihan": ["Aku, dan adik pergi ke pasar.", "Aku dan adik pergi ke pasar", "Aku dan, adik pergi ke pasar.", "Aku dan adik, pergi ke pasar"],
     "jawaban": "Aku, dan adik pergi ke pasar.",
     "topik": "Tanda Baca",
+    "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sulit"
   }
