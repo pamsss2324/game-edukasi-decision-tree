@@ -134,7 +134,7 @@
     "pertanyaan": "Sinonim dari kata 'cepat' adalah...",
     "pilihan": ["Lambat", "Pelan", "Cepat-cepat", "Gesit"],
     "jawaban": "Gesit",
-    "topik": "Sinonim",
+    "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
@@ -144,7 +144,7 @@
     "pertanyaan": "Lawan kata dari 'panjang' adalah...",
     "pilihan": ["Luas", "Lebar", "Pendek", "Tipis"],
     "jawaban": "Pendek",
-    "topik": "Antonim",
+    "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"

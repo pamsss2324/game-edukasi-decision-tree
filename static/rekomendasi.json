@@ -1,15 +1,76 @@
 {
-  "Perkalian": "Ayo belajar perkalian lagi, kamu pasti bisa!",
-  "Pembagian": "Latihan lebih banyak soal pembagian ya!",
-  "Satuan Waktu": "Coba ulang materi satuan waktu.",
-  "Perhitungan Campuran": "Pahami lagi soal perhitungan campuran dengan sabar!",
-  "Fotosintesis": "Pelajari lagi proses fotosintesis.",
-  "Organ Tubuh": "Ayo ulang materi organ tubuh!",
-  "Organ Pernapasan": "Latihan lagi tentang pernapasan.",
-  "Kalimat Benar": "Coba perbaiki kalimatmu lagi!",
-  "Kosa Kata": "Tambah kosakata dengan latihan lebih banyak!",
-  "Antonim": "Pelajari lagi lawan kata.",
-  "Kalimat Perintah": "Latihan lagi kalimat perintah.",
-  "Tanda Baca": "Perhatikan lagi penggunaan tanda baca.",
+  "Matematika": {
+    "Operasi Matematika Dasar": {
+      "default": "Coba pelajari lagi materi operasi dasar Matematika ya!",
+      "Perkalian": "Ayo belajar perkalian lagi, kamu pasti bisa!",
+      "Pembagian": "Latihan lebih banyak soal pembagian ya!",
+      "Penjumlahan": "Latihan lagi penjumlahan ya!",
+      "Pengurangan": "Coba ulang materi pengurangan.",
+      "Pecahan": "Pelajari lagi cara menghitung pecahan.",
+      "Operasi Campuran": "Pahami lagi soal perhitungan campuran dengan sabar!"
+    },
+    "Pengukuran dan Geometri": {
+      "default": "Ulangi materi pengukuran dan geometri ya!",
+      "Satuan Waktu": "Coba ulang materi satuan waktu.",
+      "Bangun Datar": "Pelajari lagi tentang bangun datar.",
+      "Geometri Sederhana": "Latihan lagi geometri sederhana ya!",
+      "Pengukuran": "Coba ulang materi pengukuran.",
+      "Luas Persegi Panjang": "Pelajari lagi cara menghitung luas persegi panjang."
+    },
+    "Operasi Matematika": {
+      "default": "Latihan lagi operasi matematika ya!",
+      "Bilangan Pecahan": "Pelajari lagi cara menghitung bilangan pecahan.",
+      "Persentase": "Coba pahami konsep persentase.",
+      "Faktor Bilangan": "Latihan lagi mencari faktor bilangan."
+    },
+    "Operasi Matematika dan Statistika": {
+      "default": "Pelajari lagi operasi matematika dan statistika ya!",
+      "Statistika": "Coba pelajari lagi cara membaca data statistika.",
+      "Diagram": "Latihan lagi membuat dan membaca diagram."
+    }
+  },
+  "IPA": {
+    "Makhluk Hidup": {
+      "default": "Pelajari lagi materi makhluk hidup! Coba amati lingkungan sekitarmu.",
+      "Organ Tubuh": "Ayo ulang materi organ tubuh!",
+      "Organ Pernapasan": "Latihan lagi tentang pernapasan.",
+      "Klasifikasi Hewan": "Coba pelajari lagi klasifikasi hewan.",
+      "Indra Manusia": "Ulangi materi tentang indra manusia."
+    },
+    "Proses Alam": {
+      "default": "Pelajari lagi materi proses alam dengan sabar!",
+      "Fotosintesis": "Pelajari lagi proses fotosintesis.",
+      "Perubahan Wujud Benda": "Coba ulang materi perubahan wujud benda."
+    },
+    "Proses Alam dan Energi": {
+      "default": "Pelajari lagi proses alam dan energi!",
+      "Cahaya dan Sifatnya": "Coba pelajari lagi sifat cahaya.",
+      "Energi": "Ulangi materi tentang energi."
+    },
+    "Sistem Tubuh Manusia": {
+      "default": "Pelajari lagi sistem tubuh manusia ya!",
+      "Sistem Peredaran Darah": "Coba ulang materi sistem peredaran darah.",
+      "Sistem Pernapasan": "Latihan lagi tentang sistem pernapasan."
+    }
+  },
+  "Bahasa Indonesia": {
+    "Tata Bahasa": {
+      "default": "Latihan lagi materi tata bahasa ya!",
+      "Kalimat Benar": "Coba perbaiki kalimatmu lagi!",
+      "Kalimat Perintah": "Latihan lagi kalimat perintah.",
+      "Tanda Baca": "Perhatikan lagi penggunaan tanda baca.",
+      "Kalimat Efektif": "Coba pelajari lagi cara membuat kalimat efektif."
+    },
+    "Kosa Kata dan Makna": {
+      "default": "Tambah pemahaman kosa kata dan makna ya!",
+      "Kosa Kata": "Tambah kosakata dengan latihan lebih banyak!",
+      "Sinonim/Antonim": "Pelajari lagi sinonim dan antonim."
+    },
+    "Teks dan Kosa Kata": {
+      "default": "Pelajari lagi teks dan kosa kata ya!",
+      "Teks Deskripsi": "Coba pelajari lagi cara menulis teks deskripsi.",
+      "Teks Prosedur": "Latihan lagi menulis teks prosedur."
+    }
+  },
   "default": "Terus berlatih ya!"
 }

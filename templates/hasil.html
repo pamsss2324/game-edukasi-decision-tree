@@ -1,8 +1,8 @@
-<!-- templates/hasil.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hasil Kuis</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -10,27 +10,31 @@
     <div class="container-hasil">
         <div class="card-hasil">
             <h2>Hasil Kuis</h2>
-            <p id="namaSiswa"></p>
-            <p id="kelasSiswa"></p>
-            <p id="mapel"></p>
-            <p id="jumlahBenar"></p>
-            <p id="jumlahSalah"></p>
-            <p id="waktuRata2"></p>
+            <p><strong>Nama:</strong> <span id="namaSiswa"></span></p>
+            <p><strong>Kelas:</strong> <span id="kelasSiswa"></span></p>
+            <p><strong>Mata Pelajaran:</strong> <span id="mapel"></span></p>
+            <p id="ringkasanHasil"></p>
+            <p><strong>Tingkat Kesulitan:</strong> <span id="kesulitanDiduga"></span></p>
         </div>
 
         <div class="motivasi-box">
-            <div class="speech-bubble" id="motivasiTeks">Kamu hebat!</div>
+            <div class="speech-bubble" id="motivasiTeks"></div>
         </div>
 
-        <!-- Tambahan: Analisis Bertingkat -->
-        <div class="analisis-bertingkat">
-            <h3>Analisis Berdasarkan Pelajaran dan Kategori</h3>
-            <div id="hasil-analisis">
-                <!-- Analisis akan ditampilkan di sini oleh JavaScript -->
+        <!-- Popup Konfirmasi Deteksi Asal -->
+        <div id="konfirmasiPopup" class="popup">
+            <div class="popup-content">
+                <h3>Konfirmasi</h3>
+                <p>Apakah kamu mengerjakan kuis ini dengan serius?</p>
+                <div class="popup-buttons">
+                    <button id="konfirmasiYa" class="btn-konfirmasi">Ya</button>
+                    <button id="konfirmasiTidak" class="btn-konfirmasi">Tidak</button>
+                </div>
             </div>
         </div>
 
-        <button onclick="kembaliKeBeranda()" class="btn-kembali">Kembali ke Beranda</button>
+        <button id="btnKembali" onclick="kembaliKeBeranda()" class="btn-kembali">Kembali ke Beranda</button>
+        <button id="btnUlangi" onclick="ulangiKuis()" class="btn-kembali">Ulangi Kuis</button>
     </div>
 
     <script src="{{ url_for('static', filename='scriptsHasil.js') }}"></script>

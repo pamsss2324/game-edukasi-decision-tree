@@ -24,7 +24,7 @@
         "pertanyaan": "Ibu membeli 2 kg gula dan 3 kg beras. Berapa total berat belanjaan ibu?",
         "pilihan": ["4 kg", "5 kg", "6 kg", "7 kg"],
         "jawaban": "5 kg",
-        "topik": "Penjumlahan Bilangan",
+        "topik": "Penjumlahan",
         "kategori": "Operasi Matematika Dasar",
         "pelajaran": "Matematika",
         "tingkat_kesulitan": "sedang"
@@ -44,7 +44,7 @@
         "pertanyaan": "Hasil dari 125 - 58 = ....",
         "pilihan": ["66", "67", "68", "69"],
         "jawaban": "67",
-        "topik": "Pengurangan Bilangan",
+        "topik": "Pengurangan",
         "kategori": "Operasi Matematika Dasar",
         "pelajaran": "Matematika",
         "tingkat_kesulitan": "sedang"
@@ -124,7 +124,7 @@
         "pertanyaan": "Sinonim dari kata 'cerdas' adalah ....",
         "pilihan": ["Bodoh", "Lelah", "Malas", "Pandai"],
         "jawaban": "Pandai",
-        "topik": "Sinonim",
+        "topik": "Sinonim/Antonim",
         "kategori": "Kosa Kata dan Makna",
         "pelajaran": "Bahasa Indonesia",
         "tingkat_kesulitan": "mudah"
@@ -154,7 +154,7 @@
         "pertanyaan": "Antonim dari kata 'tinggi' adalah ....",
         "pilihan": ["Lurus", "Luas", "Panjang", "Pendek"],
         "jawaban": "Pendek",
-        "topik": "Antonim",
+        "topik": "Sinonim/Antonim",
         "kategori": "Kosa Kata dan Makna",
         "pelajaran": "Bahasa Indonesia",
         "tingkat_kesulitan": "mudah"

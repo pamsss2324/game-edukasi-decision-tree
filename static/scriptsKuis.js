@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const pilihanContainer = document.getElementById('pilihanContainer');
     const timerEl = document.getElementById('timer');
 
-
     const idSiswa = localStorage.getItem('idSiswa');
     const namaSiswa = localStorage.getItem('namaSiswa');
     const kelasSiswa = localStorage.getItem('kelasSiswa');
@@ -17,11 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Tentukan daftar paket yang tersedia (1-4)
     const totalPaket = 4;
-    // Pilih paket secara acak (1-4)
     const paket = Math.floor(Math.random() * totalPaket) + 1;
     let fileSoal = '';
 
-    // Tentukan file soal berdasarkan kelas dan paket yang diacak
+    // Tentukan file soal berdasarkan kelas dan paket
     if (kelasSiswa === '3') {
         fileSoal = `soal/soal_kelas3_paket${paket}.json`;
     } else if (kelasSiswa === '4') {
@@ -43,11 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let waktuMulai = null;
     let waktuPerSoalList = [];
     let daftarSoalDikerjakan = [];
-    
-    //let score = 0;
 
     mulaiBtn.addEventListener('click', () => {
-        // Tutup pop-up instruksi, tampilkan konten kuis
         popupInstruksi.style.display = 'none';
         quizContent.style.display = 'block';
         fetchSoal();
@@ -63,9 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 soalData = data;
-                // Acak urutan soal
+                // Validasi total soal berdasarkan kelas
+                const expectedTotal = { '3': 15, '4': 18, '5': 21 }[kelasSiswa];
+                if (soalData.length !== expectedTotal) {
+                    throw new Error(`Jumlah soal (${soalData.length}) tidak sesuai dengan kelas ${kelasSiswa} (harus ${expectedTotal})`);
+                }
                 soalData = shuffleArray([...soalData]);
-                // Simpan daftar ID soal yang diacak dan informasi paket
                 daftarSoalDikerjakan = {
                     paket: paket.toString(),
                     soal: soalData.map(soal => ({
@@ -73,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         pelajaran: soal.pelajaran,
                         kategori: soal.kategori,
                         topik: soal.topik,
-                        benar: false,
+                        benar: null, // Awalnya null, akan diatur true/false
                         waktu: 0
                     }))
                 };
@@ -81,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(err => {
                 console.error('Gagal memuat soal:', err);
-                quizContent.innerHTML = '<p>Gagal memuat soal. Silakan coba lagi.</p>';
+                quizContent.innerHTML = `<p>${err.message}. Silakan coba lagi.</p>`;
             });
     }
 
@@ -96,12 +94,16 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(timerInterval);
             const waktuRata2 = waktuTotal / soalData.length;
             const mapel = soalData[0].pelajaran || "Tidak Diketahui";
-
-            // Hitung variansi waktu
             const variansiWaktu = calculateVariance(waktuPerSoalList);
-            const dideteksiAsal = (waktuRata2 < 5 || jumlahBenar === 0 || variansiWaktu < 1) ? 1 : 0;
 
-            // Kirim hasil ke backend
+            // Pastikan semua soal memiliki status
+            daftarSoalDikerjakan.soal.forEach((soal, index) => {
+                if (soal.benar === null) {
+                    soal.benar = false;
+                    jumlahSalah++;
+                }
+            });
+
             fetch('http://localhost:5000/simpan_hasil', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -111,13 +113,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     jumlah_benar: jumlahBenar,
                     jumlah_salah: jumlahSalah,
                     waktu_rata2_per_soal: parseFloat(waktuRata2.toFixed(2)),
-                    dideteksi_asal: dideteksiAsal,
-                    kesulitan_diduga: "-",
-                    daftar_soal_dikerjakan: JSON.stringify(daftarSoalDikerjakan)
+                    daftar_soal_dikerjakan: JSON.stringify(daftarSoalDikerjakan),
+                    total_soal: soalData.length // Tambahkan total_soal
                 })
             })
             .then(res => res.json())
             .then(data => {
+                if (data.status === 'gagal') {
+                    alert(data.pesan); // Tampilkan alert jika gagal
+                    return;
+                }
                 console.log('✅ Hasil kuis disimpan:', data);
                 localStorage.setItem('hasilKuis', JSON.stringify({
                     nama: namaSiswa,
@@ -127,15 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     jumlah_salah: jumlahSalah,
                     total_soal: soalData.length,
                     waktu_rata2_per_soal: parseFloat(waktuRata2.toFixed(2)),
-                    dideteksi_asal: data.dideteksi_asal,
+                    dideteksi_asal: data.dideteksi_asal, // Gunakan dari backend
                     kesulitan_diduga: data.kesulitan_diduga,
-                    rekomendasi: data.rekomendasi,
-                    analisis_bertingkat: data.analisis_bertingkat // Simpan analisis bertingkat
+                    rekomendasi: data.rekomendasi
                 }));
                 window.location.href = '/hasil';
             })
             .catch(err => {
                 console.error('❌ Gagal menyimpan hasil kuis:', err);
+                alert('Terjadi kesalahan saat menyimpan hasil. Silakan coba lagi.');
             });
             return;
         }
@@ -153,14 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         pilihanContainer.innerHTML = pilihanHTML;
 
-
-        waktuMulai = new Date(); // Catat waktu mulai
+        waktuMulai = new Date();
         startTimer();
 
         document.querySelectorAll('.pilihanBox').forEach(box => {
             box.addEventListener('click', (e) => {
                 clearInterval(timerInterval);
-                const waktuSelesai = new Date();    
+                const waktuSelesai = new Date();
                 const durasi = (waktuSelesai - waktuMulai) / 1000;
                 waktuPerSoalList.push(durasi);
                 waktuTotal += durasi;
@@ -171,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     e.target.classList.add('benar');
                     jumlahBenar++;
                     daftarSoalDikerjakan.soal[currentIndex].benar = true;
-                    //score++;
                 } else {
                     e.target.classList.add('salah');
                     jumlahSalah++;
@@ -204,9 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const durasi = (waktuSelesai - waktuMulai) / 1000;
                 waktuPerSoalList.push(durasi);
                 waktuTotal += durasi;
-                jumlahSalah++;
-                daftarSoalDikerjakan.soal[currentIndex].benar = false;
                 daftarSoalDikerjakan.soal[currentIndex].waktu = durasi;
+                daftarSoalDikerjakan.soal[currentIndex].benar = false;
+                jumlahSalah++;
 
                 currentIndex++;
                 tampilkanSoal();
@@ -214,7 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    // Fungsi untuk mengacak array (Fisher-Yates shuffle)
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));

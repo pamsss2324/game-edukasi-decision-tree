@@ -124,7 +124,7 @@
     "pertanyaan": "Antonim dari kata 'dingin' adalah...",
     "pilihan": ["Panas", "Sejuk", "Lembab", "Kering"],
     "jawaban": "Panas",
-    "topik": "Antonim",
+    "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
@@ -164,7 +164,7 @@
     "pertanyaan": "Sinonim dari kata 'gembira' adalah...",
     "pilihan": ["Sedih", "Senang", "Lelah", "Takut"],
     "jawaban": "Senang",
-    "topik": "Sinonim",
+    "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"

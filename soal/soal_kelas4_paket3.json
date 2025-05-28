@@ -134,7 +134,7 @@
     "pertanyaan": "Sinonim dari kata 'pandai' adalah...",
     "pilihan": ["Bodoh", "Pintar", "Sombong", "Lemah"],
     "jawaban": "Pintar",
-    "topik": "Sinonim",
+    "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
@@ -164,7 +164,7 @@
     "pertanyaan": "Lawan kata dari 'kuat' adalah...",
     "pilihan": ["Hebat", "Lemah", "Besar", "Cerdas"],
     "jawaban": "Lemah",
-    "topik": "Antonim",
+    "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
