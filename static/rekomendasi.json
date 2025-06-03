@@ -9,24 +9,30 @@
       "Pecahan": "Pelajari lagi cara menghitung pecahan.",
       "Operasi Campuran": "Pahami lagi soal perhitungan campuran dengan sabar!"
     },
-    "Pengukuran dan Geometri": {
-      "default": "Ulangi materi pengukuran dan geometri ya!",
+    "Geometri": {
+      "default": "Ulangi materi geometri ya!",
       "Satuan Waktu": "Coba ulang materi satuan waktu.",
       "Bangun Datar": "Pelajari lagi tentang bangun datar.",
       "Geometri Sederhana": "Latihan lagi geometri sederhana ya!",
       "Pengukuran": "Coba ulang materi pengukuran.",
-      "Luas Persegi Panjang": "Pelajari lagi cara menghitung luas persegi panjang."
+      "Luas Persegi Panjang": "Pelajari lagi cara menghitung luas persegi panjang.",
+      "Skala": "Pelajari lagi konsep skala pada peta.",
+      "Satuan dan Pengukuran": "Coba ulang materi satuan dan pengukuran."
     },
     "Operasi Matematika": {
       "default": "Latihan lagi operasi matematika ya!",
       "Bilangan Pecahan": "Pelajari lagi cara menghitung bilangan pecahan.",
       "Persentase": "Coba pahami konsep persentase.",
-      "Faktor Bilangan": "Latihan lagi mencari faktor bilangan."
+      "Faktor Bilangan": "Latihan lagi mencari faktor bilangan.",
+      "Bilangan": "Pelajari lagi operasi bilangan."
     },
     "Operasi Matematika dan Statistika": {
       "default": "Pelajari lagi operasi matematika dan statistika ya!",
       "Statistika": "Coba pelajari lagi cara membaca data statistika.",
       "Diagram": "Latihan lagi membuat dan membaca diagram."
+    },
+    "Persamaan": {
+      "default": "Pelajari lagi cara menyelesaikan persamaan sederhana."
     }
   },
   "IPA": {
@@ -35,7 +41,10 @@
       "Organ Tubuh": "Ayo ulang materi organ tubuh!",
       "Organ Pernapasan": "Latihan lagi tentang pernapasan.",
       "Klasifikasi Hewan": "Coba pelajari lagi klasifikasi hewan.",
-      "Indra Manusia": "Ulangi materi tentang indra manusia."
+      "Indra Manusia": "Ulangi materi tentang indra manusia.",
+      "Sistem Pencernaan": "Pelajari lagi sistem pencernaan manusia.",
+      "Bagian Tumbuhan": "Coba ulang materi bagian tumbuhan dan fungsinya.",
+      "Perkembangbiakan": "Pelajari lagi siklus hidup makhluk hidup."
     },
     "Proses Alam": {
       "default": "Pelajari lagi materi proses alam dengan sabar!",
@@ -45,7 +54,12 @@
     "Proses Alam dan Energi": {
       "default": "Pelajari lagi proses alam dan energi!",
       "Cahaya dan Sifatnya": "Coba pelajari lagi sifat cahaya.",
-      "Energi": "Ulangi materi tentang energi."
+      "Energi": "Ulangi materi tentang energi.",
+      "Siklus Air": "Pelajari lagi siklus air di alam.",
+      "Rantai Makanan": "Coba ulang materi rantai makanan.",
+      "Ekosistem": "Pelajari lagi tentang hubungan dalam ekosistem.",
+      "Gaya": "Coba ulang materi tentang gaya.",
+      "Magnet": "Pelajari lagi sifat-sifat magnet."
     },
     "Sistem Tubuh Manusia": {
       "default": "Pelajari lagi sistem tubuh manusia ya!",
@@ -59,7 +73,14 @@
       "Kalimat Benar": "Coba perbaiki kalimatmu lagi!",
       "Kalimat Perintah": "Latihan lagi kalimat perintah.",
       "Tanda Baca": "Perhatikan lagi penggunaan tanda baca.",
-      "Kalimat Efektif": "Coba pelajari lagi cara membuat kalimat efektif."
+      "Kalimat Efektif": "Coba pelajari lagi cara membuat kalimat efektif.",
+      "Kalimat Aktif dan Pasif": "Pelajari lagi kalimat aktif dan pasif.",
+      "Kata Serapan": "Coba ulang materi tentang kata serapan.",
+      "Kalimat Majemuk": "Pelajari lagi kalimat majemuk.",
+      "Kalimat Tanya": "Coba ulang materi kalimat tanya.",
+      "Imbuhan": "Pelajari lagi penggunaan imbuhan.",
+      "Majas": "Coba ulang materi tentang majas.",
+      "Kata Baku": "Pelajari lagi kata baku dan tidak baku."
     },
     "Kosa Kata dan Makna": {
       "default": "Tambah pemahaman kosa kata dan makna ya!",
@@ -69,7 +90,11 @@
     "Teks dan Kosa Kata": {
       "default": "Pelajari lagi teks dan kosa kata ya!",
       "Teks Deskripsi": "Coba pelajari lagi cara menulis teks deskripsi.",
-      "Teks Prosedur": "Latihan lagi menulis teks prosedur."
+      "Teks Prosedur": "Latihan lagi menulis teks prosedur.",
+      "Teks Persuasi": "Pelajari lagi teks persuasi.",
+      "Teks Narasi": "Coba ulang materi teks narasi.",
+      "Teks Eksplanasi": "Pelajari lagi teks eksplanasi.",
+      "Teks Laporan": "Coba ulang materi teks laporan."
     }
   },
   "default": "Terus berlatih ya!"

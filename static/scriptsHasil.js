@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Ambil data hasil kuis dari localStorage
     const hasilKuis = JSON.parse(localStorage.getItem('hasilKuis'));
+    const loadingOverlay = document.getElementById('loadingOverlay');
 
-    // Jika data tidak ada, tampilkan pesan error
     if (!hasilKuis) {
         document.querySelector('.container-hasil').innerHTML = `
             <div class="card-hasil">
@@ -14,29 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Tampilkan data ringkasan
+    // Tampilkan data awal
     document.getElementById('namaSiswa').textContent = hasilKuis.nama || 'Tidak Diketahui';
     document.getElementById('kelasSiswa').textContent = hasilKuis.kelas || 'Tidak Diketahui';
-    document.getElementById('mapel').textContent = hasilKuis.mapel;
     document.getElementById('ringkasanHasil').innerHTML = `Kamu menjawab benar <strong>${hasilKuis.jumlah_benar}</strong>, salah <strong>${hasilKuis.jumlah_salah}</strong> dari <strong>${hasilKuis.total_soal} soal</strong>! ${hasilKuis.jumlah_benar >= hasilKuis.total_soal * 0.7 ? 'Hebat! 🎉' : 'Ayo tingkatkan lagi! 💪'}`;
-    document.getElementById('kesulitanDiduga').textContent = hasilKuis.kesulitan_diduga;
+    document.getElementById('waktuRata2').textContent = `${hasilKuis.waktu_rata2_per_soal} detik`;
 
-    // Tambahkan waktu rata-rata
-    const waktuRata2El = document.createElement('p');
-    waktuRata2El.innerHTML = `<strong>Waktu Rata-rata per Soal:</strong> <span>${hasilKuis.waktu_rata2_per_soal} detik</span>`;
-    document.querySelector('.card-hasil').appendChild(waktuRata2El);
+    if (!localStorage.getItem('hasilDisimpan')) {
+        loadingOverlay.style.display = 'flex';
+        simpanHasilKeDatabase(hasilKuis);
+    } else {
+        updateHasilDisplay(hasilKuis);
+    }
 
-    // Format teks motivasi dan rekomendasi
-    const motivasiDanRekomendasi = hasilKuis.rekomendasi.split('! ');
-    const motivasi = motivasiDanRekomendasi[0] + '!';
-    const rekomendasiList = motivasiDanRekomendasi.slice(1).filter(item => item.trim() !== '');
-    const rekomendasiHtml = rekomendasiList.length > 0 
-        ? `<ul><li>${rekomendasiList.join('</li><li>')}</li></ul>`
-        : '';
-
-    document.getElementById('motivasiTeks').innerHTML = `${motivasi} <strong>${hasilKuis.mapel}:</strong> ${rekomendasiHtml}`;
-
-    // Kontrol tombol dan popup berdasarkan dideteksi_asal
     const btnKembali = document.getElementById('btnKembali');
     const btnUlangi = document.getElementById('btnUlangi');
     const popup = document.getElementById('konfirmasiPopup');
@@ -50,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
             popup.style.display = 'none';
             btnKembali.style.display = 'inline-block';
             btnUlangi.style.display = 'inline-block';
-            simpanHasilKeDatabase(hasilKuis);
         });
 
         document.getElementById('konfirmasiTidak').addEventListener('click', () => {
@@ -60,14 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         btnKembali.style.display = 'inline-block';
         btnUlangi.style.display = 'inline-block';
-        simpanHasilKeDatabase(hasilKuis);
     }
 });
 
 function simpanHasilKeDatabase(hasilKuis) {
-    // Cek apakah sudah disimpan (misalnya dengan flag)
-    if (localStorage.getItem('hasilDisimpan')) return;
-
+    const loadingOverlay = document.getElementById('loadingOverlay');
     fetch('/simpan_hasil', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -75,29 +60,55 @@ function simpanHasilKeDatabase(hasilKuis) {
     })
     .then(response => response.json())
     .then(data => {
+        loadingOverlay.style.display = 'none';
         if (data.status === 'sukses') {
-            localStorage.setItem('hasilDisimpan', 'true'); // Tandai sebagai disimpan
+            localStorage.setItem('hasilDisimpan', 'true');
+            hasilKuis.kesulitan_diduga = data.kesulitan_diduga;
+            hasilKuis.rekomendasi = data.rekomendasi;
+            hasilKuis.dideteksi_asal = data.dideteksi_asal;
+            localStorage.setItem('hasilKuis', JSON.stringify(hasilKuis));
+            updateHasilDisplay(hasilKuis);
         } else {
-            console.error('Gagal menyimpan hasil:', data.pesan);
             showCustomAlert(data.pesan || 'Terjadi kesalahan saat menyimpan hasil.');
         }
     })
     .catch(error => {
+        loadingOverlay.style.display = 'none';
         console.error('Error saat menyimpan hasil:', error);
         showCustomAlert('Terjadi kesalahan koneksi. Silakan coba lagi.');
     });
 }
 
-// Fungsi showCustomAlert dari scripts.js
+function updateHasilDisplay(hasilKuis) {
+    document.getElementById('kesulitanDiduga').textContent = hasilKuis.kesulitan_diduga || 'Tidak Tersedia';
+    const motivasiDanRekomendasi = (hasilKuis.rekomendasi || 'Terus berusaha ya!').split('! ');
+    const motivasi = motivasiDanRekomendasi[0] + '!';
+    const rekomendasiList = motivasiDanRekomendasi.slice(1).filter(item => item.trim() !== '');
+
+    document.getElementById('motivasiText').textContent = motivasi;
+    const rekomendasiUl = document.getElementById('rekomendasiList');
+    rekomendasiUl.innerHTML = '';
+    rekomendasiList.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        rekomendasiUl.appendChild(li);
+    });
+}
+
 function showCustomAlert(message) {
-    const alertBox = document.getElementById('alertBox');
-    alertBox.querySelector('p').innerText = message;
+    const alertBox = document.createElement('div');
+    alertBox.className = 'custom-alert';
+    alertBox.innerHTML = `
+        <p>${message}</p>
+        <button onclick="this.parentElement.remove()">Tutup</button>
+    `;
+    document.body.appendChild(alertBox);
     alertBox.classList.add('show');
     alertBox.style.display = 'flex';
     setTimeout(() => {
         alertBox.classList.remove('show');
-        alertBox.style.display = 'none';
-    }, 5000); // Sembunyikan setelah 5 detik
+        alertBox.remove();
+    }, 5000);
 }
 
 function kembaliKeBeranda() {

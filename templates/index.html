@@ -8,9 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <!-- Halaman utama -->
-    <div class="welcome-container card"> <!-- Tambahkan class 'card' -->
+    <div class="welcome-container card">
         <h1>Selamat Datang di Quiz Edukasi</h1>
         <p>Ayo uji kemampuanmu di bidang Bahasa Indonesia, Matematika, dan Sains!</p>
         <div class="button-group">
@@ -39,16 +38,21 @@
         </div>
     </div>
 
+    <!-- Indikator loading -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Memproses...</p>
+    </div>
+
     <div id="alertBox" class="custom-alert" style="display: none;">
         <p id="alertMessage"></p>
         <button id="alertClose">Tutup</button>
+        <button id="alertRetry" style="display: none;">Coba Lagi</button>
     </div>
 
     <div id="dateTimeBox" class="datetime-box"></div>
 
-
     <!-- Link ke JavaScript -->
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
-
 </body>
 </html>

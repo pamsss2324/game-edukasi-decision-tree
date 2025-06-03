@@ -2,7 +2,7 @@
   {
     "id": 1,
     "pertanyaan": "Hasil dari 25 + 37 adalah...",
-    "pilihan": ["52", "62", "63", "64"],
+    "pilihan": ["52", "62", "63", "65"],
     "jawaban": "62",
     "topik": "Penjumlahan",
     "kategori": "Operasi Matematika Dasar",
@@ -12,7 +12,7 @@
   {
     "id": 2,
     "pertanyaan": "Berapakah 48 - 19?",
-    "pilihan": ["27", "28", "29", "30"],
+    "pilihan": ["27", "28", "29", "31"],
     "jawaban": "29",
     "topik": "Pengurangan",
     "kategori": "Operasi Matematika Dasar",
@@ -21,8 +21,8 @@
   },
   {
     "id": 3,
-    "pertanyaan": "Ibu membeli 3 dus berisi 12 botol minuman. Total botol yang dibeli ibu adalah...",
-    "pilihan": ["36", "30", "24", "32"],
+    "pertanyaan": "Ibu beli 3 dus, tiap dus 12 botol minuman. Berapa total botol?",
+    "pilihan": ["30", "34", "36", "40"],
     "jawaban": "36",
     "topik": "Perkalian",
     "kategori": "Operasi Matematika Dasar",
@@ -31,7 +31,7 @@
   },
   {
     "id": 4,
-    "pertanyaan": "Bangun datar yang memiliki 4 sisi sama panjang dan 4 sudut sama besar disebut...",
+    "pertanyaan": "Bangun datar dengan 4 sisi sama panjang adalah...",
     "pilihan": ["Persegi panjang", "Segitiga", "Persegi", "Jajar genjang"],
     "jawaban": "Persegi",
     "topik": "Bangun Datar",
@@ -41,7 +41,7 @@
   },
   {
     "id": 5,
-    "pertanyaan": "Bangun datar yang memiliki 3 sisi dan 3 sudut disebut...",
+    "pertanyaan": "Bangun datar dengan 3 sisi dan 3 sudut adalah...",
     "pilihan": ["Persegi", "Segitiga", "Lingkaran", "Trapesium"],
     "jawaban": "Segitiga",
     "topik": "Bangun Datar",
@@ -51,7 +51,7 @@
   },
   {
     "id": 6,
-    "pertanyaan": "Bagian tubuh tumbuhan yang berfungsi untuk menyerap air adalah...",
+    "pertanyaan": "Bagian tumbuhan apa yang menyerap air?",
     "pilihan": ["Batang", "Daun", "Akar", "Bunga"],
     "jawaban": "Akar",
     "topik": "Bagian Tumbuhan",
@@ -61,7 +61,7 @@
   },
   {
     "id": 7,
-    "pertanyaan": "Benda berikut yang termasuk benda padat adalah...",
+    "pertanyaan": "Benda padat di antara ini adalah...",
     "pilihan": ["Air", "Es batu", "Uap", "Minyak"],
     "jawaban": "Es batu",
     "topik": "Sifat Benda",
@@ -71,9 +71,9 @@
   },
   {
     "id": 8,
-    "pertanyaan": "Contoh perubahan wujud dari gas menjadi cair adalah...",
-    "pilihan": ["Air mendidih", "Uap menjadi embun", "Es mencair", "Air membeku"],
-    "jawaban": "Uap menjadi embun",
+    "pertanyaan": "Perubahan wujud gas ke cair adalah...",
+    "pilihan": ["Air mendidih", "Uap jadi embun", "Es mencair", "Air membeku"],
+    "jawaban": "Uap jadi embun",
     "topik": "Perubahan Wujud Benda",
     "kategori": "Proses Alam",
     "pelajaran": "IPA",
@@ -81,7 +81,7 @@
   },
   {
     "id": 9,
-    "pertanyaan": "Alat indera yang digunakan untuk merasakan makanan adalah...",
+    "pertanyaan": "Indera apa yang rasakan rasa makanan?",
     "pilihan": ["Mata", "Telinga", "Lidah", "Hidung"],
     "jawaban": "Lidah",
     "topik": "Indera Manusia",
@@ -91,18 +91,18 @@
   },
   {
     "id": 10,
-    "pertanyaan": "Jika sebuah benda tidak diberi gaya dorong atau tarik, apa yang akan terjadi?",
-    "pilihan": ["Benda akan bergerak cepat", "Benda akan tetap diam atau bergerak lurus", "Benda akan berubah bentuk", "Benda akan menghilang"],
-    "jawaban": "Benda akan tetap diam atau bergerak lurus",
-    "topik": "Gaya dan Gerak",
+    "pertanyaan": "Jika benda tak digerakkan, apa yang terjadi pada benda yang berat?",
+    "pilihan": ["Bergerak cepat", "Tetap diam atau lurus", "Berubah bentuk", "Menghilang"],
+    "jawaban": "Tetap diam atau lurus",
+    "topik": "Proses Alam",
     "kategori": "Proses Alam",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sulit"
   },
   {
     "id": 11,
-    "pertanyaan": "Kalimat berikut yang merupakan kalimat tanya adalah...",
-    "pilihan": ["Kamu sedang apa?", "Saya pergi ke sekolah.", "Dia sedang membaca.", "Hari ini cerah."],
+    "pertanyaan": "Kalimat tanya mana yang benar?",
+    "pilihan": ["Kamu sedang apa?", "Saya pergi ke sekolah.", "Dia membaca.", "Hari ini cerah."],
     "jawaban": "Kamu sedang apa?",
     "topik": "Jenis Kalimat",
     "kategori": "Tata Bahasa",
@@ -111,7 +111,7 @@
   },
   {
     "id": 12,
-    "pertanyaan": "Manakah kalimat yang menggunakan kata sifat 'besar' dengan tepat?",
+    "pertanyaan": "Kalimat mana pakai 'besar' dengan tepat?",
     "pilihan": ["Rumah itu besar.", "Besar rumah itu.", "Rumah besar itu.", "Rumah itu besar sekali."],
     "jawaban": "Rumah itu besar.",
     "topik": "Jenis Kata",
@@ -121,7 +121,7 @@
   },
   {
     "id": 13,
-    "pertanyaan": "Manakah kalimat yang benar?",
+    "pertanyaan": "Kalimat mana yang benar?",
     "pilihan": ["Andi bermain bola di lapangan.", "andi bermain Bola di Lapangan.", "Andi Bermain bola di Lapangan.", "Andi bermain bola di Lapangan"],
     "jawaban": "Andi bermain bola di lapangan.",
     "topik": "Penulisan Kalimat",
@@ -131,7 +131,7 @@
   },
   {
     "id": 14,
-    "pertanyaan": "Antonim dari kata 'besar' adalah...",
+    "pertanyaan": "Lawan kata dari 'besar' adalah...",
     "pilihan": ["Panjang", "Tinggi", "Kecil", "Cepat"],
     "jawaban": "Kecil",
     "topik": "Sinonim/Antonim",
@@ -141,7 +141,7 @@
   },
   {
     "id": 15,
-    "pertanyaan": "Kalimat berikut yang menggunakan tanda baca tanya dengan tepat adalah...",
+    "pertanyaan": "Kalimat mana pakai tanda baca tanya benar?",
     "pilihan": ["Siapa yang datang tadi?", "Siapa yang datang tadi", "Siapa yang datang tadi.", "Siapa, yang datang tadi?"],
     "jawaban": "Siapa yang datang tadi?",
     "topik": "Tanda Baca",

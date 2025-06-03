@@ -6,6 +6,8 @@ const namaInput = document.getElementById('namaSiswa');
 const kelasSelect = document.getElementById('kelasSiswa');
 const alertBox = document.getElementById('alertBox');
 const alertClose = document.getElementById('alertClose');
+const alertRetry = document.getElementById('alertRetry');
+const loadingOverlay = document.getElementById('loadingOverlay');
 
 siswaBtn.addEventListener('click', () => {
     popupForm.style.display = 'flex';
@@ -15,15 +17,22 @@ closePopup.addEventListener('click', () => {
     popupForm.style.display = 'none';
 });
 
-function showCustomAlert(message) {
+function showCustomAlert(message, showRetry = false) {
     alertBox.querySelector('p').innerText = message;
     alertBox.classList.add('show');
     alertBox.style.display = 'flex';
+    alertRetry.style.display = showRetry ? 'inline-block' : 'none';
 }
 
 alertClose.addEventListener('click', () => {
     alertBox.classList.remove('show');
     alertBox.style.display = 'none';
+});
+
+alertRetry.addEventListener('click', () => {
+    alertBox.classList.remove('show');
+    alertBox.style.display = 'none';
+    lanjutBtn.click();
 });
 
 lanjutBtn.addEventListener('click', () => {
@@ -40,7 +49,7 @@ lanjutBtn.addEventListener('click', () => {
         return;
     }
 
-    // Kirim ke backend Flask
+    loadingOverlay.style.display = 'flex';
     fetch('http://localhost:5000/simpan_siswa', {
         method: 'POST',
         headers: {
@@ -50,19 +59,20 @@ lanjutBtn.addEventListener('click', () => {
     })
     .then(response => response.json())
     .then(data => {
+        loadingOverlay.style.display = 'none';
         if (data.status === 'sukses') {
-            // Simpan juga ke localStorage untuk dipakai di quiz.html
             localStorage.setItem('namaSiswa', nama);
             localStorage.setItem('kelasSiswa', kelas);
-            localStorage.setItem('idSiswa', data.id_siswa); // jika nanti dibutuhkan
+            localStorage.setItem('idSiswa', data.id_siswa);
             window.location.href = '/quiz';
         } else {
-            showCustomAlert('Gagal menyimpan data siswa.');
+            showCustomAlert('Gagal menyimpan data siswa.', true);
         }
     })
     .catch(error => {
-    console.error('Error:', error);
-    showCustomAlert(data?.pesan || 'Terjadi kesalahan koneksi.');
+        loadingOverlay.style.display = 'none';
+        console.error('Error:', error);
+        showCustomAlert('Terjadi kesalahan koneksi.', true);
     });
 });
 
@@ -74,6 +84,5 @@ function updateDateTime() {
     document.getElementById('dateTimeBox').textContent = `${dateStr} - ${timeStr}`;
 }
 
-// Update setiap detik
 setInterval(updateDateTime, 1000);
-updateDateTime(); // panggil sekali di awal
+updateDateTime();

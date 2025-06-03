@@ -12,13 +12,16 @@
             <h2>Hasil Kuis</h2>
             <p><strong>Nama:</strong> <span id="namaSiswa"></span></p>
             <p><strong>Kelas:</strong> <span id="kelasSiswa"></span></p>
-            <p><strong>Mata Pelajaran:</strong> <span id="mapel"></span></p>
             <p id="ringkasanHasil"></p>
-            <p><strong>Tingkat Kesulitan:</strong> <span id="kesulitanDiduga"></span></p>
+            <p><strong>Tingkat Kesulitan:</strong> <span id="kesulitanDiduga">Menunggu analisis...</span></p>
+            <p><strong>Waktu Rata-rata per Soal:</strong> <span id="waktuRata2"></span></p>
         </div>
 
         <div class="motivasi-box">
-            <div class="speech-bubble" id="motivasiTeks"></div>
+            <div class="speech-bubble" id="motivasiTeks">
+                <p id="motivasiText">Memuat motivasi...</p>
+                <ul id="rekomendasiList" class="rekomendasi-list"></ul>
+            </div>
         </div>
 
         <!-- Popup Konfirmasi Deteksi Asal -->
@@ -31,6 +34,12 @@
                     <button id="konfirmasiTidak" class="btn-konfirmasi">Tidak</button>
                 </div>
             </div>
+        </div>
+
+        <!-- Indikator loading -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>Memproses hasil...</p>
         </div>
 
         <button id="btnKembali" onclick="kembaliKeBeranda()" class="btn-kembali">Kembali ke Beranda</button>

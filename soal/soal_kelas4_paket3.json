@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "pertanyaan": "Hasil dari 56 : 7 adalah...",
+    "pertanyaan": "Berapa hasil dari 56 : 7?",
     "pilihan": ["6", "7", "8", "9"],
     "jawaban": "8",
     "topik": "Pembagian",
@@ -21,7 +21,7 @@
   },
   {
     "id": 3,
-    "pertanyaan": "Jika 5 kotak masing-masing berisi 24 kelereng, berapa total kelerengnya?",
+    "pertanyaan": "Jika 5 kotak masing-masing isi 24 kelereng, berapa totalnya?",
     "pilihan": ["100", "110", "120", "130"],
     "jawaban": "120",
     "topik": "Perkalian",
@@ -31,9 +31,9 @@
   },
   {
     "id": 4,
-    "pertanyaan": "Sebuah tali panjangnya 3,5 meter. Jika dipotong 0,5 meter, berapa panjang sisa tali?",
-    "pilihan": ["3 meter", "2,5 meter", "3,2 meter", "2 meter"],
-    "jawaban": "3 meter",
+    "pertanyaan": "Tali panjangnya 3,5 m, dipotong 0,5 m. Berapa sisa tali?",
+    "pilihan": ["2,5 m", "3 m", "3,2 m", "3,5 m"],
+    "jawaban": "3 m",
     "topik": "Pengurangan",
     "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
@@ -41,27 +41,27 @@
   },
   {
     "id": 5,
-    "pertanyaan": "Seorang pelari menempuh jarak 200 meter dalam 40 detik. Berapa kecepatan rata-ratanya?",
-    "pilihan": ["5 m/detik", "6 m/detik", "7 m/detik", "8 m/detik"],
+    "pertanyaan": "Pelari menempuh 200 m dalam 40 detik. Berapa kecepatannya?",
+    "pilihan": ["4 m/detik", "5 m/detik", "6 m/detik", "7 m/detik"],
     "jawaban": "5 m/detik",
-    "topik": "Pengukuran",
-    "kategori": "Pengukuran dan Geometri",
+    "topik": "Satuan dan Pengukuran",
+    "kategori": "Satuan dan Pengukuran",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sulit"
+    "tingkat_kesulitan": "sedang"
   },
   {
     "id": 6,
-    "pertanyaan": "Sebuah pesawat terbang menempuh jarak 600 km dalam 2 jam. Berapa kecepatan rata-ratanya?",
-    "pilihan": ["200 km/jam", "300 km/jam", "400 km/jam", "500 km/jam"],
-    "jawaban": "300 km/jam",
-    "topik": "Pengukuran",
-    "kategori": "Pengukuran dan Geometri",
+    "pertanyaan": "Berapa nilai 2/5 + 3/5?",
+    "pilihan": ["3/5", "4/5", "1", "6/5"],
+    "jawaban": "1",
+    "topik": "Pecahan",
+    "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
   {
     "id": 7,
-    "pertanyaan": "Bagian tumbuhan yang berfungsi menyerap air dan zat hara dari tanah adalah...",
+    "pertanyaan": "Bagian tumbuhan yang menyerap air dari tanah adalah...",
     "pilihan": ["Batang", "Daun", "Akar", "Bunga"],
     "jawaban": "Akar",
     "topik": "Bagian Tumbuhan",
@@ -71,8 +71,8 @@
   },
   {
     "id": 8,
-    "pertanyaan": "Apa yang terjadi jika kita tidak membuang sampah pada tempatnya?",
-    "pilihan": ["Lingkungan bersih", "Hewan menjadi sehat", "Terjadi pencemaran", "Air menjadi jernih"],
+    "pertanyaan": "Apa akibat jika kita buang sampah sembarangan?",
+    "pilihan": ["Lingkungan bersih", "Hewan sehat", "Terjadi pencemaran", "Air jadi jernih"],
     "jawaban": "Terjadi pencemaran",
     "topik": "Lingkungan",
     "kategori": "Proses Alam dan Energi",
@@ -81,7 +81,7 @@
   },
   {
     "id": 9,
-    "pertanyaan": "Apa alat indra yang digunakan untuk mendengar?",
+    "pertanyaan": "Indra apa yang digunakan untuk mendengar?",
     "pilihan": ["Mata", "Telinga", "Hidung", "Kulit"],
     "jawaban": "Telinga",
     "topik": "Indra Manusia",
@@ -97,25 +97,25 @@
     "topik": "Energi",
     "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 11,
-    "pertanyaan": "Alat yang digunakan untuk mengukur suhu adalah...",
+    "pertanyaan": "Alat untuk mengukur suhu adalah...",
     "pilihan": ["Termometer", "Barometer", "Penggaris", "Timbangan"],
     "jawaban": "Termometer",
-    "topik": "Pengukuran",
+    "topik": "Alat Ukur",
     "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 12,
-    "pertanyaan": "Mengapa kita harus mencuci tangan sebelum makan?",
-    "pilihan": ["Supaya cepat makan", "Supaya kenyang", "Menghilangkan kuman", "Agar tidak haus"],
+    "pertanyaan": "Mengapa kita harus cuci tangan sebelum makan?",
+    "pilihan": ["Agar cepat makan", "Agar kenyang", "Menghilangkan kuman", "Agar tak haus"],
     "jawaban": "Menghilangkan kuman",
     "topik": "Kesehatan",
-    "kategori": "Proses Alam dan Energi",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
@@ -131,7 +131,7 @@
   },
   {
     "id": 14,
-    "pertanyaan": "Sinonim dari kata 'pandai' adalah...",
+    "pertanyaan": "Sinonim dari 'pandai' adalah...",
     "pilihan": ["Bodoh", "Pintar", "Sombong", "Lemah"],
     "jawaban": "Pintar",
     "topik": "Sinonim/Antonim",
@@ -141,23 +141,23 @@
   },
   {
     "id": 15,
-    "pertanyaan": "Manakah kalimat yang menggunakan imbuhan me- dengan benar?",
+    "pertanyaan": "Kalimat yang pakai imbuhan me- dengan benar?",
     "pilihan": ["Dia melari sangat cepat.", "Ibu memasak nasi.", "Adik meminum air.", "Kami memfoto pemandangan."],
     "jawaban": "Ibu memasak nasi.",
     "topik": "Imbuhan",
     "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "sulit"
   },
   {
     "id": 16,
-    "pertanyaan": "Kalimat berikut yang menggunakan tanda seru dengan tepat adalah...",
+    "pertanyaan": "Kalimat yang pakai tanda seru tepat?",
     "pilihan": ["Ayo kita pergi ke sekolah!", "Dia sangat senang!", "Ibu memasak nasi?", "Mengapa kamu sedih."],
     "jawaban": "Dia sangat senang!",
     "topik": "Tanda Baca",
     "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
-    "tingkat_kesulitan": "mudah"
+    "tingkat_kesulitan": "sedang"
   },
   {
     "id": 17,
@@ -171,7 +171,7 @@
   },
   {
     "id": 18,
-    "pertanyaan": "Manakah kalimat yang memiliki struktur subjek dan predikat lengkap?",
+    "pertanyaan": "Kalimat dengan subjek dan predikat lengkap?",
     "pilihan": ["Anak bermain di taman.", "Pergi ke sekolah.", "Sedang bermain bola.", "Di taman bunga."],
     "jawaban": "Anak bermain di taman.",
     "topik": "Struktur Kalimat",

@@ -2,7 +2,7 @@
   {
     "id": 1,
     "pertanyaan": "Berapa hasil dari 6 x 4?",
-    "pilihan": ["20", "24", "26", "30"],
+    "pilihan": ["20", "22", "24", "28"],
     "jawaban": "24",
     "topik": "Perkalian",
     "kategori": "Operasi Matematika Dasar",
@@ -12,7 +12,7 @@
   {
     "id": 2,
     "pertanyaan": "Berapa hasil dari 3 x 5?",
-    "pilihan": ["12", "15", "18", "20"],
+    "pilihan": ["10", "15", "18", "20"],
     "jawaban": "15",
     "topik": "Perkalian",
     "kategori": "Operasi Matematika Dasar",
@@ -21,7 +21,7 @@
   },
   {
     "id": 3,
-    "pertanyaan": "1 jam sama dengan ... menit.",
+    "pertanyaan": "1 jam sama dengan berapa menit?",
     "pilihan": ["30", "45", "60", "90"],
     "jawaban": "60",
     "topik": "Satuan Waktu",
@@ -31,7 +31,7 @@
   },
   {
     "id": 4,
-    "pertanyaan": "Jika hari ini adalah Selasa, maka dua hari lagi adalah...",
+    "pertanyaan": "Jika hari ini Selasa, hari apa dua hari lagi?",
     "pilihan": ["Rabu", "Kamis", "Jumat", "Sabtu"],
     "jawaban": "Kamis",
     "topik": "Satuan Waktu",
@@ -41,17 +41,17 @@
   },
   {
     "id": 5,
-    "pertanyaan": "Budi membeli 3 kotak pensil, setiap kotak berisi 5 pensil. Ia memberikan 2 pensil kepada adiknya. Berapa pensil yang tersisa?",
-    "pilihan": ["13", "15", "12", "10"],
+    "pertanyaan": "Budi punya 3 kotak dengan 5 pensil per kotak, lalu beri 2 pensil ke adik. Berapa pensil tersisa?",
+    "pilihan": ["12", "13", "14", "15"],
     "jawaban": "13",
-    "topik": "Perhitungan Campuran",
+    "topik": "Perkalian",
     "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sulit"
+    "tingkat_kesulitan": "sedang"
   },
   {
     "id": 6,
-    "pertanyaan": "Organ tubuh yang digunakan untuk mendengar adalah...",
+    "pertanyaan": "Organ apa yang digunakan untuk mendengar?",
     "pilihan": ["Mata", "Telinga", "Hidung", "Mulut"],
     "jawaban": "Telinga",
     "topik": "Organ Tubuh",
@@ -61,7 +61,7 @@
   },
   {
     "id": 7,
-    "pertanyaan": "Organ tubuh yang digunakan untuk melihat adalah...",
+    "pertanyaan": "Organ apa yang digunakan untuk melihat?",
     "pilihan": ["Telinga", "Hidung", "Mata", "Lidah"],
     "jawaban": "Mata",
     "topik": "Organ Tubuh",
@@ -71,17 +71,17 @@
   },
   {
     "id": 8,
-    "pertanyaan": "Tumbuhan membutuhkan ... agar daunnya bisa membuat makanan.",
-    "pilihan": ["Air", "Udara", "Cahaya matahari", "Tanah"],
+    "pertanyaan": "Tumbuhan membutuhkan apa untuk hidup?",
+    "pilihan": ["Air", "Batu", "Cahaya matahari", "Tanah"],
     "jawaban": "Cahaya matahari",
-    "topik": "Fotosintesis",
-    "kategori": "Proses Alam",
+    "topik": "Kebutuhan Tumbuhan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 9,
-    "pertanyaan": "Kita bernapas menggunakan organ apa di wajah kita?",
+    "pertanyaan": "Organ apa yang kita gunakan untuk bernapas di wajah?",
     "pilihan": ["Mata", "Hidung", "Paru-paru", "Kaki"],
     "jawaban": "Hidung",
     "topik": "Organ Pernapasan",
@@ -91,17 +91,17 @@
   },
   {
     "id": 10,
-    "pertanyaan": "Apa yang terjadi jika tumbuhan tidak mendapat cahaya matahari dalam waktu lama?",
-    "pilihan": ["Tumbuhan akan layu", "Tumbuhan akan berbunga", "Tumbuhan akan berbuah", "Tumbuhan akan tinggi"],
-    "jawaban": "Tumbuhan akan layu",
-    "topik": "Fotosintesis",
-    "kategori": "Proses Alam",
+    "pertanyaan": "Apa yang terjadi jika tumbuhan tak dapat cahaya matahari lama?",
+    "pilihan": ["Tumbuh tinggi", "Layu dan mati", "Berbunga", "Berdaun lebat"],
+    "jawaban": "Layu dan mati",
+    "topik": "Kebutuhan Tumbuhan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
-    "tingkat_kesulitan": "sulit"
+    "tingkat_kesulitan": "sedang"
   },
   {
     "id": 11,
-    "pertanyaan": "Kalimat yang benar adalah...",
+    "pertanyaan": "Kalimat mana yang benar?",
     "pilihan": ["Saya pergi ke sekolah.", "Pergi saya ke sekolah.", "Sekolah ke saya pergi.", "Saya sekolah pergi ke."],
     "jawaban": "Saya pergi ke sekolah.",
     "topik": "Kalimat Benar",
@@ -111,7 +111,7 @@
   },
   {
     "id": 12,
-    "pertanyaan": "Kata apa yang tepat untuk melengkapi kalimat: 'Budi sangat ... karena mendapat hadiah.'?",
+    "pertanyaan": "Kata apa yang tepat: 'Budi sangat ... karena dapat hadiah'?",
     "pilihan": ["Senang", "Marah", "Sedih", "Takut"],
     "jawaban": "Senang",
     "topik": "Kosa Kata",
@@ -121,7 +121,7 @@
   },
   {
     "id": 13,
-    "pertanyaan": "Lawan kata dari besar adalah...",
+    "pertanyaan": "Lawan kata dari 'besar' adalah...",
     "pilihan": ["Tinggi", "Kecil", "Pendek", "Luas"],
     "jawaban": "Kecil",
     "topik": "Sinonim/Antonim",
@@ -141,7 +141,7 @@
   },
   {
     "id": 15,
-    "pertanyaan": "Kalimat mana yang menggunakan tanda baca dengan benar?",
+    "pertanyaan": "Kalimat mana yang pakai tanda baca benar?",
     "pilihan": ["Ayo kita belajar!", "Ayo kita belajar", "Ayo kita belajar?", "Ayo kita belajar,"],
     "jawaban": "Ayo kita belajar!",
     "topik": "Tanda Baca",

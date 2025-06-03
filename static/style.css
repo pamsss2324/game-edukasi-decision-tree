@@ -13,13 +13,15 @@ body {
     position: relative;
 }
 
-/* Layer gelap di atas background supaya teks lebih jelas */
+/* Tambahkan lapisan semi-transparan untuk meningkatkan keterbacaan teks */
 body::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Lapisan gelap semi-transparan */
     z-index: 0;
 }
 
@@ -32,7 +34,7 @@ body::before {
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     width: 80%;
     max-width: 500px;
-    color: black; /* Teks hitam agar terbaca di latar putih */
+    color: black;
 }
 
 h1 {
@@ -75,12 +77,22 @@ button:hover {
     transform: scale(1.1);
 }
 
+button:focus {
+    outline: 3px solid #ff4ecd;
+    outline-offset: 2px;
+}
+
 .guru-btn {
     background: #4eafff;
 }
 
 .guru-btn:hover {
     background: #3c90e0;
+}
+
+.guru-btn:focus {
+    outline: 3px solid #4eafff;
+    outline-offset: 2px;
 }
 
 .datetime-box {
@@ -99,12 +111,14 @@ button:hover {
 .popup {
     display: none;
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     justify-content: center;
     align-items: center;
     z-index: 2;
+    background: none;
 }
 
 .popup-content {
@@ -127,6 +141,13 @@ button:hover {
     margin-bottom: 20px;
 }
 
+.popup-content label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #2d3748;
+}
+
 .popup-content input,
 .popup-content select {
     width: 80%;
@@ -134,6 +155,26 @@ button:hover {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 1rem;
+}
+
+.popup-content select {
+    background: #ff4ecd;
+    color: white;
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+.popup-content select:focus {
+    outline: 3px solid #ff4ecd;
+    outline-offset: 2px;
 }
 
 .custom-alert {
@@ -164,6 +205,7 @@ button:hover {
     padding: 5px 15px;
     border-radius: 5px;
     cursor: pointer;
+    margin: 5px;
 }
 
 /* Tambahan efek fade-in */
@@ -196,9 +238,45 @@ button:hover {
 
 .close-btn {
     position: absolute;
-    top: 10px; right: 20px;
+    top: 10px;
+    right: 20px;
     font-size: 30px;
     cursor: pointer;
+}
+
+/* Loading overlay dan spinner */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ff4ecd;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+    color: white;
+    font-size: 1.2rem;
+    margin-top: 10px;
 }
 
 .quiz-body {
@@ -225,6 +303,7 @@ button:hover {
 .card {
     animation: slideIn 0.5s ease-out;
 }
+
 @keyframes slideIn {
     from { transform: translateY(50px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
@@ -265,20 +344,29 @@ button:hover {
 }
 
 .pilihanBox.benar {
-    background: #4caf50 !important; /* Hijau untuk benar */
+    background: #4caf50 !important;
     border-color: #4caf50;
     color: white;
 }
 
 .pilihanBox.salah {
-    background: #f44336 !important; /* Merah untuk salah */
+    background: #f44336 !important;
     border-color: #f44336;
     color: white;
 }
 
+.fade-in {
+    animation: fadeInElement 0.5s ease forwards;
+}
+
+@keyframes fadeInElement {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .progress-info {
     margin-bottom: 15px;
-    padding-top: 30px; /* Tambah padding untuk memberi ruang bagi timer */
+    padding-top: 30px;
 }
 
 .progress-bar {
@@ -287,6 +375,7 @@ button:hover {
     height: 20px;
     border-radius: 5px;
     overflow: hidden;
+    position: relative;
 }
 
 .progress-fill {
@@ -294,9 +383,32 @@ button:hover {
     background: #4eafff;
     width: 0%;
     text-align: center;
-    line-height: 20px; /* Sesuaikan dengan tinggi */
+    line-height: 20px;
     color: black;
     transition: width 0.3s;
+}
+
+.progress-fill::after {
+    content: attr(data-text);
+    position: absolute;
+    width: 100%;
+    left: 0;
+    display: none;
+}
+
+.progress-fill[data-width="50"]::after,
+.progress-fill[data-width="60"]::after,
+.progress-fill[data-width="70"]::after,
+.progress-fill[data-width="80"]::after,
+.progress-fill[data-width="90"]::after,
+.progress-fill[data-width="100"]::after {
+    display: block;
+}
+
+.progress-text {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #333;
 }
 
 .timer-box {
@@ -310,6 +422,15 @@ button:hover {
     font-weight: bold;
     font-size: 0.9rem;
     z-index: 2;
+}
+
+@media (max-width: 480px) {
+    .timer-box {
+        top: 5px;
+        right: 5px;
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
 }
 
 /* Style untuk halaman hasil */
@@ -370,7 +491,15 @@ button:hover {
     display: inline-block;
     color: #333;
     max-width: 400px;
-    line-height: 1.6; /* Jarak antar baris yang lebih baik */
+    line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+    .speech-bubble {
+        max-width: 90%;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
 }
 
 .speech-bubble::after {
@@ -387,49 +516,28 @@ button:hover {
     margin-bottom: -20px;
 }
 
-/* Styling untuk teks pelajaran (strong) */
-.speech-bubble strong {
-    color: #2c3e50; /* Warna teks pelajaran lebih menonjol */
-    font-size: 1.1rem;
-    display: block; /* Posisi baru di baris terpisah */
-    margin-bottom: 5px; /* Jarak dari daftar rekomendasi */
+/* Styling untuk daftar rekomendasi */
+.rekomendasi-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 10px 0 0 0;
 }
 
-/* Styling untuk daftar bullet */
-.speech-bubble ul {
-    list-style-type: none; /* Hilangkan bullet bawaan */
-    padding-left: 0; /* Hilangkan indentasi */
-    margin: 0;
-}
-
-.speech-bubble ul li {
+.rekomendasi-list li {
     position: relative;
-    padding-left: 20px; /* Ruang untuk bullet kustom */
-    margin-bottom: 5px; /* Jarak antar item */
+    padding-left: 20px;
+    margin-bottom: 8px;
+    color: #2c3e50;
 }
 
-.speech-bubble ul li:before {
-    content: '•'; /* Bullet kustom */
-    color: #2c3e50;
-    font-weight: bold;
+.rekomendasi-list li:before {
+    content: '✨';
     position: absolute;
     left: 0;
+    color: #ff4ecd;
 }
 
 /* Popup Konfirmasi */
-.popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
 .popup-content {
     background: #ffffff;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -468,6 +576,11 @@ button:hover {
     transform: scale(1.05);
 }
 
+.btn-konfirmasi:focus {
+    outline: 3px solid #48bb78;
+    outline-offset: 2px;
+}
+
 .popup-buttons {
     display: flex;
     justify-content: center;
@@ -489,6 +602,11 @@ button:hover {
 .btn-kembali:hover {
     background-color: #2563eb;
     transform: scale(1.05);
+}
+
+.btn-kembali:focus {
+    outline: 3px solid #3b82f6;
+    outline-offset: 2px;
 }
 
 .card-hasil p span {

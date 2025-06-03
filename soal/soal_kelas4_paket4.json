@@ -1,17 +1,17 @@
 [
   {
     "id": 1,
-    "pertanyaan": "Hasil dari 75 - 28 adalah...",
+    "pertanyaan": "Berapa hasil dari 75 - 28?",
     "pilihan": ["45", "47", "48", "50"],
     "jawaban": "47",
     "topik": "Pengurangan",
     "kategori": "Operasi Matematika Dasar",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 2,
-    "pertanyaan": "Hasil dari 8 x 7 adalah...",
+    "pertanyaan": "Berapa hasil dari 8 x 7?",
     "pilihan": ["54", "56", "58", "60"],
     "jawaban": "56",
     "topik": "Perkalian",
@@ -21,7 +21,7 @@
   },
   {
     "id": 3,
-    "pertanyaan": "Sebuah kotak berisi 100 kelereng. Jika diberikan 25 kelereng kepada teman, sisa kelereng adalah...",
+    "pertanyaan": "Kotak berisi 100 kelereng, diberikan 25 kelereng. Berapa sisa?",
     "pilihan": ["65", "70", "75", "80"],
     "jawaban": "75",
     "topik": "Pengurangan",
@@ -31,7 +31,7 @@
   },
   {
     "id": 4,
-    "pertanyaan": "Hasil dari 45 + 32 adalah...",
+    "pertanyaan": "Berapa hasil dari 45 + 32?",
     "pilihan": ["75", "76", "77", "78"],
     "jawaban": "77",
     "topik": "Penjumlahan",
@@ -41,21 +41,21 @@
   },
   {
     "id": 5,
-    "pertanyaan": "Seorang pelari menempuh jarak 150 meter dalam 30 detik. Berapa kecepatan rata-ratanya?",
+    "pertanyaan": "Pelari menempuh 150 m dalam 30 detik. Berapa kecepatannya?",
     "pilihan": ["4 m/detik", "5 m/detik", "6 m/detik", "7 m/detik"],
     "jawaban": "5 m/detik",
-    "topik": "Pengukuran",
-    "kategori": "Pengukuran dan Geometri",
+    "topik": "Satuan dan Pengukuran",
+    "kategori": "Satuan dan Pengukuran",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sulit"
+    "tingkat_kesulitan": "sedang"
   },
   {
     "id": 6,
-    "pertanyaan": "Sebuah mobil menempuh jarak 240 km dalam 4 jam. Berapa kecepatan rata-ratanya?",
-    "pilihan": ["50 km/jam", "60 km/jam", "70 km/jam", "80 km/jam"],
-    "jawaban": "60 km/jam",
-    "topik": "Pengukuran",
-    "kategori": "Pengukuran dan Geometri",
+    "pertanyaan": "Segitiga siku-siku sisi 3 cm dan 4 cm. Berapa sisi miringnya?",
+    "pilihan": ["5 cm", "6 cm", "7 cm", "8 cm"],
+    "jawaban": "5 cm",
+    "topik": "Geometri",
+    "kategori": "Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sulit"
   },
@@ -71,8 +71,8 @@
   },
   {
     "id": 8,
-    "pertanyaan": "Contoh perubahan wujud benda dari cair menjadi gas adalah...",
-    "pilihan": ["Air menjadi es", "Es mencair", "Air menguap", "Uap menjadi air"],
+    "pertanyaan": "Perubahan wujud cair ke gas adalah...",
+    "pilihan": ["Air jadi es", "Es mencair", "Air menguap", "Uap jadi air"],
     "jawaban": "Air menguap",
     "topik": "Perubahan Wujud",
     "kategori": "Proses Alam dan Energi",
@@ -91,7 +91,7 @@
   },
   {
     "id": 10,
-    "pertanyaan": "Sumber energi listrik yang umum digunakan di rumah adalah...",
+    "pertanyaan": "Sumber energi listrik di rumah biasanya dari...",
     "pilihan": ["Baterai", "Genset", "PLN", "Panel surya"],
     "jawaban": "PLN",
     "topik": "Energi",
@@ -101,7 +101,7 @@
   },
   {
     "id": 11,
-    "pertanyaan": "Alat pernapasan pada manusia adalah...",
+    "pertanyaan": "Alat pernapasan manusia adalah...",
     "pilihan": ["Hidung", "Paru-paru", "Jantung", "Lidah"],
     "jawaban": "Paru-paru",
     "topik": "Organ Pernapasan",
@@ -111,17 +111,17 @@
   },
   {
     "id": 12,
-    "pertanyaan": "Apa yang harus dilakukan agar tubuh tetap sehat?",
-    "pilihan": ["Makan permen", "Tidur siang", "Olahraga teratur", "Bermain game"],
-    "jawaban": "Olahraga teratur",
+    "pertanyaan": "Apa akibat jika kita jarang olahraga?",
+    "pilihan": ["Tubuh sehat", "Tubuh lelet", "Tubuh lemah", "Tubuh bugar"],
+    "jawaban": "Tubuh lemah",
     "topik": "Kesehatan",
-    "kategori": "Proses Alam dan Energi",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
   {
     "id": 13,
-    "pertanyaan": "Antonim dari kata 'dingin' adalah...",
+    "pertanyaan": "Lawan kata dari 'dingin' adalah...",
     "pilihan": ["Panas", "Sejuk", "Lembab", "Kering"],
     "jawaban": "Panas",
     "topik": "Sinonim/Antonim",
@@ -131,9 +131,9 @@
   },
   {
     "id": 14,
-    "pertanyaan": "Manakah yang merupakan kalimat ajakan?",
-    "pilihan": ["Ayo kita membersihkan kelas!", "Dia sedang belajar.", "Saya ke pasar.", "Apakah kamu sudah makan?"],
-    "jawaban": "Ayo kita membersihkan kelas!",
+    "pertanyaan": "Kalimat ajakan adalah...",
+    "pilihan": ["Ayo kita bersihkan kelas!", "Dia sedang belajar.", "Saya ke pasar.", "Kamu sudah makan?"],
+    "jawaban": "Ayo kita bersihkan kelas!",
     "topik": "Kalimat Ajakan",
     "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
@@ -151,17 +151,17 @@
   },
   {
     "id": 16,
-    "pertanyaan": "Kalimat berikut yang menggunakan imbuhan dengan benar adalah...",
+    "pertanyaan": "Kalimat yang pakai imbuhan benar adalah...",
     "pilihan": ["Dia berlari cepat.", "Kami menyapu-an halaman.", "Mereka memakan nasi.", "Ibu membersihkan rumah."],
     "jawaban": "Dia berlari cepat.",
     "topik": "Imbuhan",
     "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "sulit"
   },
   {
     "id": 17,
-    "pertanyaan": "Sinonim dari kata 'gembira' adalah...",
+    "pertanyaan": "Sinonim dari 'gembira' adalah...",
     "pilihan": ["Sedih", "Senang", "Lelah", "Takut"],
     "jawaban": "Senang",
     "topik": "Sinonim/Antonim",
@@ -171,12 +171,12 @@
   },
   {
     "id": 18,
-    "pertanyaan": "Manakah kalimat yang merupakan kalimat perintah?",
-    "pilihan": ["Kamu pergi ke sekolah.", "Tolong tutup pintu itu.", "Dia sedang duduk.", "Saya membaca buku."],
+    "pertanyaan": "Kalimat perintah adalah...",
+    "pilihan": ["Tolong tutup pintu itu.", "Kamu pergi ke sekolah.", "Dia sedang duduk.", "Saya membaca buku."],
     "jawaban": "Tolong tutup pintu itu.",
     "topik": "Kalimat Perintah",
     "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
-    "tingkat_kesulitan": "mudah"
+    "tingkat_kesulitan": "sulit"
   }
 ]

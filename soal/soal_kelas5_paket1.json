@@ -4,7 +4,7 @@
     "pertanyaan": "Berapa hasil dari 3/4 + 2/4?",
     "pilihan": ["1/2", "5/4", "3/2", "7/4"],
     "jawaban": "5/4",
-    "topik": "Bilangan Pecahan",
+    "topik": "Pecahan",
     "kategori": "Operasi Matematika",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
@@ -12,89 +12,89 @@
   {
     "id": 2,
     "pertanyaan": "Hasil dari 5/8 - 3/8 adalah...",
-    "pilihan": ["1/2", "2/8", "1/4", "3/8"],
+    "pilihan": ["1/2", "1/4", "3/8", "1/8"],
     "jawaban": "1/4",
-    "topik": "Bilangan Pecahan",
+    "topik": "Pecahan",
     "kategori": "Operasi Matematika",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 3,
-    "pertanyaan": "Jika harga baju adalah 150.000 dan potongan diskon 20%, berapa harga setelah diskon?",
-    "pilihan": ["120.000", "130.000", "140.000", "100.000"],
+    "pertanyaan": "Baju seharga 150.000 dapat diskon 20%. Berapa harganya setelah diskon?",
+    "pilihan": ["110.000", "120.000", "130.000", "140.000"],
     "jawaban": "120.000",
     "topik": "Persentase",
     "kategori": "Operasi Matematika",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "tinggi"
+    "tingkat_kesulitan": "sulit"
   },
   {
     "id": 4,
-    "pertanyaan": "Luas sebuah persegi panjang dengan panjang 6 cm dan lebar 4 cm adalah...",
-    "pilihan": ["10 cm²", "20 cm²", "24 cm²", "30 cm²"],
+    "pertanyaan": "Persegi panjang panjangnya 6 cm, lebar 4 cm. Berapa luasnya?",
+    "pilihan": ["20 cm²", "24 cm²", "28 cm²", "30 cm²"],
     "jawaban": "24 cm²",
-    "topik": "Pengukuran Luas",
-    "kategori": "Pengukuran dan Geometri",
+    "topik": "Geometri",
+    "kategori": "Geometri",
     "pelajaran": "Matematika",
     "tingkat_kesulitan": "sedang"
   },
   {
     "id": 5,
-    "pertanyaan": "Volume sebuah balok dengan panjang 5 cm, lebar 4 cm, dan tinggi 3 cm adalah...",
-    "pilihan": ["30 cm³", "60 cm³", "12 cm³", "15 cm³"],
+    "pertanyaan": "Balok panjang 5 cm, lebar 4 cm, tinggi 3 cm. Berapa volumenya?",
+    "pilihan": ["50 cm³", "60 cm³", "70 cm³", "80 cm³"],
     "jawaban": "60 cm³",
-    "topik": "Pengukuran Volume",
-    "kategori": "Pengukuran dan Geometri",
+    "topik": "Geometri",
+    "kategori": "Geometri",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "tinggi"
+    "tingkat_kesulitan": "sulit"
   },
   {
     "id": 6,
     "pertanyaan": "Sistem peredaran darah manusia terdiri dari...",
-    "pilihan": ["Jantung, Pembuluh Darah, dan Limfa", "Jantung, Paru-paru, dan Pembuluh Darah", "Jantung, Paru-paru, dan Oksigen", "Jantung, Pembuluh Darah, dan Sel Darah"],
-    "jawaban": "Jantung, Pembuluh Darah, dan Sel Darah",
+    "pilihan": ["Jantung, Pembuluh Darah, Sel Darah", "Jantung, Paru-paru, Oksigen", "Jantung, Paru-paru, Limfa", "Jantung, Pembuluh Darah, Ginjal"],
+    "jawaban": "Jantung, Pembuluh Darah, Sel Darah",
     "topik": "Sistem Peredaran Darah",
-    "kategori": "Sistem Tubuh Manusia",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "sedang"
   },
   {
     "id": 7,
-    "pertanyaan": "Pembuluh darah yang membawa darah kaya oksigen ke seluruh tubuh adalah...",
-    "pilihan": ["Arteri", "Vena", "Kapiler", "Limfa"],
-    "jawaban": "Arteri",
-    "topik": "Sistem Peredaran Darah",
-    "kategori": "Sistem Tubuh Manusia",
+    "pertanyaan": "Bagian tumbuhan yang berfungsi untuk fotosintesis adalah...",
+    "pilihan": ["Akar", "Batang", "Daun", "Bunga"],
+    "jawaban": "Daun",
+    "topik": "Bagian Tumbuhan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
     "tingkat_kesulitan": "mudah"
   },
   {
     "id": 8,
     "pertanyaan": "Cahaya dapat dibiasakan oleh...",
-    "pilihan": ["Lensa", "Cermin", "Air", "Batu"],
+    "pilihan": ["Lensa", "Cermin", "Kayu", "Batu"],
     "jawaban": "Lensa",
-    "topik": "Sifat-sifat Cahaya",
+    "topik": "Cahaya dan Sifatnya",
     "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 9,
-    "pertanyaan": "Proses pembiasan cahaya terjadi ketika cahaya...",
-    "pilihan": ["Melewati udara", "Berpindah dari satu medium ke medium lainnya", "Dipantulkan oleh benda", "Dibagi menjadi beberapa bagian"],
-    "jawaban": "Berpindah dari satu medium ke medium lainnya",
-    "topik": "Sifat-sifat Cahaya",
+    "pertanyaan": "Pembiasan cahaya terjadi saat cahaya...",
+    "pilihan": ["Melewati udara", "Berpindah medium", "Dipantulkan", "Diserap benda"],
+    "jawaban": "Berpindah medium",
+    "topik": "Cahaya dan Sifatnya",
     "kategori": "Proses Alam dan Energi",
     "pelajaran": "IPA",
-    "tingkat_kesulitan": "tinggi"
+    "tingkat_kesulitan": "sulit"
   },
   {
     "id": 10,
-    "pertanyaan": "Kalimat berikut yang benar dan efektif adalah...",
-    "pilihan": ["Mereka bermain sepak bola di lapangan dengan bola besar.", "Sepak bola mereka bermain di lapangan besar.", "Di lapangan besar bola mereka sepak bermain.", "Lapangan besar bola sepak mereka di bermain."],
-    "jawaban": "Mereka bermain sepak bola di lapangan dengan bola besar.",
-    "topik": "Kalimat Efektif",
+    "pertanyaan": "Kalimat yang paling benar adalah...",
+    "pilihan": ["Mereka bermain bola di lapangan besar.", "Bola mereka bermain di lapangan besar.", "Di lapangan besar mereka bola bermain.", "Bermain bola di lapangan besar mereka."],
+    "jawaban": "Mereka bermain bola di lapangan besar.",
+    "topik": "Kalimat Benar",
     "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
@@ -102,8 +102,8 @@
   {
     "id": 11,
     "pertanyaan": "Teks deskripsi berfungsi untuk...",
-    "pilihan": ["Menceritakan cerita atau kisah", "Menggambarkan suatu benda, tempat, atau keadaan", "Memberikan instruksi atau petunjuk", "Menjelaskan konsep atau ide"],
-    "jawaban": "Menggambarkan suatu benda, tempat, atau keadaan",
+    "pilihan": ["Menceritakan kisah", "Menggambarkan sesuatu", "Memberi petunjuk", "Menjelaskan ide"],
+    "jawaban": "Menggambarkan sesuatu",
     "topik": "Teks Deskripsi",
     "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
@@ -111,9 +111,9 @@
   },
   {
     "id": 12,
-    "pertanyaan": "Kalimat deskripsi yang tepat untuk menggambarkan suasana pantai adalah...",
-    "pilihan": ["Pantai itu berpasir putih dan air lautnya sangat jernih.", "Saya pergi ke pantai dan bermain bola.", "Pantai itu ada di selatan kota.", "Banyak orang pergi ke pantai untuk berlibur."],
-    "jawaban": "Pantai itu berpasir putih dan air lautnya sangat jernih.",
+    "pertanyaan": "Kalimat deskripsi yang tepat untuk pantai adalah...",
+    "pilihan": ["Pantai itu berpasir putih, airnya jernih.", "Saya pergi ke pantai dan bermain bola.", "Pantai itu ada di selatan kota.", "Banyak orang pergi ke pantai."],
+    "jawaban": "Pantai itu berpasir putih, airnya jernih.",
     "topik": "Teks Deskripsi",
     "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
@@ -122,52 +122,52 @@
   {
     "id": 13,
     "pertanyaan": "Lawan kata dari 'cepat' adalah...",
-    "pilihan": ["Lambat", "Cepat", "Kecil", "Tinggi"],
+    "pilihan": ["Lambat", "Gesit", "Sigap", "Lincah"],
     "jawaban": "Lambat",
     "topik": "Sinonim/Antonim",
-    "kategori": "Teks dan Kosa Kata",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "mudah"
   },
   {
     "id": 14,
     "pertanyaan": "Sinonim dari 'besar' adalah...",
-    "pilihan": ["Tinggi", "Kecil", "Luput", "Agung"],
+    "pilihan": ["Kecil", "Luar biasa", "Agung", "Sempit"],
     "jawaban": "Agung",
     "topik": "Sinonim/Antonim",
-    "kategori": "Teks dan Kosa Kata",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
   {
     "id": 15,
-    "pertanyaan": "Kalimat berikut yang menggunakan kata yang sesuai adalah...",
-    "pilihan": ["Buku ini sangat menarik dan bagus.", "Kami pergi ke rumah teman yang baik.", "Dia sangat pandai dalam bidang olahraga.", "Mereka datang dari kota yang jauh."],
-    "jawaban": "Buku ini sangat menarik dan bagus.",
+    "pertanyaan": "Kalimat yang menggunakan sinonim 'menarik' adalah...",
+    "pilihan": ["Buku ini sangat memikat dan bagus.", "Kami pergi ke rumah teman yang baik.", "Dia pandai dalam bidang olahraga.", "Mereka datang dari kota yang jauh."],
+    "jawaban": "Buku ini sangat memikat dan bagus.",
     "topik": "Sinonim/Antonim",
-    "kategori": "Teks dan Kosa Kata",
+    "kategori": "Kosa Kata dan Makna",
     "pelajaran": "Bahasa Indonesia",
     "tingkat_kesulitan": "sedang"
   },
   {
     "id": 16,
-    "pertanyaan": "Jika sudut A adalah 45° dan sudut B adalah 90°, berapa jumlah kedua sudut tersebut?",
+    "pertanyaan": "Sudut A 45° dan sudut B 90°. Berapa jumlahnya?",
     "pilihan": ["125°", "130°", "135°", "140°"],
     "jawaban": "135°",
-    "topik": "Sudut",
-    "kategori": "Pengukuran dan Geometri",
+    "topik": "Geometri",
+    "kategori": "Geometri",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 17,
     "pertanyaan": "Faktor bilangan 24 adalah...",
-    "pilihan": ["1, 2, 3, 4, 6, 8, 12", "1, 2, 4, 6, 8, 12, 24", "1, 3, 6, 12, 24", "2, 4, 6, 8, 12"],
+    "pilihan": ["1, 2, 3, 4, 6, 8, 12, 24", "1, 2, 4, 6, 8, 12", "1, 3, 6, 12, 24", "2, 4, 6, 8, 12"],
     "jawaban": "1, 2, 3, 4, 6, 8, 12, 24",
-    "topik": "Faktor Bilangan",
+    "topik": "Bilangan",
     "kategori": "Operasi Matematika",
     "pelajaran": "Matematika",
-    "tingkat_kesulitan": "tinggi"
+    "tingkat_kesulitan": "sulit"
   },
   {
     "id": 18,
@@ -181,19 +181,19 @@
   },
   {
     "id": 19,
-    "pertanyaan": "Organ pencernaan yang pertama kali menerima makanan adalah...",
+    "pertanyaan": "Organ pencernaan yang pertama menerima makanan adalah...",
     "pilihan": ["Lambung", "Usus", "Mulut", "Hati"],
     "jawaban": "Mulut",
-    "topik": "Pencernaan",
-    "kategori": "Sistem Tubuh Manusia",
+    "topik": "Sistem Pencernaan",
+    "kategori": "Makhluk Hidup",
     "pelajaran": "IPA",
-    "tingkat_kesulitan": "sedang"
+    "tingkat_kesulitan": "mudah"
   },
   {
     "id": 20,
     "pertanyaan": "Teks prosedur berfungsi untuk...",
-    "pilihan": ["Menceritakan kisah", "Memberikan langkah-langkah", "Menggambarkan tempat", "Menjelaskan konsep"],
-    "jawaban": "Memberikan langkah-langkah",
+    "pilihan": ["Menceritakan kisah", "Memberikan langkah", "Menggambarkan tempat", "Menjelaskan konsep"],
+    "jawaban": "Memberikan langkah",
     "topik": "Teks Prosedur",
     "kategori": "Teks dan Kosa Kata",
     "pelajaran": "Bahasa Indonesia",
@@ -202,11 +202,11 @@
   {
     "id": 21,
     "pertanyaan": "Kalimat majemuk yang benar adalah...",
-    "pilihan": ["Saya pergi ke pasar dan membeli buku.", "Dia lari cepat.", "Mereka bermain di taman.", "Ibu memasak nasi."],
-    "jawaban": "Saya pergi ke pasar dan membeli buku.",
+    "pilihan": ["Saya pergi ke pasar dan beli buku.", "Dia lari cepat.", "Mereka bermain di taman.", "Ibu memasak nasi."],
+    "jawaban": "Saya pergi ke pasar dan beli buku.",
     "topik": "Kalimat Majemuk",
     "kategori": "Tata Bahasa",
     "pelajaran": "Bahasa Indonesia",
-    "tingkat_kesulitan": "tinggi"
+    "tingkat_kesulitan": "sulit"
   }
 ]
