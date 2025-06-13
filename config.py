@@ -1,3 +1,5 @@
+import pymysql.cursors
+
 class Config:
     DATABASE_CONFIG = {
         'host': 'localhost',
@@ -5,7 +7,7 @@ class Config:
         'password': '',
         'database': 'kuis_sd',
         'port': 3306,
-        'cursorclass': 'pymysql.cursors.DictCursor',
+        'cursorclass': pymysql.cursors.DictCursor,
         'autocommit': True,
         'charset': 'utf8mb4'
     }

@@ -9,6 +9,7 @@ def get_db(max_retries=3, delay=2):
     """Membuat koneksi ke database MySQL dengan retry mechanism."""
     for attempt in range(max_retries):
         try:
+            logger.info(f"Mencoba koneksi ke database (attempt {attempt + 1}/{max_retries}) dengan config: {Config.DATABASE_CONFIG}")
             return pymysql.connect(**Config.DATABASE_CONFIG)
         except pymysql.Error as e:
             logger.error(f"❌ Gagal koneksi database (attempt {attempt + 1}/{max_retries}): {e}")

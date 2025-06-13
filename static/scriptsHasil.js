@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (hasilKuis.dideteksi_asal === 1) {
         btnKembali.style.display = 'none';
-        btnUlangi.style.display = 'inline-block';
+        btnUlangi.style.display = 'none';
         popup.style.display = 'flex';
 
         document.getElementById('konfirmasiYa').addEventListener('click', () => {

@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const pertanyaanEl = document.getElementById('pertanyaan');
     const pilihanContainer = document.getElementById('pilihanContainer');
     const timerEl = document.getElementById('timer');
-    const mapelSelect = document.getElementById('mapelSelect');
 
     const idSiswa = localStorage.getItem('idSiswa');
     const namaSiswa = localStorage.getItem('namaSiswa');
@@ -73,13 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.pesan || 'Gagal mengambil soal');
                 }
                 soalData = data.soal;
-                const mapel = mapelSelect.value;
-                if (mapel !== 'Semua') {
-                    soalData = soalData.filter(soal => soal.pelajaran === mapel);
-                }
                 const expectedTotal = { '3': 15, '4': 18, '5': 21 }[kelasSiswa];
                 if (soalData.length === 0) {
-                    throw new Error(`Tidak ada soal untuk mata pelajaran ${mapel}`);
+                    throw new Error('Tidak ada soal yang tersedia');
                 }
                 soalData = shuffleArray([...soalData]);
                 daftarSoalDikerjakan = {
@@ -113,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             clearInterval(timerInterval);
             const waktuRata2 = waktuTotal / soalData.length;
-            const mapel = mapelSelect.value === 'Semua' ? 'Semua' : soalData[0].pelajaran;
+            const mapel = 'Semua'; // Default ke "Semua" karena tidak ada pemilihan
 
             daftarSoalDikerjakan.soal.forEach((soal, index) => {
                 if (soal.benar === null) {

@@ -4,7 +4,7 @@ body {
     font-family: 'Comic Neue', cursive;
     background: url('/static/images/Bg1.jpg') no-repeat center center fixed;
     background-size: cover;
-    color: white;
+    color: #2d3748; /* Teks gelap untuk kontras dengan latar terang */
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -13,7 +13,7 @@ body {
     position: relative;
 }
 
-/* Tambahkan lapisan semi-transparan untuk meningkatkan keterbacaan teks */
+/* Lapisan semi-transparan yang lebih terang */
 body::before {
     content: '';
     position: fixed;
@@ -21,7 +21,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.3); /* Lapisan gelap semi-transparan */
+    background: rgba(255, 255, 255, 0.7); /* Latar belakang lebih terang */
     z-index: 0;
 }
 
@@ -118,7 +118,7 @@ button:focus {
     justify-content: center;
     align-items: center;
     z-index: 2;
-    background: none;
+    background: rgba(0, 0, 0, 0.5); /* Latar belakang pop-up lebih gelap */
 }
 
 .popup-content {
@@ -153,28 +153,29 @@ button:focus {
     width: 80%;
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ccc;
+    border: 2px solid #ff4ecd;
     border-radius: 5px;
     font-family: 'Comic Neue', cursive;
     font-size: 1rem;
-}
-
-.popup-content select {
-    background: #ff4ecd;
-    color: white;
-    border: none;
+    background-color: white;
+    color: #2d3748;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    position: relative;
+}
+
+.popup-content select {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="#ff4ecd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
     background-repeat: no-repeat;
     background-position: right 10px center;
     padding-right: 30px;
 }
 
 .popup-content select:focus {
-    outline: 3px solid #ff4ecd;
-    outline-offset: 2px;
+    outline: none;
+    border-color: #e43ec5;
+    box-shadow: 0 0 5px rgba(255, 78, 205, 0.5);
 }
 
 .custom-alert {
@@ -438,31 +439,44 @@ button:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Menggunakan min-height untuk fleksibilitas */
     font-family: 'Comic Neue', cursive;
     flex-direction: column;
     background: url('/static/images/Bg1.jpg') no-repeat center center fixed;
     background-size: cover;
+    overflow-y: auto; /* Mengaktifkan scroll jika konten melebihi */
+    padding: 20px 10px; /* Padding untuk layar kecil */
 }
 
 .container-hasil {
     text-align: center;
     padding: 20px;
+    max-width: 600px; /* Membatasi lebar maksimum */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.9); /* Latar belakang putih semi-transparan */
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
 }
 
 .card-hasil {
     background-color: #ffffff;
-    border-radius: 20px;
+    border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    padding: 30px;
+    padding: 20px;
+    width: 100%;
     max-width: 500px;
-    margin: auto;
 }
 
 .card-hasil p {
-    font-size: 1.1rem;
-    margin: 8px 0;
-    color: #333;
+    font-size: 1.1rem; /* Meningkatkan ukuran font untuk keterbacaan */
+    margin: 10px 0;
+    color: #2d3748;
 }
 
 .card-hasil #ringkasanHasil {
@@ -470,8 +484,9 @@ button:focus {
     color: #2d3748;
     background: #edf2f7;
     padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
+    border-radius: 8px;
+    display: block;
+    width: 100%;
 }
 
 .card-hasil #ringkasanHasil strong {
@@ -479,19 +494,20 @@ button:focus {
 }
 
 .motivasi-box {
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .speech-bubble {
     position: relative;
     background: #fcd34d;
-    border-radius: 0.4em;
+    border-radius: 10px;
     padding: 15px;
     font-weight: bold;
     display: inline-block;
-    color: #333;
+    color: #2c3e50;
     max-width: 400px;
-    line-height: 1.6;
+    line-height: 1.5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 480px) {
@@ -509,11 +525,11 @@ button:focus {
     left: 50%;
     width: 0;
     height: 0;
-    border: 20px solid transparent;
+    border: 15px solid transparent;
     border-top-color: #fcd34d;
     border-bottom: 0;
-    margin-left: -20px;
-    margin-bottom: -20px;
+    margin-left: -15px;
+    margin-bottom: -15px;
 }
 
 /* Styling untuk daftar rekomendasi */
@@ -525,9 +541,10 @@ button:focus {
 
 .rekomendasi-list li {
     position: relative;
-    padding-left: 20px;
-    margin-bottom: 8px;
+    padding-left: 25px;
+    margin-bottom: 10px;
     color: #2c3e50;
+    font-size: 1rem;
 }
 
 .rekomendasi-list li:before {
@@ -587,14 +604,21 @@ button:focus {
     gap: 10px;
 }
 
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 .btn-kembali {
-    margin: 10px;
+    margin: 5px;
     padding: 10px 20px;
     background-color: #3b82f6;
     color: white;
     border: none;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     font-family: 'Comic Neue', cursive;
 }

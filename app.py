@@ -34,10 +34,17 @@ except Exception as e:
 def simpan_siswa():
     try:
         data = request.get_json()
+        if 'nama' not in data or 'kelas' not in data:
+            raise ValueError("Data 'nama' dan 'kelas' wajib diisi.")
         nama = data['nama']
         kelas = data['kelas']
+        if kelas not in ['3', '4', '5']:
+            raise ValueError("Kelas harus salah satu dari '3', '4', atau '5'.")
         id_siswa = save_siswa(nama, kelas)
         return jsonify({'status': 'sukses', 'id_siswa': id_siswa})
+    except ValueError as ve:
+        logger.error(f"❌ Error validasi: {ve}")
+        return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
     except Exception as e:
         logger.error(f"❌ Error saat simpan siswa: {e}")
         traceback.print_exc()
@@ -47,15 +54,20 @@ def simpan_siswa():
 def simpan_hasil():
     try:
         data = request.get_json()
-        id_siswa = int(data.get('id_siswa', 0))
-        mapel = str(data.get('mapel', 'Tidak Diketahui'))
-        daftar_soal_dikerjakan = str(data.get('daftar_soal_dikerjakan', '{}'))
-        jumlah_benar = int(data.get('jumlah_benar', 0))
-        jumlah_salah = int(data.get('jumlah_salah', 0))
-        waktu_rata2_per_soal = float(data.get('waktu_rata2_per_soal', 0.0))
-        total_soal = int(data.get('total_soal', 0))
+        if 'id_siswa' not in data or 'kelas' not in data or 'mapel' not in data or 'daftar_soal_dikerjakan' not in data or 'jumlah_benar' not in data or 'jumlah_salah' not in data or 'waktu_rata2_per_soal' not in data or 'total_soal' not in data:
+            raise ValueError("Semua data wajib diisi: id_siswa, kelas, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, total_soal.")
+        id_siswa = int(data['id_siswa'])
+        kelas = data['kelas']
+        if kelas not in ['3', '4', '5']:
+            raise ValueError("Kelas harus salah satu dari '3', '4', atau '5'.")
+        mapel = str(data['mapel'])
+        daftar_soal_dikerjakan = str(data['daftar_soal_dikerjakan'])
+        jumlah_benar = int(data['jumlah_benar'])
+        jumlah_salah = int(data['jumlah_salah'])
+        waktu_rata2_per_soal = float(data['waktu_rata2_per_soal'])
+        total_soal = int(data['total_soal'])
 
-        expected_total = Config.KELAS_MAP.get(str(kelas), 0) if 'kelas' in data else 0
+        expected_total = Config.KELAS_MAP.get(kelas, 0)
         if total_soal != expected_total:
             raise ValueError(f"Total soal {total_soal} tidak sesuai dengan kelas {kelas} (harus {expected_total}).")
 
@@ -66,10 +78,17 @@ def simpan_hasil():
             logger.error(f"❌ Error: {e}. JSON tidak valid pada daftar_soal_dikerjakan.")
             return jsonify({'status': 'gagal', 'pesan': 'Data daftar_soal_dikerjakan tidak valid'}), 400
 
-        waktu_rata2_per_soal, jumlah_salah, variansi_waktu, persentase_salah, frekuensi_jawaban_identik, total_waktu, konsistensi_kecepatan_per_kategori = calculate_asal_features(soal_list, total_soal)
+        # Mengambil semua nilai dari calculate_asal_features
+        (waktu_rata2_per_soal, jumlah_salah, variansi_waktu, persentase_salah,
+         frekuensi_jawaban_identik, total_waktu, konsistensi_kecepatan_per_kategori,
+         pola_kesalahan) = calculate_asal_features(soal_list, total_soal)
 
-        input_data_asal = pd.DataFrame([[waktu_rata2_per_soal, jumlah_salah, variansi_waktu, persentase_salah, frekuensi_jawaban_identik, total_waktu, konsistensi_kecepatan_per_kategori]],
-                                     columns=['waktu_rata2_per_soal', 'jumlah_salah', 'variansi_waktu', 'persentase_salah', 'frekuensi_jawaban_identik', 'total_waktu', 'konsistensi_kecepatan_per_kategori'])
+        input_data_asal = pd.DataFrame([[waktu_rata2_per_soal, jumlah_salah, variansi_waktu, persentase_salah,
+                                        frekuensi_jawaban_identik, total_waktu, konsistensi_kecepatan_per_kategori,
+                                        pola_kesalahan]],
+                                     columns=['waktu_rata2_per_soal', 'jumlah_salah', 'variansi_waktu', 'persentase_salah',
+                                              'frekuensi_jawaban_identik', 'total_waktu', 'konsistensi_kecepatan_per_kategori',
+                                              'pola_kesalahan'])
         dideteksi_asal = int(cart_asal_model.predict(input_data_asal)[0])
 
         kesulitan_diduga, rekomendasi = analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, total_soal, cart_kesulitan_model, label_encoder_kesulitan)
@@ -88,7 +107,7 @@ def simpan_hasil():
         })
     except ValueError as ve:
         logger.error(f"❌ Error: {ve}")
-        return jsonify({'status': 'gagal', 'pesan': f'Terjadi kesalahan: {str(ve)}'}), 400
+        return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
     except Exception as e:
         logger.error(f"❌ Gagal simpan hasil kuis: {e}")
         traceback.print_exc()
