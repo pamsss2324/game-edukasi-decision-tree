@@ -81,14 +81,14 @@ def simpan_hasil():
         # Mengambil semua nilai dari calculate_asal_features
         (waktu_rata2_per_soal, jumlah_salah, variansi_waktu, persentase_salah,
          frekuensi_jawaban_identik, total_waktu, konsistensi_kecepatan_per_kategori,
-         pola_kesalahan) = calculate_asal_features(soal_list, total_soal)
+         pola_kesalahan, frekuensi_identik_berturut_turut) = calculate_asal_features(soal_list, total_soal)
 
         input_data_asal = pd.DataFrame([[waktu_rata2_per_soal, jumlah_salah, variansi_waktu, persentase_salah,
                                         frekuensi_jawaban_identik, total_waktu, konsistensi_kecepatan_per_kategori,
-                                        pola_kesalahan]],
+                                        pola_kesalahan, frekuensi_identik_berturut_turut]],
                                      columns=['waktu_rata2_per_soal', 'jumlah_salah', 'variansi_waktu', 'persentase_salah',
                                               'frekuensi_jawaban_identik', 'total_waktu', 'konsistensi_kecepatan_per_kategori',
-                                              'pola_kesalahan'])
+                                              'pola_kesalahan', 'frekuensi_identik_berturut_turut'])
         dideteksi_asal = int(cart_asal_model.predict(input_data_asal)[0])
 
         kesulitan_diduga, rekomendasi = analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, total_soal, cart_kesulitan_model, label_encoder_kesulitan)

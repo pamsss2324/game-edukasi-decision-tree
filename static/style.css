@@ -1,28 +1,15 @@
-/* Gunakan Comic Neue */
 body {
     margin: 0;
     font-family: 'Comic Neue', cursive;
     background: url('/static/images/Bg1.jpg') no-repeat center center fixed;
     background-size: cover;
-    color: #2d3748; /* Teks gelap untuk kontras dengan latar terang */
+    color: #2d3748;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     position: relative;
-}
-
-/* Lapisan semi-transparan yang lebih terang */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.7); /* Latar belakang lebih terang */
-    z-index: 0;
 }
 
 .welcome-container {
@@ -118,7 +105,7 @@ button:focus {
     justify-content: center;
     align-items: center;
     z-index: 2;
-    background: rgba(0, 0, 0, 0.5); /* Latar belakang pop-up lebih gelap */
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .popup-content {
@@ -237,15 +224,6 @@ button:focus {
     font-size: 0.9rem;
 }
 
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 30px;
-    cursor: pointer;
-}
-
-/* Loading overlay dan spinner */
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -406,12 +384,6 @@ button:focus {
     display: block;
 }
 
-.progress-text {
-    margin-top: 5px;
-    font-size: 0.9rem;
-    color: #333;
-}
-
 .timer-box {
     position: absolute;
     top: 5px;
@@ -439,25 +411,25 @@ button:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Menggunakan min-height untuk fleksibilitas */
+    min-height: 100vh;
     font-family: 'Comic Neue', cursive;
     flex-direction: column;
     background: url('/static/images/Bg1.jpg') no-repeat center center fixed;
     background-size: cover;
-    overflow-y: auto; /* Mengaktifkan scroll jika konten melebihi */
-    padding: 20px 10px; /* Padding untuk layar kecil */
+    overflow-y: auto;
+    padding: 20px 10px;
 }
 
 .container-hasil {
     text-align: center;
     padding: 20px;
-    max-width: 600px; /* Membatasi lebar maksimum */
+    max-width: 600px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    background: rgba(255, 255, 255, 0.9); /* Latar belakang putih semi-transparan */
+    gap: 25px;
+    background: rgba(255, 255, 255, 0.85);
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     position: relative;
@@ -468,13 +440,13 @@ button:focus {
     background-color: #ffffff;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    padding: 20px;
+    padding: 25px;
     width: 100%;
     max-width: 500px;
 }
 
 .card-hasil p {
-    font-size: 1.1rem; /* Meningkatkan ukuran font untuk keterbacaan */
+    font-size: 1.1rem;
     margin: 10px 0;
     color: #2d3748;
 }

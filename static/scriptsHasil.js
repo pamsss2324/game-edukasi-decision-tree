@@ -1,19 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
     const hasilKuis = JSON.parse(localStorage.getItem('hasilKuis'));
     const loadingOverlay = document.getElementById('loadingOverlay');
+    const btnKembali = document.getElementById('btnKembali');
+    const popup = document.getElementById('konfirmasiPopup');
 
     if (!hasilKuis) {
         document.querySelector('.container-hasil').innerHTML = `
             <div class="card-hasil">
                 <h2>Error</h2>
                 <p>Data hasil kuis tidak ditemukan. Silakan coba kuis lagi.</p>
-                <button onclick="ulangiKuis()" class="btn-kembali">Mulai Kuis</button>
+                <button onclick="kembaliKeBeranda()" class="btn-kembali">Kembali</button>
             </div>
         `;
         return;
     }
 
-    // Tampilkan data awal
     document.getElementById('namaSiswa').textContent = hasilKuis.nama || 'Tidak Diketahui';
     document.getElementById('kelasSiswa').textContent = hasilKuis.kelas || 'Tidak Diketahui';
     document.getElementById('ringkasanHasil').innerHTML = `Kamu menjawab benar <strong>${hasilKuis.jumlah_benar}</strong>, salah <strong>${hasilKuis.jumlah_salah}</strong> dari <strong>${hasilKuis.total_soal} soal</strong>! ${hasilKuis.jumlah_benar >= hasilKuis.total_soal * 0.7 ? 'Hebat! 🎉' : 'Ayo tingkatkan lagi! 💪'}`;
@@ -26,28 +27,19 @@ document.addEventListener('DOMContentLoaded', () => {
         updateHasilDisplay(hasilKuis);
     }
 
-    const btnKembali = document.getElementById('btnKembali');
-    const btnUlangi = document.getElementById('btnUlangi');
-    const popup = document.getElementById('konfirmasiPopup');
+    btnKembali.style.display = 'inline-block';
 
     if (hasilKuis.dideteksi_asal === 1) {
-        btnKembali.style.display = 'none';
-        btnUlangi.style.display = 'none';
         popup.style.display = 'flex';
 
         document.getElementById('konfirmasiYa').addEventListener('click', () => {
             popup.style.display = 'none';
-            btnKembali.style.display = 'inline-block';
-            btnUlangi.style.display = 'inline-block';
         });
 
         document.getElementById('konfirmasiTidak').addEventListener('click', () => {
             popup.style.display = 'none';
             ulangiKuis();
         });
-    } else {
-        btnKembali.style.display = 'inline-block';
-        btnUlangi.style.display = 'inline-block';
     }
 });
 

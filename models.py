@@ -11,7 +11,7 @@ import os
 def calculate_asal_features(soal_list, total_soal):
     """Menghitung fitur untuk deteksi asal berdasarkan data kuis."""
     if not soal_list:
-        return 0, 0, 0, 0, 0, 0, 0
+        return 0, 0, 0, 0, 0, 0, 0, 0, 0
 
     waktu_list = [float(soal.get('waktu', 0)) for soal in soal_list]
     waktu_rata2_per_soal = np.mean(waktu_list) if waktu_list else 0
@@ -32,7 +32,23 @@ def calculate_asal_features(soal_list, total_soal):
     konsistensi_kecepatan_per_kategori = np.mean([np.var(waktu_list) for waktu_list in kategori_waktu.values() if len(waktu_list) > 1]) if kategori_waktu else 0
     pola_kesalahan = max(kesalahan_per_topik.values()) if kesalahan_per_topik else 0
 
-    return waktu_rata2_per_soal, jumlah_salah, variansi_waktu, persentase_salah, frekuensi_jawaban_identik, total_waktu, konsistensi_kecepatan_per_kategori, pola_kesalahan
+    # Hitung frekuensi identik berturut-turut berdasarkan indeks_jawaban
+    indeks_jawaban_list = [int(soal.get('indeks_jawaban', -1)) for soal in soal_list]
+    frekuensi_identik_berturut_turut = 0
+    max_streak = 0
+    current_streak = 1
+    for i in range(1, len(indeks_jawaban_list)):
+        if indeks_jawaban_list[i] == indeks_jawaban_list[i-1] and indeks_jawaban_list[i] != -1:
+            current_streak += 1
+            max_streak = max(max_streak, current_streak)
+        else:
+            current_streak = 1
+    if max_streak > 0:
+        frekuensi_identik_berturut_turut = (max_streak / total_soal) * 100
+
+    return (waktu_rata2_per_soal, jumlah_salah, variansi_waktu, persentase_salah,
+            frekuensi_jawaban_identik, total_waktu, konsistensi_kecepatan_per_kategori,
+            pola_kesalahan, frekuensi_identik_berturut_turut)
 
 def train_cart_kesulitan_model():
     """Melatih model CART untuk deteksi kesulitan belajar."""
@@ -59,7 +75,9 @@ def train_cart_asal_model():
     """Melatih model CART untuk deteksi asal."""
     try:
         data = pd.read_csv(Config.DATA_PATHS['training_data_asal'])
-        X = data[['waktu_rata2_per_soal', 'jumlah_salah', 'variansi_waktu', 'persentase_salah', 'frekuensi_jawaban_identik', 'total_waktu', 'konsistensi_kecepatan_per_kategori', 'pola_kesalahan']]
+        X = data[['waktu_rata2_per_soal', 'jumlah_salah', 'variansi_waktu', 'persentase_salah',
+                  'frekuensi_jawaban_identik', 'total_waktu', 'konsistensi_kecepatan_per_kategori',
+                  'pola_kesalahan', 'frekuensi_identik_berturut_turut']]
         y = data['dideteksi_asal']
         model = DecisionTreeClassifier(criterion='gini', random_state=42)
         model.fit(X, y)
@@ -143,6 +161,7 @@ def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah,
             motivasi_map = json.load(f)
         tingkat = "tinggi" if persentase_keberhasilan >= 70 else "sedang" if persentase_keberhasilan >= 40 else "rendah"
         motivasi = motivasi_map.get(tingkat, ["Terus berusaha ya!"])[np.random.randint(0, len(motivasi_map.get(tingkat, ["Terus berusaha ya!"])))]
+
 
         input_data = pd.DataFrame([[jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal]],
                                 columns=['jumlah_benar', 'jumlah_salah', 'waktu_rata2_per_soal', 'dideteksi_asal'])

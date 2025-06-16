@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const mulaiBtn = document.getElementById('mulaiBtn');
     const quizContent = document.getElementById('quizContent');
     const progressFill = document.getElementById('progressFill');
-    const progressText = document.getElementById('progressText');
     const pertanyaanEl = document.getElementById('pertanyaan');
     const pilihanContainer = document.getElementById('pilihanContainer');
     const timerEl = document.getElementById('timer');
@@ -33,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let waktuPerSoalList = [];
     let daftarSoalDikerjakan = [];
 
-    // Cek apakah ada data kuis yang belum selesai
     const savedQuizState = JSON.parse(localStorage.getItem('quizState'));
     if (savedQuizState && savedQuizState.idSiswa === idSiswa) {
         if (confirm('Kamu memiliki kuis yang belum selesai. Lanjutkan?')) {
@@ -87,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         tingkat_kesulitan: soal.tingkat_kesulitan,
                         benar: null,
                         waktu: 0,
-                        jawaban: null
+                        jawaban: null,
+                        indeks_jawaban: null
                     }))
                 };
                 tampilkanSoal();
@@ -108,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             clearInterval(timerInterval);
             const waktuRata2 = waktuTotal / soalData.length;
-            const mapel = 'Semua'; // Default ke "Semua" karena tidak ada pemilihan
+            const mapel = 'Semua';
 
             daftarSoalDikerjakan.soal.forEach((soal, index) => {
                 if (soal.benar === null) {
@@ -140,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const progressPercent = Math.round(((currentIndex + 1) / soalData.length) * 100);
         progressFill.style.width = `${progressPercent}%`;
         progressFill.textContent = `${progressPercent}%`;
-        progressText.textContent = `Soal ${currentIndex + 1} dari ${soalData.length}`;
+
         pertanyaanEl.textContent = soal.pertanyaan;
         pertanyaanEl.classList.add('fade-in');
 
@@ -164,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 waktuTotal += durasi;
                 daftarSoalDikerjakan.soal[currentIndex].waktu = durasi;
                 daftarSoalDikerjakan.soal[currentIndex].jawaban = e.target.getAttribute('data-jawaban');
+                daftarSoalDikerjakan.soal[currentIndex].indeks_jawaban = pilihanAcak.indexOf(e.target.getAttribute('data-jawaban'));
 
                 const jawaban = e.target.getAttribute('data-jawaban');
                 if (jawaban === soal.jawaban) {
@@ -181,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
 
-                // Simpan state kuis
                 localStorage.setItem('quizState', JSON.stringify({
                     idSiswa: idSiswa,
                     soalData: soalData,
