@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingOverlay = document.getElementById('loadingOverlay');
     const btnKembali = document.getElementById('btnKembali');
     const popup = document.getElementById('konfirmasiPopup');
+    console.log(popup); // Debugging: Periksa apakah elemen popup terdeteksi
+    const btnKonfirmasiYa = document.getElementById('konfirmasiYa');
+    const btnKonfirmasiTidak = document.getElementById('konfirmasiTidak');
 
     if (!hasilKuis) {
         document.querySelector('.container-hasil').innerHTML = `
@@ -22,30 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!localStorage.getItem('hasilDisimpan')) {
         loadingOverlay.style.display = 'flex';
-        simpanHasilKeDatabase(hasilKuis);
+        simpanHasilKeDatabase(hasilKuis).then(() => {
+            checkAndShowPopup(); // Panggil fungsi pop-up setelah data disimpan
+        });
     } else {
         updateHasilDisplay(hasilKuis);
+        checkAndShowPopup(); // Panggil fungsi pop-up untuk data yang sudah disimpan
     }
 
     btnKembali.style.display = 'inline-block';
-
-    if (hasilKuis.dideteksi_asal === 1) {
-        popup.style.display = 'flex';
-
-        document.getElementById('konfirmasiYa').addEventListener('click', () => {
-            popup.style.display = 'none';
-        });
-
-        document.getElementById('konfirmasiTidak').addEventListener('click', () => {
-            popup.style.display = 'none';
-            ulangiKuis();
-        });
-    }
 });
 
 function simpanHasilKeDatabase(hasilKuis) {
     const loadingOverlay = document.getElementById('loadingOverlay');
-    fetch('/simpan_hasil', {
+    return fetch('/simpan_hasil', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(hasilKuis),
@@ -60,14 +53,17 @@ function simpanHasilKeDatabase(hasilKuis) {
             hasilKuis.dideteksi_asal = data.dideteksi_asal;
             localStorage.setItem('hasilKuis', JSON.stringify(hasilKuis));
             updateHasilDisplay(hasilKuis);
+            return Promise.resolve(); // Pastikan promise selesai
         } else {
             showCustomAlert(data.pesan || 'Terjadi kesalahan saat menyimpan hasil.');
+            return Promise.reject(); // Hentikan jika gagal
         }
     })
     .catch(error => {
         loadingOverlay.style.display = 'none';
         console.error('Error saat menyimpan hasil:', error);
         showCustomAlert('Terjadi kesalahan koneksi. Silakan coba lagi.');
+        return Promise.reject();
     });
 }
 
@@ -87,6 +83,28 @@ function updateHasilDisplay(hasilKuis) {
     });
 }
 
+function checkAndShowPopup() {
+    const hasilKuis = JSON.parse(localStorage.getItem('hasilKuis'));
+    const popup = document.getElementById('konfirmasiPopup');
+    const btnKonfirmasiYa = document.getElementById('konfirmasiYa');
+    const btnKonfirmasiTidak = document.getElementById('konfirmasiTidak');
+
+    if (hasilKuis && hasilKuis.dideteksi_asal === 1) {
+        popup.style.display = 'flex';
+
+        btnKonfirmasiYa.addEventListener('click', () => {
+            popup.style.display = 'none';
+            localStorage.removeItem('hasilKuis');
+        });
+
+        btnKonfirmasiTidak.addEventListener('click', () => {
+            popup.style.display = 'none';
+            localStorage.removeItem('hasilKuis');
+            ulangiKuis();
+        });
+    }
+}
+
 function showCustomAlert(message) {
     const alertBox = document.createElement('div');
     alertBox.className = 'custom-alert';
@@ -104,6 +122,7 @@ function showCustomAlert(message) {
 }
 
 function kembaliKeBeranda() {
+    localStorage.removeItem('hasilKuis');
     window.location.href = '/';
 }
 

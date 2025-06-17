@@ -7,6 +7,11 @@ import json
 from config import Config
 import joblib
 import os
+import logging
+
+# Konfigurasi logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def calculate_asal_features(soal_list, total_soal):
     """Menghitung fitur untuk deteksi asal berdasarkan data kuis."""

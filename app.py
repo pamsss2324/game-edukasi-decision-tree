@@ -89,7 +89,9 @@ def simpan_hasil():
                                      columns=['waktu_rata2_per_soal', 'jumlah_salah', 'variansi_waktu', 'persentase_salah',
                                               'frekuensi_jawaban_identik', 'total_waktu', 'konsistensi_kecepatan_per_kategori',
                                               'pola_kesalahan', 'frekuensi_identik_berturut_turut'])
+        logger.info(f"Input data asal: {input_data_asal.to_dict()}")
         dideteksi_asal = int(cart_asal_model.predict(input_data_asal)[0])
+        logger.info(f"Deteksi asal: {dideteksi_asal}")
 
         kesulitan_diduga, rekomendasi = analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, total_soal, cart_kesulitan_model, label_encoder_kesulitan)
 
