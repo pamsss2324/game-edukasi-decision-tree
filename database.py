@@ -39,7 +39,7 @@ def save_siswa(nama, kelas):
         logger.error(f"❌ Error saat simpan siswa: {e}")
         raise
 
-def save_hasil_kuis(id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga):
+def save_hasil_kuis(id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga, pelajaran_sulit):
     """Menyimpan hasil kuis ke database."""
     try:
         with get_db() as db:
@@ -50,10 +50,10 @@ def save_hasil_kuis(id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumla
 
             query = """
                 INSERT INTO hasil_kuis
-                (id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga, tanggal)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NOW())
+                (id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga, pelajaran_sulit, tanggal)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
             """
-            cursor.execute(query, (id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga))
+            cursor.execute(query, (id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga, pelajaran_sulit))
             db.commit()
             logger.info("✅ Hasil kuis berhasil disimpan.")
     except Exception as e:

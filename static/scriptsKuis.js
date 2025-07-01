@@ -58,43 +58,52 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function fetchSoal() {
-        fetch(`http://localhost:5000/get_soal/${kelasSiswa}/${paket}`)
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('File soal tidak ditemukan');
-                }
-                return res.json();
+        fetch('http://localhost:5000/get_soal', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                kelas: kelasSiswa,
+                paket: paket
             })
-            .then(data => {
-                if (data.status !== 'sukses') {
-                    throw new Error(data.pesan || 'Gagal mengambil soal');
-                }
-                soalData = data.soal;
-                const expectedTotal = { '3': 15, '4': 18, '5': 21 }[kelasSiswa];
-                if (soalData.length === 0) {
-                    throw new Error('Tidak ada soal yang tersedia');
-                }
-                soalData = shuffleArray([...soalData]);
-                daftarSoalDikerjakan = {
-                    paket: paket.toString(),
-                    soal: soalData.map(soal => ({
-                        id: soal.id.toString(),
-                        pelajaran: soal.pelajaran,
-                        kategori: soal.kategori,
-                        topik: soal.topik,
-                        tingkat_kesulitan: soal.tingkat_kesulitan,
-                        benar: null,
-                        waktu: 0,
-                        jawaban: null,
-                        indeks_jawaban: null
-                    }))
-                };
-                tampilkanSoal();
-            })
-            .catch(err => {
-                console.error('Gagal memuat soal:', err);
-                quizContent.innerHTML = `<p>${err.message}. Silakan coba lagi.</p>`;
-            });
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('File soal tidak ditemukan');
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.status !== 'sukses') {
+                throw new Error(data.pesan || 'Gagal mengambil soal');
+            }
+            soalData = data.soal;
+            const expectedTotal = { '3': 15, '4': 18, '5': 21 }[kelasSiswa];
+            if (soalData.length === 0) {
+                throw new Error('Tidak ada soal yang tersedia');
+            }
+            soalData = shuffleArray([...soalData]);
+            daftarSoalDikerjakan = {
+                paket: paket.toString(),
+                soal: soalData.map(soal => ({
+                    id: soal.id.toString(),
+                    pelajaran: soal.pelajaran,
+                    kategori: soal.kategori,
+                    topik: soal.topik,
+                    tingkat_kesulitan: soal.tingkat_kesulitan,
+                    benar: null,
+                    waktu: 0,
+                    jawaban: null,
+                    indeks_jawaban: null
+                }))
+            };
+            tampilkanSoal();
+        })
+        .catch(err => {
+            console.error('Gagal memuat soal:', err);
+            quizContent.innerHTML = `<p>${err.message}. Silakan coba lagi.</p>`;
+        });
     }
 
     function tampilkanSoal() {

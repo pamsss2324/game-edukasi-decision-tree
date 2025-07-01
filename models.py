@@ -97,7 +97,7 @@ def train_cart_asal_model():
         raise
 
 def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, total_soal, cart_kesulitan_model, label_encoder_kesulitan):
-    """Menganalisis kesulitan belajar dan memberikan rekomendasi."""
+    """Menganalisis kesulitan belajar dan memberikan rekomendasi, termasuk per pelajaran."""
     try:
         soal_data = json.loads(daftar_soal_dikerjakan)
         soal_list = soal_data.get('soal', []) if daftar_soal_dikerjakan else []
@@ -105,6 +105,30 @@ def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah,
         kesalahan_per_kategori = {}
         total_soal_per_kategori = {}
         bobot_kesulitan = {'mudah': 1, 'sedang': 2, 'sulit': 3}
+
+        # Hitung kesulitan per pelajaran
+        pelajaran_stats = {}
+        for soal in soal_list:
+            pelajaran = soal.get('pelajaran', 'Tidak Diketahui')
+            if pelajaran not in pelajaran_stats:
+                pelajaran_stats[pelajaran] = {'benar': 0, 'total': 0}
+            pelajaran_stats[pelajaran]['total'] += 1
+            if soal.get('benar', False):
+                pelajaran_stats[pelajaran]['benar'] += 1
+
+        # Hitung persentase keberhasilan per pelajaran
+        pelajaran_kesulitan = {}
+        for pelajaran, stats in pelajaran_stats.items():
+            persentase_keberhasilan = (stats['benar'] / stats['total'] * 100) if stats['total'] > 0 else 0
+            if persentase_keberhasilan < 50:
+                pelajaran_kesulitan[pelajaran] = 'sulit'
+            elif persentase_keberhasilan <= 70:
+                pelajaran_kesulitan[pelajaran] = 'sedang'
+            else:
+                pelajaran_kesulitan[pelajaran] = 'mudah'
+
+        # Identifikasi pelajaran yang sulit
+        pelajaran_sulit = [p for p, k in pelajaran_kesulitan.items() if k == 'sulit']
 
         for soal in soal_list:
             kategori = soal.get('kategori', 'Tidak Diketahui')
@@ -127,7 +151,7 @@ def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah,
             with open(Config.DATA_PATHS['motivasi'], 'r', encoding='utf-8') as f:
                 motivasi_map = json.load(f)
             motivasi = motivasi_map.get("tinggi", ["Kerja bagus!"])[np.random.randint(0, len(motivasi_map.get("tinggi", ["Kerja bagus!"])))]
-            return kesulitan_diduga, f"{motivasi} Kamu tidak banyak salah."
+            return kesulitan_diduga, f"{motivasi} Kamu tidak banyak salah.", pelajaran_sulit
 
         sorted_kategori = sorted(kesalahan_per_kategori.items(), key=lambda x: (x[1]['total'] * x[1]['bobot'], x[1]['total']), reverse=True)[:2]
         rekomendasi_kategori = []
@@ -174,7 +198,7 @@ def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah,
         kesulitan_diduga = label_encoder_kesulitan.inverse_transform([kesulitan_encoded])[0]
 
         rekomendasi_text = f"{motivasi} {' '.join(rekomendasi_kategori)}" if rekomendasi_kategori else f"{motivasi} Kamu sudah bagus!"
-        return kesulitan_diduga, rekomendasi_text
+        return kesulitan_diduga, rekomendasi_text, pelajaran_sulit
     except Exception as e:
         logger.error(f"❌ Error dalam analyze_kesulitan: {e}")
         raise

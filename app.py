@@ -93,14 +93,20 @@ def simpan_hasil():
         dideteksi_asal = int(cart_asal_model.predict(input_data_asal)[0])
         logger.info(f"Deteksi asal: {dideteksi_asal}")
 
-        kesulitan_diduga, rekomendasi = analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, total_soal, cart_kesulitan_model, label_encoder_kesulitan)
+        # Mengemas tiga nilai balik dari analyze_kesulitan
+        kesulitan_diduga, rekomendasi, pelajaran_sulit = analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, total_soal, cart_kesulitan_model, label_encoder_kesulitan)
 
-        save_hasil_kuis(id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga)
+        # Konversi pelajaran_sulit ke string JSON sebelum menyimpan
+        pelajaran_sulit_str = json.dumps(pelajaran_sulit) if pelajaran_sulit else '[]'
+
+        # Simpan hasil ke database dengan pelajaran_sulit
+        save_hasil_kuis(id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga, pelajaran_sulit_str)
 
         return jsonify({
             'status': 'sukses',
             'kesulitan_diduga': kesulitan_diduga,
             'rekomendasi': rekomendasi,
+            'pelajaran_sulit': pelajaran_sulit,  # Tetap kirim list asli ke frontend
             'dideteksi_asal': dideteksi_asal,
             'jumlah_benar': jumlah_benar,
             'jumlah_salah': jumlah_salah,
@@ -136,16 +142,33 @@ def serve_soal(filename):
         logger.error(f"❌ Error saat menyajikan soal: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'File soal tidak ditemukan'}), 404
 
-@app.route('/get_soal/<kelas>/<paket>', methods=['GET'])
-def get_soal(kelas, paket):
+@app.route('/get_soal', methods=['POST'])
+def get_soal():
     try:
+        data = request.get_json()
+        if not data or 'kelas' not in data or 'paket' not in data:
+            raise ValueError("Parameter 'kelas' dan 'paket' wajib diisi dalam JSON.")
+        kelas = data['kelas']
+        paket = data['paket']
+        if kelas not in ['3', '4', '5']:
+            raise ValueError("Kelas harus salah satu dari '3', '4', atau '5'.")
+        if not isinstance(paket, (int, str)) or (isinstance(paket, str) and not paket.isdigit()) or (isinstance(paket, int) and paket < 1):
+            raise ValueError("Paket harus bilangan bulat positif.")
+
         filename = f'soal_kelas{kelas}_paket{paket}.json'
-        with open(os.path.join('soal', filename), 'r', encoding='utf-8') as f:
+        filepath = os.path.join('soal', filename)
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"File soal {filename} tidak ditemukan.")
+
+        with open(filepath, 'r', encoding='utf-8') as f:
             soal_data = json.load(f)
         return jsonify({'status': 'sukses', 'soal': soal_data})
     except FileNotFoundError:
         logger.error(f"❌ File soal {filename} tidak ditemukan.")
         return jsonify({'status': 'gagal', 'pesan': 'File soal tidak ditemukan'}), 404
+    except ValueError as ve:
+        logger.error(f"❌ Error validasi: {ve}")
+        return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
     except Exception as e:
         logger.error(f"❌ Error saat mengambil soal: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500

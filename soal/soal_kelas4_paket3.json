@@ -1,8 +1,13 @@
 [
   {
-    "id": 1,
+    "id": "4-3-01",
     "pertanyaan": "Berapa hasil dari 56 : 7?",
-    "pilihan": ["6", "7", "8", "9"],
+    "pilihan": [
+      "6",
+      "7",
+      "8",
+      "9"
+    ],
     "jawaban": "8",
     "topik": "Pembagian",
     "kategori": "Operasi Matematika Dasar",
@@ -10,9 +15,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 2,
+    "id": "4-3-02",
     "pertanyaan": "Berapa hasil dari 123 + 89?",
-    "pilihan": ["202", "212", "213", "222"],
+    "pilihan": [
+      "202",
+      "212",
+      "213",
+      "222"
+    ],
     "jawaban": "212",
     "topik": "Penjumlahan",
     "kategori": "Operasi Matematika Dasar",
@@ -20,9 +30,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 3,
+    "id": "4-3-03",
     "pertanyaan": "Jika 5 kotak masing-masing isi 24 kelereng, berapa totalnya?",
-    "pilihan": ["100", "110", "120", "130"],
+    "pilihan": [
+      "100",
+      "110",
+      "120",
+      "130"
+    ],
     "jawaban": "120",
     "topik": "Perkalian",
     "kategori": "Operasi Matematika Dasar",
@@ -30,9 +45,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 4,
+    "id": "4-3-04",
     "pertanyaan": "Tali panjangnya 3,5 m, dipotong 0,5 m. Berapa sisa tali?",
-    "pilihan": ["2,5 m", "3 m", "3,2 m", "3,5 m"],
+    "pilihan": [
+      "2,5 m",
+      "3 m",
+      "3,2 m",
+      "3,5 m"
+    ],
     "jawaban": "3 m",
     "topik": "Pengurangan",
     "kategori": "Operasi Matematika Dasar",
@@ -40,9 +60,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 5,
+    "id": "4-3-05",
     "pertanyaan": "Pelari menempuh 200 m dalam 40 detik. Berapa kecepatannya?",
-    "pilihan": ["4 m/detik", "5 m/detik", "6 m/detik", "7 m/detik"],
+    "pilihan": [
+      "4 m/detik",
+      "5 m/detik",
+      "6 m/detik",
+      "7 m/detik"
+    ],
     "jawaban": "5 m/detik",
     "topik": "Satuan dan Pengukuran",
     "kategori": "Satuan dan Pengukuran",
@@ -50,9 +75,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 6,
+    "id": "4-3-06",
     "pertanyaan": "Berapa nilai 2/5 + 3/5?",
-    "pilihan": ["3/5", "4/5", "1", "6/5"],
+    "pilihan": [
+      "3/5",
+      "4/5",
+      "1",
+      "6/5"
+    ],
     "jawaban": "1",
     "topik": "Pecahan",
     "kategori": "Operasi Matematika Dasar",
@@ -60,9 +90,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 7,
+    "id": "4-3-07",
     "pertanyaan": "Bagian tumbuhan yang menyerap air dari tanah adalah...",
-    "pilihan": ["Batang", "Daun", "Akar", "Bunga"],
+    "pilihan": [
+      "Batang",
+      "Daun",
+      "Akar",
+      "Bunga"
+    ],
     "jawaban": "Akar",
     "topik": "Bagian Tumbuhan",
     "kategori": "Makhluk Hidup",
@@ -70,9 +105,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 8,
+    "id": "4-3-08",
     "pertanyaan": "Apa akibat jika kita buang sampah sembarangan?",
-    "pilihan": ["Lingkungan bersih", "Hewan sehat", "Terjadi pencemaran", "Air jadi jernih"],
+    "pilihan": [
+      "Lingkungan bersih",
+      "Hewan sehat",
+      "Terjadi pencemaran",
+      "Air jadi jernih"
+    ],
     "jawaban": "Terjadi pencemaran",
     "topik": "Lingkungan",
     "kategori": "Proses Alam dan Energi",
@@ -80,9 +120,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 9,
+    "id": "4-3-09",
     "pertanyaan": "Indra apa yang digunakan untuk mendengar?",
-    "pilihan": ["Mata", "Telinga", "Hidung", "Kulit"],
+    "pilihan": [
+      "Mata",
+      "Telinga",
+      "Hidung",
+      "Kulit"
+    ],
     "jawaban": "Telinga",
     "topik": "Indra Manusia",
     "kategori": "Makhluk Hidup",
@@ -90,9 +135,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 10,
+    "id": "4-3-10",
     "pertanyaan": "Contoh sumber energi terbarukan adalah...",
-    "pilihan": ["Minyak bumi", "Batu bara", "Matahari", "Gas alam"],
+    "pilihan": [
+      "Minyak bumi",
+      "Batu bara",
+      "Matahari",
+      "Gas alam"
+    ],
     "jawaban": "Matahari",
     "topik": "Energi",
     "kategori": "Proses Alam dan Energi",
@@ -100,9 +150,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 11,
+    "id": "4-3-11",
     "pertanyaan": "Alat untuk mengukur suhu adalah...",
-    "pilihan": ["Termometer", "Barometer", "Penggaris", "Timbangan"],
+    "pilihan": [
+      "Termometer",
+      "Barometer",
+      "Penggaris",
+      "Timbangan"
+    ],
     "jawaban": "Termometer",
     "topik": "Alat Ukur",
     "kategori": "Proses Alam dan Energi",
@@ -110,9 +165,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 12,
+    "id": "4-3-12",
     "pertanyaan": "Mengapa kita harus cuci tangan sebelum makan?",
-    "pilihan": ["Agar cepat makan", "Agar kenyang", "Menghilangkan kuman", "Agar tak haus"],
+    "pilihan": [
+      "Agar cepat makan",
+      "Agar kenyang",
+      "Menghilangkan kuman",
+      "Agar tak haus"
+    ],
     "jawaban": "Menghilangkan kuman",
     "topik": "Kesehatan",
     "kategori": "Makhluk Hidup",
@@ -120,9 +180,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 13,
+    "id": "4-3-13",
     "pertanyaan": "Kalimat tanya yang tepat adalah...",
-    "pilihan": ["Kamu pergi sekolah.", "Kamu sekolah dimana?", "Di mana kamu sekolah?", "Sekolah kamu di."],
+    "pilihan": [
+      "Kamu pergi sekolah.",
+      "Kamu sekolah dimana?",
+      "Di mana kamu sekolah?",
+      "Sekolah kamu di."
+    ],
     "jawaban": "Di mana kamu sekolah?",
     "topik": "Kalimat Tanya",
     "kategori": "Tata Bahasa",
@@ -130,9 +195,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 14,
+    "id": "4-3-14",
     "pertanyaan": "Sinonim dari 'pandai' adalah...",
-    "pilihan": ["Bodoh", "Pintar", "Sombong", "Lemah"],
+    "pilihan": [
+      "Bodoh",
+      "Pintar",
+      "Sombong",
+      "Lemah"
+    ],
     "jawaban": "Pintar",
     "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
@@ -140,9 +210,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 15,
+    "id": "4-3-15",
     "pertanyaan": "Kalimat yang pakai imbuhan me- dengan benar?",
-    "pilihan": ["Dia melari sangat cepat.", "Ibu memasak nasi.", "Adik meminum air.", "Kami memfoto pemandangan."],
+    "pilihan": [
+      "Dia melari sangat cepat.",
+      "Ibu memasak nasi.",
+      "Adik meminum air.",
+      "Kami memfoto pemandangan."
+    ],
     "jawaban": "Ibu memasak nasi.",
     "topik": "Imbuhan",
     "kategori": "Tata Bahasa",
@@ -150,9 +225,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 16,
+    "id": "4-3-16",
     "pertanyaan": "Kalimat yang pakai tanda seru tepat?",
-    "pilihan": ["Ayo kita pergi ke sekolah!", "Dia sangat senang!", "Ibu memasak nasi?", "Mengapa kamu sedih."],
+    "pilihan": [
+      "Ayo kita pergi ke sekolah!",
+      "Dia sangat senang!",
+      "Ibu memasak nasi?",
+      "Mengapa kamu sedih."
+    ],
     "jawaban": "Dia sangat senang!",
     "topik": "Tanda Baca",
     "kategori": "Tata Bahasa",
@@ -160,9 +240,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 17,
+    "id": "4-3-17",
     "pertanyaan": "Lawan kata dari 'kuat' adalah...",
-    "pilihan": ["Hebat", "Lemah", "Besar", "Cerdas"],
+    "pilihan": [
+      "Hebat",
+      "Lemah",
+      "Besar",
+      "Cerdas"
+    ],
     "jawaban": "Lemah",
     "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
@@ -170,9 +255,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 18,
+    "id": "4-3-18",
     "pertanyaan": "Kalimat dengan subjek dan predikat lengkap?",
-    "pilihan": ["Anak bermain di taman.", "Pergi ke sekolah.", "Sedang bermain bola.", "Di taman bunga."],
+    "pilihan": [
+      "Anak bermain di taman.",
+      "Pergi ke sekolah.",
+      "Sedang bermain bola.",
+      "Di taman bunga."
+    ],
     "jawaban": "Anak bermain di taman.",
     "topik": "Struktur Kalimat",
     "kategori": "Tata Bahasa",

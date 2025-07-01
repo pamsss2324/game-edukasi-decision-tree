@@ -1,8 +1,13 @@
 [
   {
-    "id": 1,
+    "id": "4-4-01",
     "pertanyaan": "Berapa hasil dari 75 - 28?",
-    "pilihan": ["45", "47", "48", "50"],
+    "pilihan": [
+      "45",
+      "47",
+      "48",
+      "50"
+    ],
     "jawaban": "47",
     "topik": "Pengurangan",
     "kategori": "Operasi Matematika Dasar",
@@ -10,9 +15,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 2,
+    "id": "4-4-02",
     "pertanyaan": "Berapa hasil dari 8 x 7?",
-    "pilihan": ["54", "56", "58", "60"],
+    "pilihan": [
+      "54",
+      "56",
+      "58",
+      "60"
+    ],
     "jawaban": "56",
     "topik": "Perkalian",
     "kategori": "Operasi Matematika Dasar",
@@ -20,9 +30,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 3,
+    "id": "4-4-03",
     "pertanyaan": "Kotak berisi 100 kelereng, diberikan 25 kelereng. Berapa sisa?",
-    "pilihan": ["65", "70", "75", "80"],
+    "pilihan": [
+      "65",
+      "70",
+      "75",
+      "80"
+    ],
     "jawaban": "75",
     "topik": "Pengurangan",
     "kategori": "Operasi Matematika Dasar",
@@ -30,9 +45,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 4,
+    "id": "4-4-04",
     "pertanyaan": "Berapa hasil dari 45 + 32?",
-    "pilihan": ["75", "76", "77", "78"],
+    "pilihan": [
+      "75",
+      "76",
+      "77",
+      "78"
+    ],
     "jawaban": "77",
     "topik": "Penjumlahan",
     "kategori": "Operasi Matematika Dasar",
@@ -40,9 +60,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 5,
+    "id": "4-4-05",
     "pertanyaan": "Pelari menempuh 150 m dalam 30 detik. Berapa kecepatannya?",
-    "pilihan": ["4 m/detik", "5 m/detik", "6 m/detik", "7 m/detik"],
+    "pilihan": [
+      "4 m/detik",
+      "5 m/detik",
+      "6 m/detik",
+      "7 m/detik"
+    ],
     "jawaban": "5 m/detik",
     "topik": "Satuan dan Pengukuran",
     "kategori": "Satuan dan Pengukuran",
@@ -50,9 +75,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 6,
+    "id": "4-4-06",
     "pertanyaan": "Segitiga siku-siku sisi 3 cm dan 4 cm. Berapa sisi miringnya?",
-    "pilihan": ["5 cm", "6 cm", "7 cm", "8 cm"],
+    "pilihan": [
+      "5 cm",
+      "6 cm",
+      "7 cm",
+      "8 cm"
+    ],
     "jawaban": "5 cm",
     "topik": "Geometri",
     "kategori": "Geometri",
@@ -60,9 +90,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 7,
+    "id": "4-4-07",
     "pertanyaan": "Fungsi daun pada tumbuhan adalah...",
-    "pilihan": ["Menguatkan akar", "Menopang batang", "Melakukan fotosintesis", "Menarik serangga"],
+    "pilihan": [
+      "Menguatkan akar",
+      "Menopang batang",
+      "Melakukan fotosintesis",
+      "Menarik serangga"
+    ],
     "jawaban": "Melakukan fotosintesis",
     "topik": "Bagian Tumbuhan",
     "kategori": "Makhluk Hidup",
@@ -70,9 +105,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 8,
+    "id": "4-4-08",
     "pertanyaan": "Perubahan wujud cair ke gas adalah...",
-    "pilihan": ["Air jadi es", "Es mencair", "Air menguap", "Uap jadi air"],
+    "pilihan": [
+      "Air jadi es",
+      "Es mencair",
+      "Air menguap",
+      "Uap jadi air"
+    ],
     "jawaban": "Air menguap",
     "topik": "Perubahan Wujud",
     "kategori": "Proses Alam dan Energi",
@@ -80,9 +120,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 9,
+    "id": "4-4-09",
     "pertanyaan": "Hewan yang berkembang biak dengan bertelur disebut...",
-    "pilihan": ["Vivipar", "Ovipar", "Ovovivipar", "Mamalia"],
+    "pilihan": [
+      "Vivipar",
+      "Ovipar",
+      "Ovovivipar",
+      "Mamalia"
+    ],
     "jawaban": "Ovipar",
     "topik": "Perkembangbiakan",
     "kategori": "Makhluk Hidup",
@@ -90,9 +135,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 10,
+    "id": "4-4-10",
     "pertanyaan": "Sumber energi listrik di rumah biasanya dari...",
-    "pilihan": ["Baterai", "Genset", "PLN", "Panel surya"],
+    "pilihan": [
+      "Baterai",
+      "Genset",
+      "PLN",
+      "Panel surya"
+    ],
     "jawaban": "PLN",
     "topik": "Energi",
     "kategori": "Proses Alam dan Energi",
@@ -100,9 +150,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 11,
+    "id": "4-4-11",
     "pertanyaan": "Alat pernapasan manusia adalah...",
-    "pilihan": ["Hidung", "Paru-paru", "Jantung", "Lidah"],
+    "pilihan": [
+      "Hidung",
+      "Paru-paru",
+      "Jantung",
+      "Lidah"
+    ],
     "jawaban": "Paru-paru",
     "topik": "Organ Pernapasan",
     "kategori": "Makhluk Hidup",
@@ -110,9 +165,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 12,
+    "id": "4-4-12",
     "pertanyaan": "Apa akibat jika kita jarang olahraga?",
-    "pilihan": ["Tubuh sehat", "Tubuh lelet", "Tubuh lemah", "Tubuh bugar"],
+    "pilihan": [
+      "Tubuh sehat",
+      "Tubuh lelet",
+      "Tubuh lemah",
+      "Tubuh bugar"
+    ],
     "jawaban": "Tubuh lemah",
     "topik": "Kesehatan",
     "kategori": "Makhluk Hidup",
@@ -120,9 +180,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 13,
+    "id": "4-4-13",
     "pertanyaan": "Lawan kata dari 'dingin' adalah...",
-    "pilihan": ["Panas", "Sejuk", "Lembab", "Kering"],
+    "pilihan": [
+      "Panas",
+      "Sejuk",
+      "Lembab",
+      "Kering"
+    ],
     "jawaban": "Panas",
     "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
@@ -130,9 +195,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 14,
+    "id": "4-4-14",
     "pertanyaan": "Kalimat ajakan adalah...",
-    "pilihan": ["Ayo kita bersihkan kelas!", "Dia sedang belajar.", "Saya ke pasar.", "Kamu sudah makan?"],
+    "pilihan": [
+      "Ayo kita bersihkan kelas!",
+      "Dia sedang belajar.",
+      "Saya ke pasar.",
+      "Kamu sudah makan?"
+    ],
     "jawaban": "Ayo kita bersihkan kelas!",
     "topik": "Kalimat Ajakan",
     "kategori": "Tata Bahasa",
@@ -140,9 +210,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 15,
+    "id": "4-4-15",
     "pertanyaan": "Kata baku dari 'aktifitas' adalah...",
-    "pilihan": ["Aktifitas", "Aktivitas", "Agtifitas", "Aktipitas"],
+    "pilihan": [
+      "Aktifitas",
+      "Aktivitas",
+      "Agtifitas",
+      "Aktipitas"
+    ],
     "jawaban": "Aktivitas",
     "topik": "Kata Baku",
     "kategori": "Tata Bahasa",
@@ -150,9 +225,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 16,
+    "id": "4-4-16",
     "pertanyaan": "Kalimat yang pakai imbuhan benar adalah...",
-    "pilihan": ["Dia berlari cepat.", "Kami menyapu-an halaman.", "Mereka memakan nasi.", "Ibu membersihkan rumah."],
+    "pilihan": [
+      "Dia berlari cepat.",
+      "Kami menyapu-an halaman.",
+      "Mereka memakan nasi.",
+      "Ibu membersihkan rumah."
+    ],
     "jawaban": "Dia berlari cepat.",
     "topik": "Imbuhan",
     "kategori": "Tata Bahasa",
@@ -160,9 +240,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 17,
+    "id": "4-4-17",
     "pertanyaan": "Sinonim dari 'gembira' adalah...",
-    "pilihan": ["Sedih", "Senang", "Lelah", "Takut"],
+    "pilihan": [
+      "Sedih",
+      "Senang",
+      "Lelah",
+      "Takut"
+    ],
     "jawaban": "Senang",
     "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
@@ -170,9 +255,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 18,
+    "id": "4-4-18",
     "pertanyaan": "Kalimat perintah adalah...",
-    "pilihan": ["Tolong tutup pintu itu.", "Kamu pergi ke sekolah.", "Dia sedang duduk.", "Saya membaca buku."],
+    "pilihan": [
+      "Tolong tutup pintu itu.",
+      "Kamu pergi ke sekolah.",
+      "Dia sedang duduk.",
+      "Saya membaca buku."
+    ],
     "jawaban": "Tolong tutup pintu itu.",
     "topik": "Kalimat Perintah",
     "kategori": "Tata Bahasa",

@@ -1,8 +1,13 @@
 [
   {
-    "id": 1,
+    "id": "3-4-01",
     "pertanyaan": "Hasil dari 25 + 37 adalah...",
-    "pilihan": ["52", "62", "63", "65"],
+    "pilihan": [
+      "52",
+      "62",
+      "63",
+      "65"
+    ],
     "jawaban": "62",
     "topik": "Penjumlahan",
     "kategori": "Operasi Matematika Dasar",
@@ -10,9 +15,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 2,
+    "id": "3-4-02",
     "pertanyaan": "Berapakah 48 - 19?",
-    "pilihan": ["27", "28", "29", "31"],
+    "pilihan": [
+      "27",
+      "28",
+      "29",
+      "31"
+    ],
     "jawaban": "29",
     "topik": "Pengurangan",
     "kategori": "Operasi Matematika Dasar",
@@ -20,9 +30,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 3,
+    "id": "3-4-03",
     "pertanyaan": "Ibu beli 3 dus, tiap dus 12 botol minuman. Berapa total botol?",
-    "pilihan": ["30", "34", "36", "40"],
+    "pilihan": [
+      "30",
+      "34",
+      "36",
+      "40"
+    ],
     "jawaban": "36",
     "topik": "Perkalian",
     "kategori": "Operasi Matematika Dasar",
@@ -30,9 +45,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 4,
+    "id": "3-4-04",
     "pertanyaan": "Bangun datar dengan 4 sisi sama panjang adalah...",
-    "pilihan": ["Persegi panjang", "Segitiga", "Persegi", "Jajar genjang"],
+    "pilihan": [
+      "Persegi panjang",
+      "Segitiga",
+      "Persegi",
+      "Jajar genjang"
+    ],
     "jawaban": "Persegi",
     "topik": "Bangun Datar",
     "kategori": "Geometri",
@@ -40,9 +60,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 5,
+    "id": "3-4-05",
     "pertanyaan": "Bangun datar dengan 3 sisi dan 3 sudut adalah...",
-    "pilihan": ["Persegi", "Segitiga", "Lingkaran", "Trapesium"],
+    "pilihan": [
+      "Persegi",
+      "Segitiga",
+      "Lingkaran",
+      "Trapesium"
+    ],
     "jawaban": "Segitiga",
     "topik": "Bangun Datar",
     "kategori": "Geometri",
@@ -50,9 +75,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 6,
+    "id": "3-4-06",
     "pertanyaan": "Bagian tumbuhan apa yang menyerap air?",
-    "pilihan": ["Batang", "Daun", "Akar", "Bunga"],
+    "pilihan": [
+      "Batang",
+      "Daun",
+      "Akar",
+      "Bunga"
+    ],
     "jawaban": "Akar",
     "topik": "Bagian Tumbuhan",
     "kategori": "Makhluk Hidup",
@@ -60,9 +90,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 7,
+    "id": "3-4-07",
     "pertanyaan": "Benda padat di antara ini adalah...",
-    "pilihan": ["Air", "Es batu", "Uap", "Minyak"],
+    "pilihan": [
+      "Air",
+      "Es batu",
+      "Uap",
+      "Minyak"
+    ],
     "jawaban": "Es batu",
     "topik": "Sifat Benda",
     "kategori": "Proses Alam",
@@ -70,9 +105,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 8,
+    "id": "3-4-08",
     "pertanyaan": "Perubahan wujud gas ke cair adalah...",
-    "pilihan": ["Air mendidih", "Uap jadi embun", "Es mencair", "Air membeku"],
+    "pilihan": [
+      "Air mendidih",
+      "Uap jadi embun",
+      "Es mencair",
+      "Air membeku"
+    ],
     "jawaban": "Uap jadi embun",
     "topik": "Perubahan Wujud Benda",
     "kategori": "Proses Alam",
@@ -80,9 +120,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 9,
+    "id": "3-4-09",
     "pertanyaan": "Indera apa yang rasakan rasa makanan?",
-    "pilihan": ["Mata", "Telinga", "Lidah", "Hidung"],
+    "pilihan": [
+      "Mata",
+      "Telinga",
+      "Lidah",
+      "Hidung"
+    ],
     "jawaban": "Lidah",
     "topik": "Indera Manusia",
     "kategori": "Makhluk Hidup",
@@ -90,9 +135,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 10,
+    "id": "3-4-10",
     "pertanyaan": "Jika benda tak digerakkan, apa yang terjadi pada benda yang berat?",
-    "pilihan": ["Bergerak cepat", "Tetap diam atau lurus", "Berubah bentuk", "Menghilang"],
+    "pilihan": [
+      "Bergerak cepat",
+      "Tetap diam atau lurus",
+      "Berubah bentuk",
+      "Menghilang"
+    ],
     "jawaban": "Tetap diam atau lurus",
     "topik": "Proses Alam",
     "kategori": "Proses Alam",
@@ -100,9 +150,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 11,
+    "id": "3-4-11",
     "pertanyaan": "Kalimat tanya mana yang benar?",
-    "pilihan": ["Kamu sedang apa?", "Saya pergi ke sekolah.", "Dia membaca.", "Hari ini cerah."],
+    "pilihan": [
+      "Kamu sedang apa?",
+      "Saya pergi ke sekolah.",
+      "Dia membaca.",
+      "Hari ini cerah."
+    ],
     "jawaban": "Kamu sedang apa?",
     "topik": "Jenis Kalimat",
     "kategori": "Tata Bahasa",
@@ -110,9 +165,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 12,
+    "id": "3-4-12",
     "pertanyaan": "Kalimat mana pakai 'besar' dengan tepat?",
-    "pilihan": ["Rumah itu besar.", "Besar rumah itu.", "Rumah besar itu.", "Rumah itu besar sekali."],
+    "pilihan": [
+      "Rumah itu besar.",
+      "Besar rumah itu.",
+      "Rumah besar itu.",
+      "Rumah itu besar sekali."
+    ],
     "jawaban": "Rumah itu besar.",
     "topik": "Jenis Kata",
     "kategori": "Kosa Kata dan Makna",
@@ -120,9 +180,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 13,
+    "id": "3-4-13",
     "pertanyaan": "Kalimat mana yang benar?",
-    "pilihan": ["Andi bermain bola di lapangan.", "andi bermain Bola di Lapangan.", "Andi Bermain bola di Lapangan.", "Andi bermain bola di Lapangan"],
+    "pilihan": [
+      "Andi bermain bola di lapangan.",
+      "andi bermain Bola di Lapangan.",
+      "Andi Bermain bola di Lapangan.",
+      "Andi bermain bola di Lapangan"
+    ],
     "jawaban": "Andi bermain bola di lapangan.",
     "topik": "Penulisan Kalimat",
     "kategori": "Tata Bahasa",
@@ -130,9 +195,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 14,
+    "id": "3-4-14",
     "pertanyaan": "Lawan kata dari 'besar' adalah...",
-    "pilihan": ["Panjang", "Tinggi", "Kecil", "Cepat"],
+    "pilihan": [
+      "Panjang",
+      "Tinggi",
+      "Kecil",
+      "Cepat"
+    ],
     "jawaban": "Kecil",
     "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
@@ -140,9 +210,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 15,
+    "id": "3-4-15",
     "pertanyaan": "Kalimat mana pakai tanda baca tanya benar?",
-    "pilihan": ["Siapa yang datang tadi?", "Siapa yang datang tadi", "Siapa yang datang tadi.", "Siapa, yang datang tadi?"],
+    "pilihan": [
+      "Siapa yang datang tadi?",
+      "Siapa yang datang tadi",
+      "Siapa yang datang tadi.",
+      "Siapa, yang datang tadi?"
+    ],
     "jawaban": "Siapa yang datang tadi?",
     "topik": "Tanda Baca",
     "kategori": "Tata Bahasa",

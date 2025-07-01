@@ -1,8 +1,13 @@
 [
   {
-    "id": 1,
+    "id": "5-4-01",
     "pertanyaan": "Harga tas 200.000, diskon 15%. Berapa harga setelah diskon?",
-    "pilihan": ["170.000", "175.000", "180.000", "190.000"],
+    "pilihan": [
+      "170.000",
+      "175.000",
+      "180.000",
+      "190.000"
+    ],
     "jawaban": "170.000",
     "topik": "Persentase",
     "kategori": "Operasi Matematika",
@@ -10,9 +15,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 2,
+    "id": "5-4-02",
     "pertanyaan": "Hasil dari 12 - 4 x 2 adalah...",
-    "pilihan": ["8", "16", "4", "20"],
+    "pilihan": [
+      "8",
+      "16",
+      "4",
+      "20"
+    ],
     "jawaban": "4",
     "topik": "Operasi Campuran",
     "kategori": "Operasi Matematika",
@@ -20,9 +30,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 3,
+    "id": "5-4-03",
     "pertanyaan": "Jika 3 km sama dengan berapa meter?",
-    "pilihan": ["300 m", "3.000 m", "30.000 m", "300.000 m"],
+    "pilihan": [
+      "300 m",
+      "3.000 m",
+      "30.000 m",
+      "300.000 m"
+    ],
     "jawaban": "3.000 m",
     "topik": "Satuan dan Pengukuran",
     "kategori": "Geometri",
@@ -30,9 +45,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 4,
+    "id": "5-4-04",
     "pertanyaan": "Hasil dari 3,2 + 1,8 adalah...",
-    "pilihan": ["4,0", "4,5", "5,0", "5,5"],
+    "pilihan": [
+      "4,0",
+      "4,5",
+      "5,0",
+      "5,5"
+    ],
     "jawaban": "5,0",
     "topik": "Bilangan",
     "kategori": "Operasi Matematika",
@@ -40,9 +60,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 5,
+    "id": "5-4-05",
     "pertanyaan": "Kereta melaju 80 km/jam. Berapa jarak dalam 3 jam?",
-    "pilihan": ["200 km", "240 km", "260 km", "280 km"],
+    "pilihan": [
+      "200 km",
+      "240 km",
+      "260 km",
+      "280 km"
+    ],
     "jawaban": "240 km",
     "topik": "Satuan dan Pengukuran",
     "kategori": "Geometri",
@@ -50,9 +75,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 6,
+    "id": "5-4-06",
     "pertanyaan": "Rata-rata data: 4, 8, 2, 6, 10 adalah...",
-    "pilihan": ["5", "6", "7", "8"],
+    "pilihan": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
     "jawaban": "6",
     "topik": "Statistika",
     "kategori": "Operasi Matematika",
@@ -60,9 +90,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 7,
+    "id": "5-4-07",
     "pertanyaan": "Pecahan 4/5 jika jadi desimal adalah...",
-    "pilihan": ["0,6", "0,7", "0,8", "0,9"],
+    "pilihan": [
+      "0,6",
+      "0,7",
+      "0,8",
+      "0,9"
+    ],
     "jawaban": "0,8",
     "topik": "Pecahan",
     "kategori": "Operasi Matematika",
@@ -70,9 +105,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 8,
+    "id": "5-4-08",
     "pertanyaan": "Fase awal siklus hidup tumbuhan berbiji adalah...",
-    "pilihan": ["Biji", "Tunas", "Daun", "Akar"],
+    "pilihan": [
+      "Biji",
+      "Tunas",
+      "Daun",
+      "Akar"
+    ],
     "jawaban": "Biji",
     "topik": "Perkembangbiakan",
     "kategori": "Makhluk Hidup",
@@ -80,9 +120,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 9,
+    "id": "5-4-09",
     "pertanyaan": "Organ yang menyaring darah adalah...",
-    "pilihan": ["Jantung", "Paru-paru", "Ginjal", "Hati"],
+    "pilihan": [
+      "Jantung",
+      "Paru-paru",
+      "Ginjal",
+      "Hati"
+    ],
     "jawaban": "Ginjal",
     "topik": "Organ Tubuh",
     "kategori": "Makhluk Hidup",
@@ -90,9 +135,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 10,
+    "id": "5-4-10",
     "pertanyaan": "Sumber energi terbarukan adalah...",
-    "pilihan": ["Batu bara", "Minyak bumi", "Matahari", "Gas alam"],
+    "pilihan": [
+      "Batu bara",
+      "Minyak bumi",
+      "Matahari",
+      "Gas alam"
+    ],
     "jawaban": "Matahari",
     "topik": "Energi",
     "kategori": "Proses Alam dan Energi",
@@ -100,9 +150,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 11,
+    "id": "5-4-11",
     "pertanyaan": "Bagian tumbuhan yang mengangkut air adalah...",
-    "pilihan": ["Akar", "Batang", "Daun", "Bunga"],
+    "pilihan": [
+      "Akar",
+      "Batang",
+      "Daun",
+      "Bunga"
+    ],
     "jawaban": "Batang",
     "topik": "Bagian Tumbuhan",
     "kategori": "Makhluk Hidup",
@@ -110,9 +165,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 12,
+    "id": "5-4-12",
     "pertanyaan": "Cahaya dipantulkan oleh...",
-    "pilihan": ["Lensa", "Cermin", "Kaca", "Kayu"],
+    "pilihan": [
+      "Lensa",
+      "Cermin",
+      "Kaca",
+      "Kayu"
+    ],
     "jawaban": "Cermin",
     "topik": "Cahaya dan Sifatnya",
     "kategori": "Proses Alam dan Energi",
@@ -120,9 +180,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 13,
+    "id": "5-4-13",
     "pertanyaan": "Hubungan semute dan pohon termasuk simbiosis...",
-    "pilihan": ["Parasitisme", "Mutualisme", "Kommensalisme", "Predasi"],
+    "pilihan": [
+      "Parasitisme",
+      "Mutualisme",
+      "Kommensalisme",
+      "Predasi"
+    ],
     "jawaban": "Mutualisme",
     "topik": "Ekosistem",
     "kategori": "Proses Alam dan Energi",
@@ -130,9 +195,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 14,
+    "id": "5-4-14",
     "pertanyaan": "Benda yang tak menghantarkan panas disebut...",
-    "pilihan": ["Konduktor", "Isolator", "Semikonduktor", "Konduksi"],
+    "pilihan": [
+      "Konduktor",
+      "Isolator",
+      "Semikonduktor",
+      "Konduksi"
+    ],
     "jawaban": "Isolator",
     "topik": "Gaya",
     "kategori": "Proses Alam dan Energi",
@@ -140,9 +210,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 15,
+    "id": "5-4-15",
     "pertanyaan": "Teks narasi bertujuan untuk...",
-    "pilihan": ["Menceritakan peristiwa", "Menjelaskan fenomena", "Mengajak pembaca", "Menggambarkan suasana"],
+    "pilihan": [
+      "Menceritakan peristiwa",
+      "Menjelaskan fenomena",
+      "Mengajak pembaca",
+      "Menggambarkan suasana"
+    ],
     "jawaban": "Menceritakan peristiwa",
     "topik": "Teks Narasi",
     "kategori": "Teks dan Kosa Kata",
@@ -150,9 +225,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 16,
+    "id": "5-4-16",
     "pertanyaan": "Kalimat aktif adalah...",
-    "pilihan": ["Buku itu dibaca adik.", "Adik membaca buku itu.", "Buku itu telah dibaca.", "Buku itu sedang dibaca."],
+    "pilihan": [
+      "Buku itu dibaca adik.",
+      "Adik membaca buku itu.",
+      "Buku itu telah dibaca.",
+      "Buku itu sedang dibaca."
+    ],
     "jawaban": "Adik membaca buku itu.",
     "topik": "Kalimat Aktif dan Pasif",
     "kategori": "Tata Bahasa",
@@ -160,9 +240,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 17,
+    "id": "5-4-17",
     "pertanyaan": "Kata 'internet' berasal dari bahasa...",
-    "pilihan": ["Belanda", "Inggris", "Arab", "Jepang"],
+    "pilihan": [
+      "Belanda",
+      "Inggris",
+      "Arab",
+      "Jepang"
+    ],
     "jawaban": "Inggris",
     "topik": "Kata Serapan",
     "kategori": "Tata Bahasa",
@@ -170,9 +255,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 18,
+    "id": "5-4-18",
     "pertanyaan": "Sinonim dari 'senang' adalah...",
-    "pilihan": ["Sedih", "Gembira", "Lelah", "Takut"],
+    "pilihan": [
+      "Sedih",
+      "Gembira",
+      "Lelah",
+      "Takut"
+    ],
     "jawaban": "Gembira",
     "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
@@ -180,9 +270,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 19,
+    "id": "5-4-19",
     "pertanyaan": "Teks deskripsi berisi...",
-    "pilihan": ["Langkah-langkah", "Gambaran benda", "Cerita fiksi", "Ajakan"],
+    "pilihan": [
+      "Langkah-langkah",
+      "Gambaran benda",
+      "Cerita fiksi",
+      "Ajakan"
+    ],
     "jawaban": "Gambaran benda",
     "topik": "Teks Deskripsi",
     "kategori": "Teks dan Kosa Kata",
@@ -190,9 +285,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 20,
+    "id": "5-4-20",
     "pertanyaan": "Kalimat pasif adalah...",
-    "pilihan": ["Ibu memasak sup.", "Sup dimasak oleh ibu.", "Ibu sedang memasak sup.", "Sup itu sangat enak."],
+    "pilihan": [
+      "Ibu memasak sup.",
+      "Sup dimasak oleh ibu.",
+      "Ibu sedang memasak sup.",
+      "Sup itu sangat enak."
+    ],
     "jawaban": "Sup dimasak oleh ibu.",
     "topik": "Kalimat Aktif dan Pasif",
     "kategori": "Tata Bahasa",
@@ -200,9 +300,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 21,
+    "id": "5-4-21",
     "pertanyaan": "Kalimat 'Langit biru bagai permadani' pakai majas...",
-    "pilihan": ["Metafora", "Personifikasi", "Hiperbola", "Litotes"],
+    "pilihan": [
+      "Metafora",
+      "Personifikasi",
+      "Hiperbola",
+      "Litotes"
+    ],
     "jawaban": "Metafora",
     "topik": "Majas",
     "kategori": "Tata Bahasa",

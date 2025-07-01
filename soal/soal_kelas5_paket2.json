@@ -1,8 +1,13 @@
 [
   {
-    "id": 1,
+    "id": "5-2-01",
     "pertanyaan": "Keliling persegi dengan sisi 5 cm adalah...",
-    "pilihan": ["15 cm", "20 cm", "25 cm", "30 cm"],
+    "pilihan": [
+      "15 cm",
+      "20 cm",
+      "25 cm",
+      "30 cm"
+    ],
     "jawaban": "20 cm",
     "topik": "Geometri",
     "kategori": "Geometri",
@@ -10,9 +15,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 2,
+    "id": "5-2-02",
     "pertanyaan": "Hasil dari 2/3 x 3/4 adalah...",
-    "pilihan": ["1/2", "5/6", "1/4", "2/3"],
+    "pilihan": [
+      "1/2",
+      "5/6",
+      "1/4",
+      "2/3"
+    ],
     "jawaban": "1/2",
     "topik": "Pecahan",
     "kategori": "Operasi Matematika",
@@ -20,9 +30,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 3,
+    "id": "5-2-03",
     "pertanyaan": "Peta jarak 4 cm = 200 km. Skala peta adalah...",
-    "pilihan": ["1:4.000.000", "1:5.000.000", "1:6.000.000", "1:2.000.000"],
+    "pilihan": [
+      "1:4.000.000",
+      "1:5.000.000",
+      "1:6.000.000",
+      "1:2.000.000"
+    ],
     "jawaban": "1:5.000.000",
     "topik": "Skala",
     "kategori": "Geometri",
@@ -30,9 +45,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 4,
+    "id": "5-2-04",
     "pertanyaan": "Hasil dari -3 + 5 adalah...",
-    "pilihan": ["-8", "-2", "2", "8"],
+    "pilihan": [
+      "-8",
+      "-2",
+      "2",
+      "8"
+    ],
     "jawaban": "2",
     "topik": "Bilangan",
     "kategori": "Operasi Matematika",
@@ -40,9 +60,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 5,
+    "id": "5-2-05",
     "pertanyaan": "Mobil melaju 60 km/jam. Berapa jarak dalam 2 jam?",
-    "pilihan": ["100 km", "120 km", "140 km", "160 km"],
+    "pilihan": [
+      "100 km",
+      "120 km",
+      "140 km",
+      "160 km"
+    ],
     "jawaban": "120 km",
     "topik": "Satuan dan Pengukuran",
     "kategori": "Geometri",
@@ -50,9 +75,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 6,
+    "id": "5-2-06",
     "pertanyaan": "Rata-rata data: 5, 7, 3, 9, 6 adalah...",
-    "pilihan": ["5", "6", "7", "8"],
+    "pilihan": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
     "jawaban": "6",
     "topik": "Statistika",
     "kategori": "Operasi Matematika",
@@ -60,9 +90,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 7,
+    "id": "5-2-07",
     "pertanyaan": "Jika 2x + 5 = 15, nilai x adalah...",
-    "pilihan": ["4", "5", "6", "7"],
+    "pilihan": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
     "jawaban": "5",
     "topik": "Persamaan",
     "kategori": "Operasi Matematika",
@@ -70,9 +105,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 8,
+    "id": "5-2-08",
     "pertanyaan": "Konsumen dalam ekosistem adalah...",
-    "pilihan": ["Tumbuhan", "Bakteri", "Hewan", "Jamur"],
+    "pilihan": [
+      "Tumbuhan",
+      "Bakteri",
+      "Hewan",
+      "Jamur"
+    ],
     "jawaban": "Hewan",
     "topik": "Ekosistem",
     "kategori": "Proses Alam dan Energi",
@@ -80,9 +120,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 9,
+    "id": "5-2-09",
     "pertanyaan": "Gaya yang membuat benda bergerak adalah...",
-    "pilihan": ["Gaya gesek", "Gaya dorong", "Gaya gravitasi", "Gaya tarik"],
+    "pilihan": [
+      "Gaya gesek",
+      "Gaya dorong",
+      "Gaya gravitasi",
+      "Gaya tarik"
+    ],
     "jawaban": "Gaya dorong",
     "topik": "Gaya",
     "kategori": "Proses Alam dan Energi",
@@ -90,9 +135,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 10,
+    "id": "5-2-10",
     "pertanyaan": "Alat yang ubah energi angin jadi listrik adalah...",
-    "pilihan": ["Panel surya", "Kincir angin", "Turbin air", "Baterai"],
+    "pilihan": [
+      "Panel surya",
+      "Kincir angin",
+      "Turbin air",
+      "Baterai"
+    ],
     "jawaban": "Kincir angin",
     "topik": "Energi",
     "kategori": "Proses Alam dan Energi",
@@ -100,9 +150,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 11,
+    "id": "5-2-11",
     "pertanyaan": "Organ utama sistem pernapasan manusia adalah...",
-    "pilihan": ["Paru-paru", "Hidung", "Tenggorokan", "Bronkus"],
+    "pilihan": [
+      "Paru-paru",
+      "Hidung",
+      "Tenggorokan",
+      "Bronkus"
+    ],
     "jawaban": "Paru-paru",
     "topik": "Sistem Pernapasan",
     "kategori": "Makhluk Hidup",
@@ -110,9 +165,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 12,
+    "id": "5-2-12",
     "pertanyaan": "Benda yang dapat ditarik magnet adalah...",
-    "pilihan": ["Kayu", "Plastik", "Besi", "Kaca"],
+    "pilihan": [
+      "Kayu",
+      "Plastik",
+      "Besi",
+      "Kaca"
+    ],
     "jawaban": "Besi",
     "topik": "Magnet",
     "kategori": "Proses Alam dan Energi",
@@ -120,9 +180,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 13,
+    "id": "5-2-13",
     "pertanyaan": "Uap air jadi air karena pendinginan disebut...",
-    "pilihan": ["Evaporasi", "Kondensasi", "Presipitasi", "Transpirasi"],
+    "pilihan": [
+      "Evaporasi",
+      "Kondensasi",
+      "Presipitasi",
+      "Transpirasi"
+    ],
     "jawaban": "Kondensasi",
     "topik": "Siklus Air",
     "kategori": "Proses Alam dan Energi",
@@ -130,9 +195,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 14,
+    "id": "5-2-14",
     "pertanyaan": "Fungsi utama lambung adalah...",
-    "pilihan": ["Menyaring udara", "Mencerna makanan", "Mengangkut oksigen", "Menyimpan air"],
+    "pilihan": [
+      "Menyaring udara",
+      "Mencerna makanan",
+      "Mengangkut oksigen",
+      "Menyimpan air"
+    ],
     "jawaban": "Mencerna makanan",
     "topik": "Sistem Pencernaan",
     "kategori": "Makhluk Hidup",
@@ -140,9 +210,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 15,
+    "id": "5-2-15",
     "pertanyaan": "Teks persuasi bertujuan untuk...",
-    "pilihan": ["Menceritakan peristiwa", "Menggambarkan sesuatu", "Meyakinkan pembaca", "Memberikan informasi"],
+    "pilihan": [
+      "Menceritakan peristiwa",
+      "Menggambarkan sesuatu",
+      "Meyakinkan pembaca",
+      "Memberikan informasi"
+    ],
     "jawaban": "Meyakinkan pembaca",
     "topik": "Teks Persuasi",
     "kategori": "Teks dan Kosa Kata",
@@ -150,9 +225,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 16,
+    "id": "5-2-16",
     "pertanyaan": "Kalimat yang paling benar adalah...",
-    "pilihan": ["Adik bermain bola di lapangan besar.", "Di lapangan besar adik bola bermain.", "Bermain bola adik di lapangan besar.", "Lapangan besar adik bermain bola di."],
+    "pilihan": [
+      "Adik bermain bola di lapangan besar.",
+      "Di lapangan besar adik bola bermain.",
+      "Bermain bola adik di lapangan besar.",
+      "Lapangan besar adik bermain bola di."
+    ],
     "jawaban": "Adik bermain bola di lapangan besar.",
     "topik": "Kalimat Benar",
     "kategori": "Tata Bahasa",
@@ -160,9 +240,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 17,
+    "id": "5-2-17",
     "pertanyaan": "Kata baku dari 'praktik' adalah...",
-    "pilihan": ["Praktik", "Praktek", "Peraktik", "Peraktek"],
+    "pilihan": [
+      "Praktik",
+      "Praktek",
+      "Peraktik",
+      "Peraktek"
+    ],
     "jawaban": "Praktik",
     "topik": "Kata Baku",
     "kategori": "Tata Bahasa",
@@ -170,9 +255,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 18,
+    "id": "5-2-18",
     "pertanyaan": "Lawan kata dari 'panjang' adalah...",
-    "pilihan": ["Pendiam", "Pendek", "Lelet", "Lambat"],
+    "pilihan": [
+      "Pendiam",
+      "Pendek",
+      "Lelet",
+      "Lambat"
+    ],
     "jawaban": "Pendek",
     "topik": "Sinonim/Antonim",
     "kategori": "Kosa Kata dan Makna",
@@ -180,9 +270,14 @@
     "tingkat_kesulitan": "mudah"
   },
   {
-    "id": 19,
+    "id": "5-2-19",
     "pertanyaan": "Ciri teks narasi adalah...",
-    "pilihan": ["Menggunakan langkah", "Menceritakan peristiwa", "Menggambarkan suasana", "Mengajak pembaca"],
+    "pilihan": [
+      "Menggunakan langkah",
+      "Menceritakan peristiwa",
+      "Menggambarkan suasana",
+      "Mengajak pembaca"
+    ],
     "jawaban": "Menceritakan peristiwa",
     "topik": "Teks Narasi",
     "kategori": "Teks dan Kosa Kata",
@@ -190,9 +285,14 @@
     "tingkat_kesulitan": "sedang"
   },
   {
-    "id": 20,
+    "id": "5-2-20",
     "pertanyaan": "Kalimat tanya untuk menanyakan alasan adalah...",
-    "pilihan": ["Kapan kamu pergi?", "Di mana kamu tinggal?", "Mengapa kamu terlambat?", "Apa yang kamu lakukan?"],
+    "pilihan": [
+      "Kapan kamu pergi?",
+      "Di mana kamu tinggal?",
+      "Mengapa kamu terlambat?",
+      "Apa yang kamu lakukan?"
+    ],
     "jawaban": "Mengapa kamu terlambat?",
     "topik": "Kalimat Tanya",
     "kategori": "Tata Bahasa",
@@ -200,9 +300,14 @@
     "tingkat_kesulitan": "sulit"
   },
   {
-    "id": 21,
+    "id": "5-2-21",
     "pertanyaan": "Kata 'menyanyi' pakai imbuhan...",
-    "pilihan": ["me-", "ber-", "di-", "ter-"],
+    "pilihan": [
+      "me-",
+      "ber-",
+      "di-",
+      "ter-"
+    ],
     "jawaban": "me-",
     "topik": "Imbuhan",
     "kategori": "Tata Bahasa",
