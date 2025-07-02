@@ -1,14 +1,17 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template
+from flask import Flask, request, jsonify, send_from_directory, render_template, session, redirect, url_for
 from flask_cors import CORS
+from flask_session import Session
 import json
 import os
 import traceback
 import pandas as pd
 import joblib
-from database import save_siswa, save_hasil_kuis
+from database import save_siswa, save_hasil_kuis, get_db, save_login_log
 from models import calculate_asal_features, analyze_kesulitan
 from config import Config
 import logging
+import hashlib
+import bcrypt
 
 # Konfigurasi logging
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +19,11 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app)
+
+# Konfigurasi Flask-Session
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # Muat model yang telah disimpan
 try:
@@ -29,6 +37,44 @@ except FileNotFoundError:
 except Exception as e:
     logger.error(f"❌ Error saat muat model: {e}")
     raise
+
+# Fungsi untuk validasi login guru
+def validate_guru_login(nama, kode_akses):
+    try:
+        with get_db() as db:
+            cursor = db.cursor()
+            # Simulasi tabel guru (akan diperbarui di database.py nanti)
+            cursor.execute("SELECT kode_akses FROM guru WHERE nama = %s AND kadaluarsa > NOW()", (nama,))
+            result = cursor.fetchone()
+            if result:
+                stored_kode = result['kode_akses']
+                # Hash kode akses input dengan salt sederhana (akan diganti bcrypt nanti)
+                hashed_input = hashlib.sha256((kode_akses + "salt").encode()).hexdigest()
+                return hashed_input == stored_kode
+            return False
+    except Exception as e:
+        logger.error(f"❌ Error saat validasi login guru: {e}")
+        return False
+
+# Fungsi untuk validasi login admin (menggunakan bcrypt)
+def validate_admin_login(username, password):
+    # Simulasi kredensial admin (akan disimpan di database nanti)
+    admin_username = "admin"
+    admin_password_hash = b"$2b$12$jWuwbXTRDCG2H5R7bEw0TuQG1I7EtQDw2nr66L3W/S5p38l0te8SS"  # Ganti dengan hash bcrypt yang valid
+    return username == admin_username and bcrypt.checkpw(password.encode(), admin_password_hash)
+
+# Fungsi untuk mengambil data guru (untuk dashboard nanti)
+def get_hasil_kuis_by_siswa(id_siswa):
+    try:
+        with get_db() as db:
+            cursor = db.cursor()
+            query = "SELECT * FROM hasil_kuis WHERE id_siswa = %s ORDER BY tanggal DESC"
+            cursor.execute(query, (id_siswa,))
+            results = cursor.fetchall()
+            return results
+    except Exception as e:
+        logger.error(f"❌ Error saat mengambil hasil kuis: {e}")
+        raise
 
 @app.route('/simpan_siswa', methods=['POST'])
 def simpan_siswa():
@@ -179,3 +225,65 @@ if __name__ == '__main__':
         app.run(debug=True, host='0.0.0.0', port=5000)
     except Exception as e:
         logger.error(f"❌ Gagal memulai aplikasi: {e}")
+
+@app.route('/login/guru', methods=['POST'])
+def login_guru():
+    try:
+        data = request.get_json()
+        if 'nama' not in data or 'kode_akses' not in data:
+            return jsonify({'status': 'gagal', 'pesan': 'Nama dan kode akses wajib diisi'}), 400
+        nama = data['nama']
+        kode_akses = data['kode_akses']
+        if validate_guru_login(nama, kode_akses):
+            session['user'] = {'role': 'guru', 'nama': nama}
+            save_login_log(nama, 'sukses')
+            return jsonify({'status': 'sukses', 'pesan': 'Login berhasil'})
+        else:
+            save_login_log(nama, 'gagal')
+            return jsonify({'status': 'gagal', 'pesan': 'Nama atau kode akses salah'}), 401
+    except Exception as e:
+        logger.error(f"❌ Error saat login guru: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+@app.route('/login/admin', methods=['POST'])
+def login_admin():
+    try:
+        data = request.get_json()
+        if 'username' not in data or 'password' not in data:
+            return jsonify({'status': 'gagal', 'pesan': 'Username dan password wajib diisi'}), 400
+        username = data['username']
+        password = data['password']
+        if validate_admin_login(username, password):
+            session['user'] = {'role': 'admin', 'username': username}
+            save_login_log(username, 'sukses')
+            return jsonify({'status': 'sukses', 'pesan': 'Login berhasil'})
+        else:
+            save_login_log(username, 'gagal')
+            return jsonify({'status': 'gagal', 'pesan': 'Username atau password salah'}), 401
+    except Exception as e:
+        logger.error(f"❌ Error saat login admin: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+@app.route('/guru/dashboard')
+def guru_dashboard():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return redirect(url_for('halaman_utama'))
+    try:
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT DISTINCT id_siswa FROM hasil_kuis")
+            siswa_ids = [row['id_siswa'] for row in cursor.fetchall()]
+        hasil_siswa = {}
+        for id_siswa in siswa_ids:
+            hasil = get_hasil_kuis_by_siswa(id_siswa)
+            hasil_siswa[id_siswa] = hasil
+        return render_template('guru/dashboard.html', hasil_siswa=hasil_siswa)
+    except Exception as e:
+        logger.error(f"❌ Error saat menampilkan dashboard guru: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+@app.route('/admin/adminDashboard')
+def admin_dashboard():
+    if not session.get('user') or session.get('user').get('role') != 'admin':
+        return redirect(url_for('halaman_utama'))
+    return render_template('admin/adminDashboard.html')  # Placeholder untuk dashboard admin

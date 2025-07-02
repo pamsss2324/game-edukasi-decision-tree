@@ -1,0 +1,43 @@
+#guruLoginPopup .popup-content,
+#adminLoginPopup .popup-content {
+    text-align: center;
+}
+
+#guruLoginPopup input,
+#adminLoginPopup input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ff4ecd;
+    border-radius: 5px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 1rem;
+    background-color: white;
+    color: #2d3748;
+}
+
+#guruLoginPopup button,
+#adminLoginPopup button {
+    background: #4eafff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+#guruLoginPopup button:hover,
+#adminLoginPopup button:hover {
+    background: #3c90e0;
+    transform: scale(1.05);
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}

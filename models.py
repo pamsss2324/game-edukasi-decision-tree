@@ -100,7 +100,7 @@ def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah,
     """Menganalisis kesulitan belajar dan memberikan rekomendasi, termasuk per pelajaran."""
     try:
         soal_data = json.loads(daftar_soal_dikerjakan)
-        soal_list = soal_data.get('soal', []) if daftar_soal_dikerjakan else []
+        soal_list = soal_data.get('soal', [])
         
         kesalahan_per_kategori = {}
         total_soal_per_kategori = {}
@@ -115,6 +115,7 @@ def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah,
             pelajaran_stats[pelajaran]['total'] += 1
             if soal.get('benar', False):
                 pelajaran_stats[pelajaran]['benar'] += 1
+        logger.info(f"pelajaran_stats: {pelajaran_stats}")
 
         # Hitung persentase keberhasilan per pelajaran
         pelajaran_kesulitan = {}
@@ -129,6 +130,7 @@ def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah,
 
         # Identifikasi pelajaran yang sulit
         pelajaran_sulit = [p for p, k in pelajaran_kesulitan.items() if k == 'sulit']
+        logger.info(f"pelajaran_sulit sebelum return: {pelajaran_sulit}")
 
         for soal in soal_list:
             kategori = soal.get('kategori', 'Tidak Diketahui')

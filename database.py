@@ -59,3 +59,16 @@ def save_hasil_kuis(id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumla
     except Exception as e:
         logger.error(f"❌ Error saat simpan hasil kuis: {e}")
         raise
+
+def save_login_log(nama, status):
+    """Menyimpan log aktivitas login."""
+    try:
+        with get_db() as db:
+            cursor = db.cursor()
+            query = "INSERT INTO login_log (nama, status, waktu) VALUES (%s, %s, NOW())"
+            cursor.execute(query, (nama, status))
+            db.commit()
+            logger.info(f"✅ Log login untuk {nama} ({status}) disimpan.")
+    except Exception as e:
+        logger.error(f"❌ Error saat simpan log login: {e}")
+        raise

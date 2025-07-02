@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Guru</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Selamat datang, {{ session['user']['nama'] }}!</h1>
+    <div>
+        {% for id_siswa, hasil_list in hasil_siswa.items() %}
+            <h2>Siswa ID: {{ id_siswa }}</h2>
+            {% for hasil in hasil_list %}
+                <div>
+                    <p>Tanggal: {{ hasil.tanggal }}</p>
+                    <p>Jumlah Benar: {{ hasil.jumlah_benar }}</p>
+                    <p>Jumlah Salah: {{ hasil.jumlah_salah }}</p>
+                    <p>Kesulitan Diduga: {{ hasil.kesulitan_diduga }}</p>
+                    <p>Pelajaran Sulit: {{ hasil.pelajaran_sulit|safe }}</p>
+                </div>
+                <hr>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</body>
+</html>
