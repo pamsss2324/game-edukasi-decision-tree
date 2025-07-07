@@ -1,3 +1,4 @@
+/* Reset dan Global Styles */
 body {
     margin: 0;
     font-family: 'Comic Neue', cursive;
@@ -10,18 +11,6 @@ body {
     align-items: center;
     text-align: center;
     position: relative;
-}
-
-.welcome-container {
-    position: relative;
-    z-index: 1;
-    padding: 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    width: 80%;
-    max-width: 500px;
-    color: black;
 }
 
 h1 {
@@ -39,12 +28,6 @@ h3 {
 p {
     font-size: 1.2rem;
     margin-bottom: 30px;
-}
-
-.button-group {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
 }
 
 button {
@@ -67,6 +50,25 @@ button:hover {
 button:focus {
     outline: 3px solid #ff4ecd;
     outline-offset: 2px;
+}
+
+/* Layout Umum */
+.welcome-container {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    width: 80%;
+    max-width: 500px;
+    color: black;
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
 }
 
 .guru-btn {
@@ -288,19 +290,6 @@ button:focus {
     to { transform: translateY(0); opacity: 1; }
 }
 
-@media (max-width: 480px) {
-    .card {
-        width: 90%;
-        margin: 10px auto;
-    }
-    h1 {
-        font-size: 2rem;
-    }
-    h3 {
-        font-size: 1.2rem;
-    }
-}
-
 .pilihan-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -397,16 +386,6 @@ button:focus {
     z-index: 2;
 }
 
-@media (max-width: 480px) {
-    .timer-box {
-        top: 5px;
-        right: 5px;
-        font-size: 0.8rem;
-        padding: 4px 8px;
-    }
-}
-
-/* Style untuk halaman hasil */
 .hasil-body {
     display: flex;
     justify-content: center;
@@ -480,16 +459,8 @@ button:focus {
     max-width: 400px;
     line-height: 1.5;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-height: 200px; /* Batasi tinggi maksimum */
-    overflow-y: auto; /* Gulir jika teks terlalu panjang */
-}
-
-@media (max-width: 480px) {
-    .speech-bubble {
-        max-width: 90%;
-        padding: 10px;
-        font-size: 0.9rem;
-    }
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .speech-bubble::after {
@@ -506,7 +477,6 @@ button:focus {
     margin-bottom: -15px;
 }
 
-/* Styling untuk daftar rekomendasi */
 .rekomendasi-list {
     list-style-type: none;
     padding-left: 0;
@@ -526,28 +496,6 @@ button:focus {
     position: absolute;
     left: 0;
     color: #ff4ecd;
-}
-
-/* Popup Konfirmasi */
-.popup-content {
-    background: #ffffff;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    color: #2d3748;
-}
-
-.popup-content h3 {
-    margin-bottom: 15px;
-    color: #4a5568;
-}
-
-.popup-content p {
-    margin-bottom: 20px;
-    font-size: 1.1rem;
 }
 
 .btn-konfirmasi {
@@ -570,19 +518,6 @@ button:focus {
 .btn-konfirmasi:focus {
     outline: 3px solid #48bb78;
     outline-offset: 2px;
-}
-
-.popup-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.button-group {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 20px;
 }
 
 .btn-kembali {
@@ -618,4 +553,29 @@ button:focus {
     padding: 8px;
     border-radius: 8px;
     display: inline-block;
+}
+
+/* Responsivitas */
+@media (max-width: 480px) {
+    .card {
+        width: 90%;
+        margin: 10px auto;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    h3 {
+        font-size: 1.2rem;
+    }
+    .timer-box {
+        top: 5px;
+        right: 5px;
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+    .speech-bubble {
+        max-width: 90%;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
 }

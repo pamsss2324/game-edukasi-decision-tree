@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
+    <title>Buat Akun Guru</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/adminDashboard.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
@@ -14,7 +14,7 @@
             <div id="datetime" class="datetime"></div>
         </div>
         <div class="nav-links">
-            <a href="#" class="nav-item" data-section="home">Home</a>
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-item" data-section="home">Home</a>
             <div class="dropdown">
                 <button class="dropbtn nav-item">Akun Guru</button>
                 <div class="dropdown-content">
@@ -27,33 +27,26 @@
     </div>
 
     <div class="main-content">
-        <!-- Home Section -->
-        <div class="content-section" id="home-section">
-            <div class="table-container">
-                <h2>Daftar Guru</h2>
-                <div class="table-controls">
-                    <input type="text" id="guruSearch" placeholder="Cari guru..." class="search-bar">
-                    <select id="statusFilter" class="filter-select">
-                        <option value="all">Semua Status</option>
-                        <option value="aktif">Aktif</option>
-                        <option value="nonaktif">Nonaktif</option>
-                    </select>
+        <div class="form-container">
+            <h2>Buat Akun Guru</h2>
+            <form id="createAccountForm">
+                <label>Nama:</label>
+                <input type="text" id="guruNama" required>
+                <span id="namaError" class="error-message"></span>
+
+                <label>Kode Akses:</label>
+                <div class="password-container">
+                    <input type="password" id="guruKode" required>
+                    <span id="togglePassword" class="toggle-password">👁️</span>
                 </div>
-                <div class="table-wrapper">
-                    <table id="guruTable" class="guru-table">
-                        <thead>
-                            <tr>
-                                <th>Nama</th>
-                                <th>Kode Akses</th>
-                                <th>Kadaluarsa</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <div id="pagination-home" class="pagination"></div>
-            </div>
+                <span id="kodeError" class="error-message"></span>
+
+                <label>Kadaluarsa:</label>
+                <input type="date" id="guruKadaluarsa" required>
+                <span id="kadaluarsaError" class="error-message"></span>
+
+                <button type="submit" id="submitBtn" disabled>Submit</button>
+            </form>
         </div>
     </div>
 

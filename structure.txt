@@ -12,6 +12,13 @@ quiz-app/
     data/
         training_data_asal.csv
         training_data_kesulitan.csv
+    flask_session/
+        1128e51fd4e43070eedead7ef5435d9f
+        2029240f6d1128be89ddc32729463129
+        5e2d1a2441df3e9444291da4fdbb5adf
+        7cbd7a28dfef247d757d14fc9c7b708f
+        8f424219d2fa85fdff69d90d92a5e7d6
+        963213d4736ea59dbbe3f13c6c449685
     models/
         cart_asal_model.pkl
         cart_kesulitan_model.pkl
@@ -30,12 +37,17 @@ quiz-app/
         soal_kelas5_paket3.json
         soal_kelas5_paket4.json
     static/
+        adminDashboard.js
+        login.css
+        login.js
         motivasi.json
         rekomendasi.json
         scripts.js
         scriptsHasil.js
         scriptsKuis.js
         style.css
+        css/
+            adminDashboard.css
         images/
             Bg1.jpg
     templates/
@@ -44,7 +56,8 @@ quiz-app/
         quiz.html
         admin/
             adminDashboard.html
-            manageCodes.html
+            aturKodeAkses.html
+            buatAkunGuru.html
         guru/
             dashboard.html
             laporanIndividu.html

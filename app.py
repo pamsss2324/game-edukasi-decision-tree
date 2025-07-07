@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, send_from_directory, render_template,
 from flask_cors import CORS
 from flask_session import Session
 import json
+import pymysql
 import os
 import traceback
 import pandas as pd
@@ -12,6 +13,9 @@ from config import Config
 import logging
 import hashlib
 import bcrypt
+import re
+import datetime
+
 
 # Konfigurasi logging
 logging.basicConfig(level=logging.INFO)
@@ -43,14 +47,12 @@ def validate_guru_login(nama, kode_akses):
     try:
         with get_db() as db:
             cursor = db.cursor()
-            # Simulasi tabel guru (akan diperbarui di database.py nanti)
             cursor.execute("SELECT kode_akses FROM guru WHERE nama = %s AND kadaluarsa > NOW()", (nama,))
             result = cursor.fetchone()
             if result:
                 stored_kode = result['kode_akses']
-                # Hash kode akses input dengan salt sederhana (akan diganti bcrypt nanti)
-                hashed_input = hashlib.sha256((kode_akses + "salt").encode()).hexdigest()
-                return hashed_input == stored_kode
+                # Validasi dengan bcrypt
+                return bcrypt.checkpw(kode_akses.encode(), stored_kode.encode())
             return False
     except Exception as e:
         logger.error(f"❌ Error saat validasi login guru: {e}")
@@ -219,21 +221,16 @@ def get_soal():
         logger.error(f"❌ Error saat mengambil soal: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
 
-if __name__ == '__main__':
-    logger.info("✅ Memulai Flask App di localhost:5000 ...")
-    try:
-        app.run(debug=True, host='0.0.0.0', port=5000)
-    except Exception as e:
-        logger.error(f"❌ Gagal memulai aplikasi: {e}")
-
 @app.route('/login/guru', methods=['POST'])
 def login_guru():
+    logger.info("Rute /login/guru dipanggil")
     try:
         data = request.get_json()
         if 'nama' not in data or 'kode_akses' not in data:
             return jsonify({'status': 'gagal', 'pesan': 'Nama dan kode akses wajib diisi'}), 400
         nama = data['nama']
         kode_akses = data['kode_akses']
+        logger.info(f"Input login guru: nama={nama}, kode_akses={kode_akses}")
         if validate_guru_login(nama, kode_akses):
             session['user'] = {'role': 'guru', 'nama': nama}
             save_login_log(nama, 'sukses')
@@ -247,6 +244,7 @@ def login_guru():
 
 @app.route('/login/admin', methods=['POST'])
 def login_admin():
+    logger.info("Rute /login/admin dipanggil")
     try:
         data = request.get_json()
         if 'username' not in data or 'password' not in data:
@@ -286,4 +284,185 @@ def guru_dashboard():
 def admin_dashboard():
     if not session.get('user') or session.get('user').get('role') != 'admin':
         return redirect(url_for('halaman_utama'))
-    return render_template('admin/adminDashboard.html')  # Placeholder untuk dashboard admin
+    # Kirim data guru awal untuk halaman home
+    try:
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT nama, kode_akses, kadaluarsa, status FROM guru LIMIT 10")
+            guru_list = cursor.fetchall()
+        return render_template('admin/adminDashboard.html', initial_guru=guru_list)
+    except Exception as e:
+        logger.error(f"Error loading admin dashboard: {e}")
+        return render_template('admin/adminDashboard.html', initial_guru=[])
+    
+@app.route('/admin/atur-kode-akses', endpoint='admin_atur_kode_akses')
+def atur_kode_akses():
+    if not session.get('user') or session.get('user').get('role') != 'admin':
+        return redirect(url_for('halaman_utama'))
+    try:
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT nama, kode_akses, kadaluarsa, status, terakhir_diperbarui FROM guru LIMIT 10")
+            guru_list = cursor.fetchall()
+        return render_template('admin/aturKodeAkses.html', initial_guru=guru_list)
+    except Exception as e:
+        logger.error(f"Error loading atur kode akses: {e}")
+        return render_template('admin/aturKodeAkses.html', initial_guru=[])
+
+@app.route('/admin/get_guru', methods=['GET'])
+def get_guru():
+    if not session.get('user') or session.get('user').get('role') != 'admin':
+        return redirect(url_for('halaman_utama'))
+    try:
+        page = request.args.get('page', 1, type=int)
+        limit = request.args.get('limit', 10, type=int)
+        offset = (page - 1) * limit
+        status_filter = request.args.get('status', type=str)
+        
+        with get_db() as db:
+            cursor = db.cursor()
+            
+            # Query dasar
+            query = """
+                SELECT nama, kode_akses, kadaluarsa, status, terakhir_diperbarui 
+                FROM guru
+            """
+            count_query = "SELECT COUNT(*) as total FROM guru"
+            params = []
+            
+            # Tambahkan filter status jika ada
+            if status_filter in ['active', 'inactive']:
+                is_active = 1 if status_filter == 'active' else 0
+                query += " WHERE status = %s"
+                count_query += " WHERE status = %s"
+                params.append(is_active)
+            
+            # Tambahkan pagination
+            query += " LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
+            
+            # Eksekusi query
+            cursor.execute(count_query, params[:1] if status_filter else [])
+            total = cursor.fetchone()['total']
+            
+            cursor.execute(query, params)
+            guru_list = cursor.fetchall()
+            
+        return jsonify({
+            'status': 'sukses',
+            'guru': guru_list,
+            'total': total,
+            'page': page,
+            'limit': limit
+        })
+    except Exception as e:
+        logger.error(f"❌ Error saat mengambil daftar guru: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+@app.route('/admin/buat-akun-guru', methods=['GET'], endpoint='admin_buat_akun_guru')
+def buat_akun_guru():
+    if not session.get('user') or session.get('user').get('role') != 'admin':
+        return redirect(url_for('halaman_utama'))
+    return render_template('admin/buatAkunGuru.html')
+
+@app.route('/admin/add_guru', methods=['POST'], endpoint='admin_buat_akun_guru_submit')
+def add_guru():
+    if not session.get('user') or session.get('user').get('role') != 'admin':
+        return redirect(url_for('halaman_utama'))
+    try:
+        data = request.get_json()
+        if 'nama' not in data or 'kode_akses' not in data or 'kadaluarsa' not in data:
+            return jsonify({'status': 'gagal', 'pesan': 'Nama, kode akses, dan kadaluarsa wajib diisi'}), 400
+        nama = data['nama']
+        kode_akses = data['kode_akses']
+        kadaluarsa = data['kadaluarsa']
+
+        if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', kode_akses):
+            return jsonify({'status': 'gagal', 'pesan': 'Kode akses minimal 8 karakter dan harus berisi huruf serta angka'}), 400
+        if datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.now():
+            return jsonify({'status': 'gagal', 'pesan': 'Kadaluarsa harus di masa depan'}), 400
+
+        hashed_kode = bcrypt.hashpw(kode_akses.encode(), bcrypt.gensalt())
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("INSERT INTO guru (nama, kode_akses, kadaluarsa) VALUES (%s, %s, %s)",
+                          (nama, hashed_kode, kadaluarsa))
+            db.commit()
+        logger.info(f"✅ Akun guru {nama} ditambahkan.")
+        return jsonify({'status': 'sukses', 'pesan': 'Akun guru berhasil ditambahkan'})
+    except Exception as e:
+        logger.error(f"❌ Error saat menambah guru: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+@app.route('/admin/update_guru', methods=['POST'])
+def update_guru():
+    if not session.get('user') or session.get('user').get('role') != 'admin':
+        return redirect(url_for('halaman_utama'))
+    try:
+        data = request.get_json()
+        nama = data['nama']
+        kode_akses = data['kode_akses']
+        kadaluarsa = data['kadaluarsa']
+
+        if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', kode_akses):
+            return jsonify({'status': 'gagal', 'pesan': 'Kode akses minimal 8 karakter dan harus berisi huruf serta angka'}), 400
+        if datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.now():
+            return jsonify({'status': 'gagal', 'pesan': 'Kadaluarsa harus di masa depan'}), 400
+
+        hashed_kode = bcrypt.hashpw(kode_akses.encode(), bcrypt.gensalt())
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("UPDATE guru SET kode_akses = %s, kadaluarsa = %s WHERE nama = %s",
+                          (hashed_kode, kadaluarsa, nama))
+            db.commit()
+        logger.info(f"✅ Kode akses guru {nama} diperbarui.")
+        return jsonify({'status': 'sukses', 'pesan': 'Kode akses berhasil diperbarui'})
+    except Exception as e:
+        logger.error(f"❌ Error saat memperbarui guru: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+    
+@app.route('/admin/toggle_guru_status', methods=['POST'])
+def toggle_guru_status():
+    if not session.get('user') or session.get('user').get('role') != 'admin':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    
+    try:
+        data = request.get_json()
+        if 'nama' not in data:
+            return jsonify({'status': 'gagal', 'pesan': 'Nama guru wajib diisi'}), 400
+        
+        try:
+            with get_db() as db:
+                cursor = db.cursor()
+                # Toggle status (0/1)
+                cursor.execute("""
+                    UPDATE guru 
+                    SET status = NOT status, 
+                        terakhir_diperbarui = NOW() 
+                    WHERE nama = %s
+                """, (data['nama'],))
+                db.commit()
+                
+                # Ambil status baru untuk response
+                cursor.execute("SELECT status FROM guru WHERE nama = %s", (data['nama'],))
+                result = cursor.fetchone()
+                
+            return jsonify({
+                'status': 'sukses',
+                'pesan': 'Status berhasil diubah',
+                'status_baru': bool(result['status'])
+            })
+        except pymysql.Error as db_error:
+            logger.error(f"❌ Database error: {db_error}")
+            return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan database'}), 500
+            
+    except Exception as e:
+        logger.error(f"❌ Error saat mengubah status guru: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500    
+
+if __name__ == '__main__':
+    logger.info("✅ Memulai Flask App di localhost:5000 ...")
+    try:
+        app.run(debug=True, host='0.0.0.0', port=5000)
+    except Exception as e:
+        logger.error(f"❌ Gagal memulai aplikasi: {e}")

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atur Kode Akses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/adminDashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="navbar-title">Admin</div>
+            <div id="datetime" class="datetime"></div>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-item" data-section="home">Home</a>
+            <div class="dropdown">
+                <button class="dropbtn nav-item">Akun Guru</button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('admin_buat_akun_guru') }}" class="nav-item">Buat Akun</a>
+                    <a href="{{ url_for('admin_atur_kode_akses') }}" class="nav-item">Atur Kode</a>
+                </div>
+            </div>
+            <a href="#" class="nav-item logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="table-container">
+            <h2>Atur Kode Akses</h2>
+            <div class="table-controls">
+                <input type="text" id="manageSearch" class="search-bar" placeholder="Cari nama guru...">
+                <select id="manageStatusFilter" class="filter-select">
+                    <option value="all">Semua Status</option>
+                    <option value="active">Aktif</option>
+                    <option value="inactive">Nonaktif</option>
+                </select>
+            </div>
+            <div class="table-wrapper">
+                <table id="manageTable" class="guru-table">
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Kode Akses</th>
+                            <th>Kadaluarsa</th>
+                            <th>Status</th>
+                            <th>Terakhir Diperbarui</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="pagination-manage" class="pagination"></div>
+        </div>
+    </div>
+
+    <div id="editPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Edit Kode Akses</h3>
+            <form id="editForm">
+                <label>Nama:</label>
+                <input type="text" id="editNama" readonly>
+                <label>Kode Akses:</label>
+                <input type="text" id="editKode" required>
+                <label>Kadaluarsa:</label>
+                <input type="date" id="editKadaluarsa">
+                <button type="submit" disabled>Simpan</button>
+            </form>
+            <button onclick="closePopup()">Batal</button>
+        </div>
+    </div>
+
+    <div id="logoutPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Konfirmasi Logout</h3>
+            <p>Apakah kamu yakin untuk keluar?</p>
+            <div class="popup-buttons">
+                <button onclick="confirmLogout()">Ya</button>
+                <button onclick="closePopup()">Tidak</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='adminDashboard.js') }}"></script>
+</body>
+</html>
