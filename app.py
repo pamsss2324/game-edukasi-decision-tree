@@ -16,7 +16,6 @@ import bcrypt
 import re
 import datetime
 
-
 # Konfigurasi logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -51,21 +50,19 @@ def validate_guru_login(nama, kode_akses):
             result = cursor.fetchone()
             if result:
                 stored_kode = result['kode_akses']
-                # Validasi dengan bcrypt
                 return bcrypt.checkpw(kode_akses.encode(), stored_kode.encode())
             return False
     except Exception as e:
         logger.error(f"❌ Error saat validasi login guru: {e}")
         return False
 
-# Fungsi untuk validasi login admin (menggunakan bcrypt)
+# Fungsi untuk validasi login admin
 def validate_admin_login(username, password):
-    # Simulasi kredensial admin (akan disimpan di database nanti)
     admin_username = "admin"
-    admin_password_hash = b"$2b$12$jWuwbXTRDCG2H5R7bEw0TuQG1I7EtQDw2nr66L3W/S5p38l0te8SS"  # Ganti dengan hash bcrypt yang valid
+    admin_password_hash = b"$2b$12$jWuwbXTRDCG2H5R7bEw0TuQG1I7EtQDw2nr66L3W/S5p38l0te8SS"
     return username == admin_username and bcrypt.checkpw(password.encode(), admin_password_hash)
 
-# Fungsi untuk mengambil data guru (untuk dashboard nanti)
+# Fungsi untuk mengambil data guru
 def get_hasil_kuis_by_siswa(id_siswa):
     try:
         with get_db() as db:
@@ -126,7 +123,6 @@ def simpan_hasil():
             logger.error(f"❌ Error: {e}. JSON tidak valid pada daftar_soal_dikerjakan.")
             return jsonify({'status': 'gagal', 'pesan': 'Data daftar_soal_dikerjakan tidak valid'}), 400
 
-        # Mengambil semua nilai dari calculate_asal_features
         (waktu_rata2_per_soal, jumlah_salah, variansi_waktu, persentase_salah,
          frekuensi_jawaban_identik, total_waktu, konsistensi_kecepatan_per_kategori,
          pola_kesalahan, frekuensi_identik_berturut_turut) = calculate_asal_features(soal_list, total_soal)
@@ -141,20 +137,17 @@ def simpan_hasil():
         dideteksi_asal = int(cart_asal_model.predict(input_data_asal)[0])
         logger.info(f"Deteksi asal: {dideteksi_asal}")
 
-        # Mengemas tiga nilai balik dari analyze_kesulitan
         kesulitan_diduga, rekomendasi, pelajaran_sulit = analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, total_soal, cart_kesulitan_model, label_encoder_kesulitan)
 
-        # Konversi pelajaran_sulit ke string JSON sebelum menyimpan
         pelajaran_sulit_str = json.dumps(pelajaran_sulit) if pelajaran_sulit else '[]'
 
-        # Simpan hasil ke database dengan pelajaran_sulit
         save_hasil_kuis(id_siswa, mapel, daftar_soal_dikerjakan, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga, pelajaran_sulit_str)
 
         return jsonify({
             'status': 'sukses',
             'kesulitan_diduga': kesulitan_diduga,
             'rekomendasi': rekomendasi,
-            'pelajaran_sulit': pelajaran_sulit,  # Tetap kirim list asli ke frontend
+            'pelajaran_sulit': pelajaran_sulit,
             'dideteksi_asal': dideteksi_asal,
             'jumlah_benar': jumlah_benar,
             'jumlah_salah': jumlah_salah,
@@ -284,7 +277,6 @@ def guru_dashboard():
 def admin_dashboard():
     if not session.get('user') or session.get('user').get('role') != 'admin':
         return redirect(url_for('halaman_utama'))
-    # Kirim data guru awal untuk halaman home
     try:
         with get_db() as db:
             cursor = db.cursor()
@@ -317,12 +309,11 @@ def get_guru():
         page = request.args.get('page', 1, type=int)
         limit = request.args.get('limit', 10, type=int)
         offset = (page - 1) * limit
-        status_filter = request.args.get('status', type=str)
+        status_filter = request.args.get('status', 'all', type=str)  # Default to 'all' if not provided
         
         with get_db() as db:
             cursor = db.cursor()
             
-            # Query dasar
             query = """
                 SELECT nama, kode_akses, kadaluarsa, status, terakhir_diperbarui 
                 FROM guru
@@ -330,23 +321,19 @@ def get_guru():
             count_query = "SELECT COUNT(*) as total FROM guru"
             params = []
             
-            # Tambahkan filter status jika ada
             if status_filter in ['active', 'inactive']:
-                is_active = 1 if status_filter == 'active' else 0
                 query += " WHERE status = %s"
                 count_query += " WHERE status = %s"
-                params.append(is_active)
+                params.append(1 if status_filter == 'active' else 0)
             
-            # Tambahkan pagination
             query += " LIMIT %s OFFSET %s"
             params.extend([limit, offset])
             
-            # Eksekusi query
-            cursor.execute(count_query, params[:1] if status_filter else [])
-            total = cursor.fetchone()['total']
+            cursor.execute(count_query, params[:1] if status_filter in ['active', 'inactive'] else [])
+            total = cursor.fetchone()['total'] if cursor.rowcount > 0 else 0
             
             cursor.execute(query, params)
-            guru_list = cursor.fetchall()
+            guru_list = cursor.fetchall() or []
             
         return jsonify({
             'status': 'sukses',
@@ -355,6 +342,9 @@ def get_guru():
             'page': page,
             'limit': limit
         })
+    except pymysql.Error as db_error:
+        logger.error(f"❌ Database error: {db_error}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan database'}), 500
     except Exception as e:
         logger.error(f"❌ Error saat mengambil daftar guru: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
@@ -379,7 +369,7 @@ def add_guru():
 
         if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', kode_akses):
             return jsonify({'status': 'gagal', 'pesan': 'Kode akses minimal 8 karakter dan harus berisi huruf serta angka'}), 400
-        if datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.now():
+        if datetime.datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.datetime.now():
             return jsonify({'status': 'gagal', 'pesan': 'Kadaluarsa harus di masa depan'}), 400
 
         hashed_kode = bcrypt.hashpw(kode_akses.encode(), bcrypt.gensalt())
@@ -390,6 +380,9 @@ def add_guru():
             db.commit()
         logger.info(f"✅ Akun guru {nama} ditambahkan.")
         return jsonify({'status': 'sukses', 'pesan': 'Akun guru berhasil ditambahkan'})
+    except ValueError as ve:
+        logger.error(f"❌ Error validasi: {ve}")
+        return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
     except Exception as e:
         logger.error(f"❌ Error saat menambah guru: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
@@ -406,7 +399,7 @@ def update_guru():
 
         if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', kode_akses):
             return jsonify({'status': 'gagal', 'pesan': 'Kode akses minimal 8 karakter dan harus berisi huruf serta angka'}), 400
-        if datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.now():
+        if datetime.datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.datetime.now():
             return jsonify({'status': 'gagal', 'pesan': 'Kadaluarsa harus di masa depan'}), 400
 
         hashed_kode = bcrypt.hashpw(kode_akses.encode(), bcrypt.gensalt())
@@ -417,6 +410,9 @@ def update_guru():
             db.commit()
         logger.info(f"✅ Kode akses guru {nama} diperbarui.")
         return jsonify({'status': 'sukses', 'pesan': 'Kode akses berhasil diperbarui'})
+    except ValueError as ve:
+        logger.error(f"❌ Error validasi: {ve}")
+        return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
     except Exception as e:
         logger.error(f"❌ Error saat memperbarui guru: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
@@ -431,34 +427,37 @@ def toggle_guru_status():
         if 'nama' not in data:
             return jsonify({'status': 'gagal', 'pesan': 'Nama guru wajib diisi'}), 400
         
-        try:
-            with get_db() as db:
-                cursor = db.cursor()
-                # Toggle status (0/1)
-                cursor.execute("""
-                    UPDATE guru 
-                    SET status = NOT status, 
-                        terakhir_diperbarui = NOW() 
-                    WHERE nama = %s
-                """, (data['nama'],))
-                db.commit()
-                
-                # Ambil status baru untuk response
-                cursor.execute("SELECT status FROM guru WHERE nama = %s", (data['nama'],))
-                result = cursor.fetchone()
-                
-            return jsonify({
-                'status': 'sukses',
-                'pesan': 'Status berhasil diubah',
-                'status_baru': bool(result['status'])
-            })
-        except pymysql.Error as db_error:
-            logger.error(f"❌ Database error: {db_error}")
-            return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan database'}), 500
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("""
+                UPDATE guru 
+                SET status = NOT status, 
+                    terakhir_diperbarui = NOW() 
+                WHERE nama = %s
+            """, (data['nama'],))
+            db.commit()
             
+            cursor.execute("SELECT status FROM guru WHERE nama = %s", (data['nama'],))
+            result = cursor.fetchone()
+            
+        return jsonify({
+            'status': 'sukses',
+            'pesan': 'Status berhasil diubah',
+            'status_baru': bool(result['status'])
+        })
+    except pymysql.Error as db_error:
+        logger.error(f"❌ Database error: {db_error}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan database'}), 500
     except Exception as e:
         logger.error(f"❌ Error saat mengubah status guru: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500    
+
+@app.route('/admin/logout', methods=['GET'])
+def admin_logout():
+    if session.get('user'):
+        logger.info(f"✅ Logout berhasil untuk user: {session['user'].get('username') or session['user'].get('nama')}")
+        session.pop('user', None)  # Hapus session
+    return redirect(url_for('halaman_utama'))
 
 if __name__ == '__main__':
     logger.info("✅ Memulai Flask App di localhost:5000 ...")

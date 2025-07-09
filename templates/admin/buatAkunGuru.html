@@ -32,20 +32,25 @@
             <form id="createAccountForm">
                 <label>Nama:</label>
                 <input type="text" id="guruNama" required>
+                <span id="namaGuideline" class="guideline">Nama wajib diisi</span>
                 <span id="namaError" class="error-message"></span>
 
                 <label>Kode Akses:</label>
                 <div class="password-container">
-                    <input type="password" id="guruKode" required>
+                    <input type="password" id="guruKode" required autocomplete="new-password">
                     <span id="togglePassword" class="toggle-password">👁️</span>
                 </div>
+                <span id="kodeGuideline" class="guideline">Kode akses minimal 8 karakter dan harus berisi huruf serta angka</span>
                 <span id="kodeError" class="error-message"></span>
 
                 <label>Kadaluarsa:</label>
-                <input type="date" id="guruKadaluarsa" required>
+                <input type="date" id="guruKadaluarsa" required min="{{ current_date }}">
                 <span id="kadaluarsaError" class="error-message"></span>
 
-                <button type="submit" id="submitBtn" disabled>Submit</button>
+                <button type="submit" id="submitBtn" disabled>
+                    <span id="submitText">Submit</span>
+                    <span id="loadingSpinner" class="spinner" style="display: none;">⏳</span>
+                </button>
             </form>
         </div>
     </div>
@@ -59,6 +64,21 @@
                 <button onclick="closePopup()">Tidak</button>
             </div>
         </div>
+    </div>
+
+    <div id="successPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Sukses</h3>
+            <p>Pesan akan muncul di sini</p>
+            <div class="popup-buttons">
+                <button onclick="closePopup()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay Loading untuk halaman -->
+    <div id="pageLoadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
     </div>
 
     <script src="{{ url_for('static', filename='adminDashboard.js') }}"></script>

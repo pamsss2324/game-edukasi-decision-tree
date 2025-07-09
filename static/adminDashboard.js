@@ -2,7 +2,9 @@
 function updateDatetime() {
     const now = new Date();
     const datetime = document.getElementById('datetime');
-    datetime.textContent = now.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    if (datetime) {
+        datetime.textContent = now.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
 }
 setInterval(updateDatetime, 60000); // Update every minute
 updateDatetime();
@@ -16,6 +18,7 @@ function loadGuruHome(page = 1, limit = 10, filter = 'all') {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Home data:', data);
         if (data.status === 'sukses') {
             const table = document.getElementById('guruTable');
             const tbody = table.getElementsByTagName('tbody')[0];
@@ -42,7 +45,7 @@ function loadGuruHome(page = 1, limit = 10, filter = 'all') {
             alert(data.pesan);
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Error loading Home data:', error));
 }
 
 // Load guru data with pagination for Atur Kode
@@ -54,6 +57,7 @@ function loadGuruManage(page = 1, limit = 10, filter = 'all') {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Manage data:', data);
         if (data.status === 'sukses') {
             const table = document.getElementById('manageTable');
             const tbody = table.getElementsByTagName('tbody')[0];
@@ -69,7 +73,7 @@ function loadGuruManage(page = 1, limit = 10, filter = 'all') {
                     <td>
                         <span class="status-badge status-${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span>
                     </td>
-                    <td>${guru.updated_at || 'N/A'}</td>
+                    <td>${guru.terakhir_diperbarui || 'N/A'}</td>
                     <td><button class="action-btn" onclick="openEditPopup('${guru.nama}', '${guru.kode_akses}', '${guru.kadaluarsa}')">Edit</button></td>
                 `;
                 tbody.appendChild(tr);
@@ -79,7 +83,7 @@ function loadGuruManage(page = 1, limit = 10, filter = 'all') {
             alert(data.pesan);
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Error loading Manage data:', error));
 }
 
 // Search and filter functionality for Home
@@ -126,17 +130,18 @@ function setupToggleSwitchesHome() {
             const kode = this.getAttribute('data-kode');
             const kadaluarsa = this.getAttribute('data-kadaluarsa');
             const newStatus = this.checked ? 'aktif' : 'nonaktif';
-            fetch('/admin/update_status', {
+            fetch('/admin/toggle_guru_status', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ nama, kode_akses: kode, kadaluarsa, status: newStatus })
             })
             .then(response => response.json())
             .then(data => {
+                console.log('Toggle status response:', data);
                 if (data.status !== 'sukses') alert(data.pesan);
                 else loadGuruHome(1, 10, document.getElementById('statusFilter').value);
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error toggling status:', error));
         });
     });
 }
@@ -144,6 +149,7 @@ function setupToggleSwitchesHome() {
 // Pagination for Home
 function setupPaginationHome(totalItems, currentPage, limit, filter) {
     const pagination = document.getElementById('pagination-home');
+    if (!pagination) return;
     pagination.innerHTML = '';
     const totalPages = Math.ceil(totalItems / limit);
 
@@ -173,6 +179,7 @@ function setupPaginationHome(totalItems, currentPage, limit, filter) {
 // Pagination for Atur Kode
 function setupPaginationManage(totalItems, currentPage, limit, filter) {
     const pagination = document.getElementById('pagination-manage');
+    if (!pagination) return;
     pagination.innerHTML = '';
     const totalPages = Math.ceil(totalItems / limit);
 
@@ -204,170 +211,38 @@ function openEditPopup(nama, kode, kadaluarsa) {
     const popup = document.getElementById('editPopup');
     const editKode = document.getElementById('editKode');
     const editKadaluarsa = document.getElementById('editKadaluarsa');
-    document.getElementById('editNama').value = nama;
-    editKode.value = kode;
-    editKadaluarsa.value = kadaluarsa;
-    popup.classList.remove('hidden');
-    editKode.addEventListener('input', function() {
-        if (editKode.value !== kode) editKadaluarsa.required = true;
-        else editKadaluarsa.required = false;
-        validateEditForm();
-    });
+    if (popup && editKode && editKadaluarsa) {
+        document.getElementById('editNama').value = nama;
+        editKode.value = kode;
+        editKadaluarsa.value = kadaluarsa;
+        popup.classList.remove('hidden');
+        editKode.addEventListener('input', function() {
+            if (editKode.value !== kode) editKadaluarsa.required = true;
+            else editKadaluarsa.required = false;
+            validateEditForm();
+        });
+    }
 }
 
 function validateEditForm() {
     const kode = document.getElementById('editKode');
     const kadaluarsa = document.getElementById('editKadaluarsa');
+    const kodeError = document.getElementById('editKodeError');
+    const kadaluarsaError = document.getElementById('editKadaluarsaError');
+    if (!kode || !kadaluarsa) return;
+
     const kodeValid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(kode.value);
     const kadaluarsaValid = !kadaluarsa.required || (kadaluarsa.value && new Date(kadaluarsa.value) > new Date());
-    document.querySelector('#editForm button[type="submit"]').disabled = !(kodeValid && kadaluarsaValid);
-    if (!kodeValid) kode.style.borderColor = '#F56565';
-    else kode.style.borderColor = '#EDF2F7';
-    if (kadaluarsa.required && !kadaluarsaValid) kadaluarsa.style.borderColor = '#F56565';
-    else kadaluarsa.style.borderColor = '#EDF2F7';
+    const submitBtn = document.querySelector('#editForm button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = !(kodeValid && kadaluarsaValid);
+
+    kodeError.style.display = kodeValid ? 'none' : 'block';
+    kadaluarsaError.style.display = kadaluarsaValid ? 'none' : 'block';
+
+    kode.style.borderColor = kodeValid ? '#EDF2F7' : '#F56565';
+    kadaluarsa.style.borderColor = kadaluarsaValid ? '#EDF2F7' : '#F56565';
 }
 
-document.getElementById('editForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const nama = document.getElementById('editNama').value;
-    const kode = document.getElementById('editKode').value;
-    const kadaluarsa = document.getElementById('editKadaluarsa').value;
-
-    if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(kode)) {
-        alert('Kode akses minimal 8 karakter dan harus berisi huruf serta angka.');
-        return;
-    }
-    if (kadaluarsa && new Date(kadaluarsa) <= new Date()) {
-        alert('Kadaluarsa harus di masa depan.');
-        return;
-    }
-
-    fetch('/admin/update_guru', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ nama, kode_akses: kode, kadaluarsa })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'sukses') {
-            alert(data.pesan);
-            closePopup();
-            loadGuruManage(1, 10, document.getElementById('manageStatusFilter').value);
-        } else {
-            alert(data.pesan);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-});
-
-// Logout functionality
-function confirmLogout() {
-    window.location.href = '{{ url_for("halaman_utama") }}';
-}
-
-function closePopup() {
-    document.querySelectorAll('.popup').forEach(popup => popup.classList.add('hidden'));
-    if (document.getElementById('editPopup').classList.contains('hidden')) {
-        document.getElementById('editKode').removeEventListener('input', validateEditForm);
-    }
-}
-
-// Navigation
-document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (item.classList.contains('logout')) {
-            document.getElementById('logoutPopup').classList.remove('hidden');
-        }
-    });
-});
-
-// Load initial data for Home
-window.onload = () => {
-    if (document.getElementById('home-section')) {
-        loadGuruHome(1, 10, 'all');
-        setupSearchAndFilterHome();
-    }
-    if (document.getElementById('manageTable')) {
-        loadGuruManage(1, 10, 'all');
-        setupSearchAndFilterManage();
-    }
-    if (document.getElementById('createAccountForm')) {
-        setupCreateAccountForm();
-    }
-};
-
-// ... (kode sebelumnya tetap sama hingga window.onload)
-
-// Form validation for Buat Akun Guru
-function setupCreateAccountForm() {
-    const form = document.getElementById('createAccountForm');
-    if (!form) return;
-
-    const nama = document.getElementById('guruNama');
-    const kode = document.getElementById('guruKode');
-    const kadaluarsa = document.getElementById('guruKadaluarsa');
-    const submitBtn = document.getElementById('submitBtn');
-    const namaError = document.getElementById('namaError');
-    const kodeError = document.getElementById('kodeError');
-    const kadaluarsaError = document.getElementById('kadaluarsaError');
-    const togglePassword = document.getElementById('togglePassword');
-
-    if (!nama || !kode || !kadaluarsa || !submitBtn || !namaError || !kodeError || !kadaluarsaError || !togglePassword) {
-        console.error('Salah satu elemen form tidak ditemukan');
-        return;
-    }
-
-    function validateForm() {
-        const kodeValid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(kode.value);
-        const kadaluarsaValid = kadaluarsa.value && new Date(kadaluarsa.value) > new Date();
-        const isValid = nama.value.trim() && kodeValid && kadaluarsaValid;
-
-        submitBtn.disabled = !isValid;
-
-        namaError.textContent = nama.value.trim() ? '' : 'Nama wajib diisi';
-        kodeError.textContent = kodeValid ? '' : 'Kode akses minimal 8 karakter dan harus berisi huruf serta angka';
-        kadaluarsaError.textContent = kadaluarsaValid ? '' : 'Kadaluarsa harus di masa depan';
-
-        nama.style.borderColor = nama.value.trim() ? '#EDF2F7' : '#F56565';
-        kode.style.borderColor = kodeValid ? '#EDF2F7' : '#F56565';
-        kadaluarsa.style.borderColor = kadaluarsaValid ? '#EDF2F7' : '#F56565';
-    }
-
-    togglePassword.addEventListener('click', function() {
-        const type = kode.getAttribute('type') === 'password' ? 'text' : 'password';
-        kode.setAttribute('type', type);
-        this.textContent = type === 'password' ? '👁️' : '🙈';
-        this.style.transform = type === 'password' ? 'scale(1)' : 'scale(1.1)';
-        this.style.opacity = type === 'password' ? '1' : '0.8';
-    });
-
-    [nama, kode, kadaluarsa].forEach(input => {
-        input.addEventListener('input', validateForm);
-    });
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (!submitBtn.disabled) {
-            fetch('/admin/add_guru', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ nama: nama.value, kode_akses: kode.value, kadaluarsa: kadaluarsa.value })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.pesan);
-                if (data.status === 'sukses') form.reset();
-                validateForm();
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    });
-
-    validateForm();
-}
-
-// Edit popup for Atur Kode
 function setupEditForm() {
     const editForm = document.getElementById('editForm');
     if (!editForm) return;
@@ -394,6 +269,7 @@ function setupEditForm() {
         })
         .then(response => response.json())
         .then(data => {
+            console.log('Update response:', data);
             if (data.status === 'sukses') {
                 alert(data.pesan);
                 closePopup();
@@ -402,57 +278,185 @@ function setupEditForm() {
                 alert(data.pesan);
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error updating guru:', error));
     });
 }
 
-function validateEditForm() {
-    const kode = document.getElementById('editKode');
-    const kadaluarsa = document.getElementById('editKadaluarsa');
-    if (!kode || !kadaluarsa) return;
+// Form validation for Buat Akun Guru
+function setupCreateAccountForm() {
+    console.log('Setup Create Account Form initialized');
+    const form = document.getElementById('createAccountForm');
+    if (!form) {
+        console.error('Form not found');
+        return;
+    }
 
-    const kodeValid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(kode.value);
-    const kadaluarsaValid = !kadaluarsa.required || (kadaluarsa.value && new Date(kadaluarsa.value) > new Date());
-    const submitBtn = editForm.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = !(kodeValid && kadaluarsaValid);
+    const nama = document.getElementById('guruNama');
+    const kode = document.getElementById('guruKode');
+    const kadaluarsa = document.getElementById('guruKadaluarsa');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const namaError = document.getElementById('namaError');
+    const kodeError = document.getElementById('kodeError');
+    const kadaluarsaError = document.getElementById('kadaluarsaError');
+    const togglePassword = document.getElementById('togglePassword');
+    const successPopup = document.getElementById('successPopup');
+    const pageLoadingOverlay = document.getElementById('pageLoadingOverlay');
 
-    if (!kodeValid) kode.style.borderColor = '#F56565';
-    else kode.style.borderColor = '#EDF2F7';
-    if (kadaluarsa.required && !kadaluarsaValid) kadaluarsa.style.borderColor = '#F56565';
-    else kadaluarsa.style.borderColor = '#EDF2F7';
+    if (!nama || !kode || !kadaluarsa || !submitBtn || !namaError || !kodeError || !kadaluarsaError || !togglePassword || !successPopup || !pageLoadingOverlay) {
+        console.error('One or more form elements not found:', { nama, kode, kadaluarsa, submitBtn, namaError, kodeError, kadaluarsaError, togglePassword, successPopup, pageLoadingOverlay });
+        return;
+    }
+
+    function validateForm() {
+        const kodeValid = kode.value ? /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(kode.value) : true;
+        const kadaluarsaValid = kadaluarsa.value ? new Date(kadaluarsa.value) > new Date() : true;
+        const isValid = (nama.value.trim() || !nama.value) && kodeValid && kadaluarsaValid;
+
+        submitBtn.disabled = !isValid;
+
+        namaError.style.display = nama.value.trim() ? 'none' : 'block';
+        kodeError.style.display = kodeValid ? 'none' : 'block';
+        kadaluarsaError.style.display = kadaluarsaValid ? 'none' : 'block';
+
+        nama.style.borderColor = nama.value.trim() ? '#EDF2F7' : '#F56565';
+        kode.style.borderColor = kodeValid ? '#EDF2F7' : '#F56565';
+        kadaluarsa.style.borderColor = kadaluarsaValid ? '#EDF2F7' : '#F56565';
+    }
+
+    togglePassword.addEventListener('click', function() {
+        const type = kode.getAttribute('type') === 'password' ? 'text' : 'password';
+        kode.setAttribute('type', type);
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+        this.style.transform = type === 'password' ? 'translateY(-50%) scale(1)' : 'translateY(-50%) scale(1.05)';
+        this.style.opacity = type === 'password' ? '1' : '0.8';
+    });
+
+    [nama, kode, kadaluarsa].forEach(input => {
+        input.addEventListener('input', validateForm);
+    });
+
+    form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    console.log('Form submitted');
+    if (!submitBtn.disabled) {
+        submitText.style.display = 'none';
+        loadingSpinner.style.display = 'inline-block';
+        submitBtn.disabled = true;
+
+        fetch('/admin/add_guru', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ nama: nama.value, kode_akses: kode.value, kadaluarsa: kadaluarsa.value })
+        })
+        .then(response => {
+            console.log('Fetch response:', response);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetch data:', data);
+            submitText.style.display = 'inline';
+            loadingSpinner.style.display = 'none';
+            submitBtn.disabled = false;
+            if (successPopup && pageLoadingOverlay) { // Tambah pengecekan eksplisit
+                successPopup.classList.remove('hidden');
+                if (data.status === 'sukses') {
+                    successPopup.querySelector('h3').textContent = 'Sukses';
+                    successPopup.querySelector('p').textContent = 'Akun guru berhasil dibuat';
+                    const closeBtn = successPopup.querySelector('button');
+                    closeBtn.onclick = () => {
+                        successPopup.classList.add('hidden');
+                        pageLoadingOverlay.classList.remove('hidden');
+                        setTimeout(() => {
+                            window.location.href = '/admin/adminDashboard';
+                        }, 1000);
+                    };
+                } else {
+                    successPopup.querySelector('h3').textContent = 'Gagal';
+                    successPopup.querySelector('p').textContent = data.pesan || 'Terjadi kesalahan';
+                    const closeBtn = successPopup.querySelector('button');
+                    closeBtn.onclick = () => {
+                        successPopup.classList.add('hidden');
+                    };
+                }
+            } else {
+                console.error('Popup elements not found:', { successPopup, pageLoadingOverlay });
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            submitText.style.display = 'inline';
+            loadingSpinner.style.display = 'none';
+            submitBtn.disabled = false;
+            if (successPopup) {
+                successPopup.classList.remove('hidden');
+                successPopup.querySelector('h3').textContent = 'Gagal';
+                successPopup.querySelector('p').textContent = 'Terjadi kesalahan saat menyimpan data';
+                const closeBtn = successPopup.querySelector('button');
+                closeBtn.onclick = () => {
+                    successPopup.classList.add('hidden');
+                };
+            } else {
+                console.error('Success popup not found');
+            }
+        });
+    }
+});
+
+    // Inisialisasi tanpa validasi awal
+    submitBtn.disabled = true;
 }
 
 // Logout functionality
 function confirmLogout() {
-    window.location.href = '{{ url_for("halaman_utama") }}';
+    console.log('Confirm logout called');
+    const logoutPopup = document.getElementById('logoutPopup');
+    if (logoutPopup) {
+        logoutPopup.classList.remove('hidden');
+        console.log('Logout popup displayed');
+    } else {
+        console.error('Logout popup not found');
+    }
 }
 
 function closePopup() {
     document.querySelectorAll('.popup').forEach(popup => popup.classList.add('hidden'));
-    const editPopup = document.getElementById('editPopup');
-    if (editPopup && editPopup.classList.contains('hidden')) {
-        const editKode = document.getElementById('editKode');
-        if (editKode) editKode.removeEventListener('input', validateEditForm);
-    }
 }
 
-// Navigation
-document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (item.classList.contains('logout')) {
-            const popup = document.getElementById('logoutPopup');
-            if (popup) {
-                popup.classList.remove('hidden');
-            } else {
-                console.error('Popup logout tidak ditemukan');
+function performLogout() {
+    window.location.href = '/admin/logout';
+}
+
+// Toggle dropdown on click
+function setupDropdownToggle() {
+    const dropdowns = document.querySelectorAll('.dropdown');
+    dropdowns.forEach(dropdown => {
+        const dropbtn = dropdown.querySelector('.dropbtn');
+        const dropdownContent = dropdown.querySelector('.dropdown-content');
+        dropbtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isOpen = dropdownContent.style.display === 'block';
+            document.querySelectorAll('.dropdown-content').forEach(content => content.style.display = 'none');
+            if (!isOpen) {
+                dropdownContent.style.display = 'block';
             }
+        });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        const isClickInside = e.target.closest('.dropdown');
+        if (!isClickInside) {
+            document.querySelectorAll('.dropdown-content').forEach(content => content.style.display = 'none');
         }
     });
-});
+}
 
 // Load initial data
 window.onload = () => {
+    console.log('Window loaded');
     if (document.getElementById('home-section')) {
         loadGuruHome(1, 10, 'all');
         setupSearchAndFilterHome();
@@ -466,5 +470,26 @@ window.onload = () => {
     }
     if (document.getElementById('createAccountForm')) {
         setupCreateAccountForm();
+    }
+    setupDropdownToggle();
+
+    // Add logout event listener with logging
+    const logoutLinks = document.querySelectorAll('.logout');
+    console.log('Logout links found:', logoutLinks.length);
+    logoutLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            console.log('Logout clicked');
+            e.preventDefault();
+            confirmLogout();
+        });
+    });
+
+    // Inisialisasi tombol logout popup
+    const logoutPopup = document.getElementById('logoutPopup');
+    if (logoutPopup) {
+        const yesButton = logoutPopup.querySelector('.popup-buttons button:first-child');
+        const noButton = logoutPopup.querySelector('.popup-buttons button:last-child');
+        if (yesButton) yesButton.addEventListener('click', performLogout);
+        if (noButton) noButton.addEventListener('click', closePopup);
     }
 };
