@@ -35,8 +35,8 @@
                     <input type="text" id="guruSearch" placeholder="Cari guru..." class="search-bar">
                     <select id="statusFilter" class="filter-select">
                         <option value="all">Semua Status</option>
-                        <option value="aktif">Aktif</option>
-                        <option value="nonaktif">Nonaktif</option>
+                        <option value="active">Aktif</option>
+                        <option value="inactive">Nonaktif</option>
                     </select>
                 </div>
                 <div class="table-wrapper">
@@ -66,6 +66,18 @@
                 <button onclick="closePopup()">Tidak</button>
             </div>
         </div>
+    </div>
+
+    <div id="successPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Status</h3>
+            <p>Pesan</p>
+            <button onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+    <div id="pageLoadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
     </div>
 
     <script src="{{ url_for('static', filename='adminDashboard.js') }}"></script>

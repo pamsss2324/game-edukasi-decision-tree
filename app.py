@@ -7,14 +7,15 @@ import os
 import traceback
 import pandas as pd
 import joblib
+import re
+import datetime
+import logging
+from cryptography.fernet import Fernet
+from dotenv import load_dotenv
 from database import save_siswa, save_hasil_kuis, get_db, save_login_log
 from models import calculate_asal_features, analyze_kesulitan
 from config import Config
-import logging
-import hashlib
 import bcrypt
-import re
-import datetime
 
 # Konfigurasi logging
 logging.basicConfig(level=logging.INFO)
@@ -27,6 +28,11 @@ CORS(app)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+# Konfigurasi Fernet untuk enkripsi
+load_dotenv()
+app.config['FERNET_KEY'] = os.getenv('FERNET_KEY') or Fernet.generate_key()
+fernet = Fernet(app.config['FERNET_KEY'])
 
 # Muat model yang telah disimpan
 try:
@@ -49,8 +55,11 @@ def validate_guru_login(nama, kode_akses):
             cursor.execute("SELECT kode_akses FROM guru WHERE nama = %s AND kadaluarsa > NOW()", (nama,))
             result = cursor.fetchone()
             if result:
-                stored_kode = result['kode_akses']
-                return bcrypt.checkpw(kode_akses.encode(), stored_kode.encode())
+                try:
+                    stored_kode = fernet.decrypt(result['kode_akses'].encode()).decode()
+                    return stored_kode == kode_akses
+                except:
+                    return False
             return False
     except Exception as e:
         logger.error(f"❌ Error saat validasi login guru: {e}")
@@ -67,8 +76,7 @@ def get_hasil_kuis_by_siswa(id_siswa):
     try:
         with get_db() as db:
             cursor = db.cursor()
-            query = "SELECT * FROM hasil_kuis WHERE id_siswa = %s ORDER BY tanggal DESC"
-            cursor.execute(query, (id_siswa,))
+            cursor.execute("SELECT * FROM hasil_kuis WHERE id_siswa = %s ORDER BY tanggal DESC", (id_siswa,))
             results = cursor.fetchall()
             return results
     except Exception as e:
@@ -280,13 +288,25 @@ def admin_dashboard():
     try:
         with get_db() as db:
             cursor = db.cursor()
-            cursor.execute("SELECT nama, kode_akses, kadaluarsa, status FROM guru LIMIT 10")
+            cursor.execute("SELECT nama, kode_akses, kadaluarsa, status FROM guru LIMIT 8")
             guru_list = cursor.fetchall()
-        return render_template('admin/adminDashboard.html', initial_guru=guru_list)
+            decrypted_guru_list = []
+            for guru in guru_list:
+                try:
+                    kode_akses = fernet.decrypt(guru['kode_akses'].encode()).decode()
+                except:
+                    kode_akses = guru['kode_akses'][:2] + '*' * 6
+                decrypted_guru_list.append({
+                    'nama': guru['nama'],
+                    'kode_akses': kode_akses,
+                    'kadaluarsa': guru['kadaluarsa'],
+                    'status': guru['status']
+                })
+        return render_template('admin/adminDashboard.html', initial_guru=decrypted_guru_list)
     except Exception as e:
         logger.error(f"Error loading admin dashboard: {e}")
         return render_template('admin/adminDashboard.html', initial_guru=[])
-    
+
 @app.route('/admin/atur-kode-akses', endpoint='admin_atur_kode_akses')
 def atur_kode_akses():
     if not session.get('user') or session.get('user').get('role') != 'admin':
@@ -296,7 +316,20 @@ def atur_kode_akses():
             cursor = db.cursor()
             cursor.execute("SELECT nama, kode_akses, kadaluarsa, status, terakhir_diperbarui FROM guru LIMIT 10")
             guru_list = cursor.fetchall()
-        return render_template('admin/aturKodeAkses.html', initial_guru=guru_list)
+            decrypted_guru_list = []
+            for guru in guru_list:
+                try:
+                    kode_akses = fernet.decrypt(guru['kode_akses'].encode()).decode()
+                except:
+                    kode_akses = guru['kode_akses'][:2] + '*' * 6
+                decrypted_guru_list.append({
+                    'nama': guru['nama'],
+                    'kode_akses': kode_akses,
+                    'kadaluarsa': guru['kadaluarsa'],
+                    'status': guru['status'],
+                    'terakhir_diperbarui': guru['terakhir_diperbarui']
+                })
+        return render_template('admin/aturKodeAkses.html', initial_guru=decrypted_guru_list)
     except Exception as e:
         logger.error(f"Error loading atur kode akses: {e}")
         return render_template('admin/aturKodeAkses.html', initial_guru=[])
@@ -307,34 +340,56 @@ def get_guru():
         return redirect(url_for('halaman_utama'))
     try:
         page = request.args.get('page', 1, type=int)
-        limit = request.args.get('limit', 10, type=int)
+        limit = request.args.get('limit', 8, type=int)
         offset = (page - 1) * limit
-        status_filter = request.args.get('status', 'all', type=str)  # Default to 'all' if not provided
-        
+        status_filter = request.args.get('status', 'all', type=str)
+        search = request.args.get('search', '', type=str)
+        logger.info(f"Received get_guru request: page={page}, limit={limit}, status={status_filter}, search={search}")
+
         with get_db() as db:
             cursor = db.cursor()
-            
             query = """
                 SELECT nama, kode_akses, kadaluarsa, status, terakhir_diperbarui 
                 FROM guru
+                WHERE 1=1
             """
-            count_query = "SELECT COUNT(*) as total FROM guru"
+            count_query = "SELECT COUNT(*) as total FROM guru WHERE 1=1"
             params = []
-            
+
             if status_filter in ['active', 'inactive']:
-                query += " WHERE status = %s"
-                count_query += " WHERE status = %s"
+                query += " AND status = %s"
+                count_query += " AND status = %s"
                 params.append(1 if status_filter == 'active' else 0)
-            
+
+            if search:
+                query += " AND LOWER(nama) LIKE %s"
+                count_query += " AND LOWER(nama) LIKE %s"
+                params.append(f"%{search.lower()}%")
+
             query += " LIMIT %s OFFSET %s"
             params.extend([limit, offset])
-            
-            cursor.execute(count_query, params[:1] if status_filter in ['active', 'inactive'] else [])
+
+            logger.info(f"Executing count query: {count_query} with params: {params[:-2]}")
+            cursor.execute(count_query, params[:-2] if search or status_filter in ['active', 'inactive'] else [])
             total = cursor.fetchone()['total'] if cursor.rowcount > 0 else 0
-            
+
+            logger.info(f"Executing query: {query} with params: {params}")
             cursor.execute(query, params)
-            guru_list = cursor.fetchall() or []
-            
+            guru_list = []
+            for row in cursor.fetchall():
+                try:
+                    kode_akses = fernet.decrypt(row['kode_akses'].encode()).decode()
+                except:
+                    kode_akses = row['kode_akses'][:2] + '*' * 6
+                guru_list.append({
+                    'nama': row['nama'],
+                    'kode_akses': kode_akses,
+                    'kadaluarsa': row['kadaluarsa'],
+                    'status': row['status'],
+                    'terakhir_diperbarui': row['terakhir_diperbarui']
+                })
+            logger.info(f"Returning guru_list: {guru_list}")
+
         return jsonify({
             'status': 'sukses',
             'guru': guru_list,
@@ -367,16 +422,22 @@ def add_guru():
         kode_akses = data['kode_akses']
         kadaluarsa = data['kadaluarsa']
 
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT nama FROM guru WHERE nama = %s", (nama,))
+            if cursor.fetchone():
+                return jsonify({'status': 'gagal', 'pesan': 'Nama guru sudah ada'}), 400
+
         if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', kode_akses):
             return jsonify({'status': 'gagal', 'pesan': 'Kode akses minimal 8 karakter dan harus berisi huruf serta angka'}), 400
         if datetime.datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.datetime.now():
             return jsonify({'status': 'gagal', 'pesan': 'Kadaluarsa harus di masa depan'}), 400
 
-        hashed_kode = bcrypt.hashpw(kode_akses.encode(), bcrypt.gensalt())
+        encrypted_kode = fernet.encrypt(kode_akses.encode()).decode()
         with get_db() as db:
             cursor = db.cursor()
             cursor.execute("INSERT INTO guru (nama, kode_akses, kadaluarsa) VALUES (%s, %s, %s)",
-                          (nama, hashed_kode, kadaluarsa))
+                          (nama, encrypted_kode, kadaluarsa))
             db.commit()
         logger.info(f"✅ Akun guru {nama} ditambahkan.")
         return jsonify({'status': 'sukses', 'pesan': 'Akun guru berhasil ditambahkan'})
@@ -399,69 +460,48 @@ def update_guru():
 
         if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', kode_akses):
             return jsonify({'status': 'gagal', 'pesan': 'Kode akses minimal 8 karakter dan harus berisi huruf serta angka'}), 400
-        if datetime.datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.datetime.now():
+        if kadaluarsa and datetime.datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.datetime.now():
             return jsonify({'status': 'gagal', 'pesan': 'Kadaluarsa harus di masa depan'}), 400
 
-        hashed_kode = bcrypt.hashpw(kode_akses.encode(), bcrypt.gensalt())
+        encrypted_kode = fernet.encrypt(kode_akses.encode()).decode()
         with get_db() as db:
             cursor = db.cursor()
-            cursor.execute("UPDATE guru SET kode_akses = %s, kadaluarsa = %s WHERE nama = %s",
-                          (hashed_kode, kadaluarsa, nama))
+            cursor.execute("UPDATE guru SET kode_akses = %s, kadaluarsa = %s, terakhir_diperbarui = NOW() WHERE nama = %s",
+                          (encrypted_kode, kadaluarsa, nama))
             db.commit()
-        logger.info(f"✅ Kode akses guru {nama} diperbarui.")
-        return jsonify({'status': 'sukses', 'pesan': 'Kode akses berhasil diperbarui'})
+        logger.info(f"✅ Akun guru {nama} diperbarui.")
+        return jsonify({'status': 'sukses', 'pesan': 'Akun guru berhasil diperbarui'})
     except ValueError as ve:
         logger.error(f"❌ Error validasi: {ve}")
         return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
     except Exception as e:
         logger.error(f"❌ Error saat memperbarui guru: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
-    
+
 @app.route('/admin/toggle_guru_status', methods=['POST'])
 def toggle_guru_status():
     if not session.get('user') or session.get('user').get('role') != 'admin':
-        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
-    
+        return redirect(url_for('halaman_utama'))
     try:
         data = request.get_json()
-        if 'nama' not in data:
-            return jsonify({'status': 'gagal', 'pesan': 'Nama guru wajib diisi'}), 400
-        
+        nama = data['nama']
+        status = 1 if data['status'] == 'aktif' else 0
+
         with get_db() as db:
             cursor = db.cursor()
-            cursor.execute("""
-                UPDATE guru 
-                SET status = NOT status, 
-                    terakhir_diperbarui = NOW() 
-                WHERE nama = %s
-            """, (data['nama'],))
+            cursor.execute("UPDATE guru SET status = %s, terakhir_diperbarui = NOW() WHERE nama = %s",
+                          (status, nama))
             db.commit()
-            
-            cursor.execute("SELECT status FROM guru WHERE nama = %s", (data['nama'],))
-            result = cursor.fetchone()
-            
-        return jsonify({
-            'status': 'sukses',
-            'pesan': 'Status berhasil diubah',
-            'status_baru': bool(result['status'])
-        })
-    except pymysql.Error as db_error:
-        logger.error(f"❌ Database error: {db_error}")
-        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan database'}), 500
+        logger.info(f"✅ Status guru {nama} diubah menjadi {data['status']}.")
+        return jsonify({'status': 'sukses', 'pesan': 'Status guru berhasil diubah'})
     except Exception as e:
-        logger.error(f"❌ Error saat mengubah status guru: {e}")
-        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500    
+        logger.error(f"❌ Error saat mengedit status guru: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
 
-@app.route('/admin/logout', methods=['GET'])
+@app.route('/admin/logout')
 def admin_logout():
-    if session.get('user'):
-        logger.info(f"✅ Logout berhasil untuk user: {session['user'].get('username') or session['user'].get('nama')}")
-        session.pop('user', None)  # Hapus session
+    session.pop('user', None)
     return redirect(url_for('halaman_utama'))
 
 if __name__ == '__main__':
-    logger.info("✅ Memulai Flask App di localhost:5000 ...")
-    try:
-        app.run(debug=True, host='0.0.0.0', port=5000)
-    except Exception as e:
-        logger.error(f"❌ Gagal memulai aplikasi: {e}")
+    app.run(debug=True)

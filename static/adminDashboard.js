@@ -1,3 +1,5 @@
+let debounceTimeout;
+
 // Update datetime real-time
 function updateDatetime() {
     const now = new Date();
@@ -9,16 +11,36 @@ function updateDatetime() {
 setInterval(updateDatetime, 60000); // Update every minute
 updateDatetime();
 
-// Load guru data with pagination for Home
-function loadGuruHome(page = 1, limit = 10, filter = 'all') {
+// Show error popup
+function showErrorPopup(message) {
+    const successPopup = document.getElementById('successPopup');
+    if (successPopup) {
+        successPopup.querySelector('h3').textContent = 'Gagal';
+        successPopup.querySelector('p').textContent = message;
+        successPopup.classList.remove('hidden');
+        const closeBtn = successPopup.querySelector('button');
+        closeBtn.onclick = () => successPopup.classList.add('hidden');
+    } else {
+        alert(message);
+    }
+}
+
+// Load data guru dengan paginasi untuk Home
+function loadGuruHome(page = 1, limit = 8, filter = 'all', search = '') {
     const offset = (page - 1) * limit;
-    fetch(`/admin/get_guru?page=${page}&limit=${limit}&offset=${offset}&status=${filter}`, {
+    const pageLoadingOverlay = document.getElementById('pageLoadingOverlay');
+    if (pageLoadingOverlay) pageLoadingOverlay.classList.remove('hidden');
+    
+    console.log(`[loadGuruHome] Fetching data: page=${page}, limit=${limit}, offset=${offset}, filter=${filter}, search=${search}`);
+    
+    fetch(`/admin/get_guru?page=${page}&limit=${limit}&offset=${offset}&status=${encodeURIComponent(filter)}&search=${encodeURIComponent(search)}`, {
         method: 'GET',
         headers: {'Content-Type': 'application/json'}
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Home data:', data);
+        if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden');
+        console.log('[loadGuruHome] Response:', data);
         if (data.status === 'sukses') {
             const table = document.getElementById('guruTable');
             const tbody = table.getElementsByTagName('tbody')[0];
@@ -26,7 +48,7 @@ function loadGuruHome(page = 1, limit = 10, filter = 'all') {
             data.guru.forEach(guru => {
                 const tr = document.createElement('tr');
                 const status = new Date(guru.kadaluarsa) > new Date() ? 'aktif' : 'nonaktif';
-                const maskedCode = guru.kode_akses.slice(0, 2) + '*'.repeat(guru.kode_akses.length - 2);
+                const maskedCode = guru.kode_akses.slice(0, 2) + '*'.repeat(6); // Selalu 8 karakter
                 tr.innerHTML = `
                     <td>${guru.nama}</td>
                     <td>${maskedCode}</td>
@@ -40,24 +62,34 @@ function loadGuruHome(page = 1, limit = 10, filter = 'all') {
                 tbody.appendChild(tr);
             });
             setupToggleSwitchesHome();
-            setupPaginationHome(data.total, page, limit, filter);
+            setupPaginationHome(data.total, page, limit, filter, search);
         } else {
-            alert(data.pesan);
+            showErrorPopup(data.pesan);
         }
     })
-    .catch(error => console.error('Error loading Home data:', error));
+    .catch(error => {
+        if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden');
+        console.error('[loadGuruHome] Error:', error);
+        showErrorPopup('Terjamin kesalahan saat memuat data');
+    });
 }
 
-// Load guru data with pagination for Atur Kode
-function loadGuruManage(page = 1, limit = 10, filter = 'all') {
+// Load data guru dengan paginasi untuk Atur Kode
+function loadGuruManage(page = 1, limit = 10, filter = 'all', search = '') {
     const offset = (page - 1) * limit;
-    fetch(`/admin/get_guru?page=${page}&limit=${limit}&offset=${offset}&status=${filter}`, {
+    const pageLoadingOverlay = document.getElementById('pageLoadingOverlay');
+    if (pageLoadingOverlay) pageLoadingOverlay.classList.remove('hidden');
+    
+    console.log(`[loadGuruManage] Fetching data: page=${page}, limit=${limit}, offset=${offset}, filter=${filter}, search=${search}`);
+    
+    fetch(`/admin/get_guru?page=${page}&limit=${limit}&offset=${offset}&status=${encodeURIComponent(filter)}&search=${encodeURIComponent(search)}`, {
         method: 'GET',
         headers: {'Content-Type': 'application/json'}
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Manage data:', data);
+        if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden');
+        console.log('[loadGuruManage] Response:', data);
         if (data.status === 'sukses') {
             const table = document.getElementById('manageTable');
             const tbody = table.getElementsByTagName('tbody')[0];
@@ -65,7 +97,7 @@ function loadGuruManage(page = 1, limit = 10, filter = 'all') {
             data.guru.forEach(guru => {
                 const tr = document.createElement('tr');
                 const status = new Date(guru.kadaluarsa) > new Date() ? 'aktif' : 'nonaktif';
-                const maskedCode = guru.kode_akses.slice(0, 2) + '*'.repeat(guru.kode_akses.length - 2);
+                const maskedCode = guru.kode_akses.slice(0, 2) + '*'.repeat(6); // Selalu 8 karakter
                 tr.innerHTML = `
                     <td>${guru.nama}</td>
                     <td>${maskedCode}</td>
@@ -78,51 +110,69 @@ function loadGuruManage(page = 1, limit = 10, filter = 'all') {
                 `;
                 tbody.appendChild(tr);
             });
-            setupPaginationManage(data.total, page, limit, filter);
+            setupPaginationManage(data.total, page, limit, filter, search);
         } else {
-            alert(data.pesan);
+            showErrorPopup(data.pesan);
         }
     })
-    .catch(error => console.error('Error loading Manage data:', error));
+    .catch(error => {
+        if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden');
+        console.error('[loadGuruManage] Error:', error);
+        showErrorPopup('Terjamin kesalahan saat memuat data');
+    });
 }
 
-// Search and filter functionality for Home
+// Pencarian dan filter untuk Home
 function setupSearchAndFilterHome() {
     const searchBar = document.getElementById('guruSearch');
     const statusFilter = document.getElementById('statusFilter');
-    let debounceTimeout;
-
+    if (!searchBar || !statusFilter) {
+        console.error('[setupSearchAndFilterHome] Elemen tidak ditemukan:', { searchBar, statusFilter });
+        return;
+    }
     searchBar.addEventListener('input', () => {
+        const searchValue = searchBar.value.trim();
+        console.log('[setupSearchAndFilterHome] Search input:', searchValue);
         clearTimeout(debounceTimeout);
         debounceTimeout = setTimeout(() => {
-            loadGuruHome(1, 10, statusFilter.value);
-        }, 300);
+            console.log('[setupSearchAndFilterHome] Calling loadGuruHome dengan:', { page: 1, limit: 8, filter: statusFilter.value, search: searchValue });
+            loadGuruHome(1, 8, statusFilter.value, searchValue);
+        }, 500);
     });
 
     statusFilter.addEventListener('change', () => {
-        loadGuruHome(1, 10, statusFilter.value);
+        const searchValue = searchBar.value.trim();
+        console.log('[setupSearchAndFilterHome] Filter changed:', statusFilter.value);
+        loadGuruHome(1, 8, statusFilter.value, searchValue);
     });
 }
 
-// Search and filter functionality for Atur Kode
+// Pencarian dan filter untuk Atur Kode
 function setupSearchAndFilterManage() {
     const searchBar = document.getElementById('manageSearch');
     const statusFilter = document.getElementById('manageStatusFilter');
-    let debounceTimeout;
-
+    if (!searchBar || !statusFilter) {
+        console.error('[setupSearchAndFilterManage] Elemen tidak ditemukan:', { searchBar, statusFilter });
+        return;
+    }
     searchBar.addEventListener('input', () => {
+        const searchValue = searchBar.value.trim();
+        console.log('[setupSearchAndFilterManage] Search input:', searchValue);
         clearTimeout(debounceTimeout);
         debounceTimeout = setTimeout(() => {
-            loadGuruManage(1, 10, statusFilter.value);
-        }, 300);
+            console.log('[setupSearchAndFilterManage] Calling loadGuruManage dengan:', { page: 1, limit: 10, filter: statusFilter.value, search: searchValue });
+            loadGuruManage(1, 10, statusFilter.value, searchValue);
+        }, 500);
     });
 
     statusFilter.addEventListener('change', () => {
-        loadGuruManage(1, 10, statusFilter.value);
+        const searchValue = searchBar.value.trim();
+        console.log('[setupSearchAndFilterManage] Filter changed:', statusFilter.value);
+        loadGuruManage(1, 10, statusFilter.value, searchValue);
     });
 }
 
-// Toggle switch functionality for Home
+// Toggle switch untuk Home
 function setupToggleSwitchesHome() {
     document.querySelectorAll('.toggle-switch').forEach(toggle => {
         toggle.addEventListener('change', function() {
@@ -130,54 +180,62 @@ function setupToggleSwitchesHome() {
             const kode = this.getAttribute('data-kode');
             const kadaluarsa = this.getAttribute('data-kadaluarsa');
             const newStatus = this.checked ? 'aktif' : 'nonaktif';
+            const pageLoadingOverlay = document.getElementById('pageLoadingOverlay');
+            if (pageLoadingOverlay) pageLoadingOverlay.classList.remove('hidden');
+            
             fetch('/admin/toggle_guru_status', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ nama, kode_akses: kode, kadaluarsa, status: newStatus })
+                body: JSON.stringify({ nama, kode_akses: kode, status: newStatus })
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Toggle status response:', data);
-                if (data.status !== 'sukses') alert(data.pesan);
-                else loadGuruHome(1, 10, document.getElementById('statusFilter').value);
+                if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden');
+                console.log('[ToggleStatus] Response:', data);
+                if (data.status !== 'sukses') showErrorPopup(data.pesan);
+                else loadGuruHome(1, 8, document.getElementById('statusFilter').value, document.getElementById('guruSearch').value.trim());
             })
-            .catch(error => console.error('Error toggling status:', error));
+            .catch(error => {
+                if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden');
+                console.error('[Toggle Error]:', error);
+                showErrorPopup('Terjamin kesalahan saat mengubah status');
+            });
         });
     });
 }
 
-// Pagination for Home
-function setupPaginationHome(totalItems, currentPage, limit, filter) {
+// Paginasi untuk Home
+function setupPaginationHome(totalItems, currentPage, limit, filter, search) {
     const pagination = document.getElementById('pagination-home');
     if (!pagination) return;
     pagination.innerHTML = '';
     const totalPages = Math.ceil(totalItems / limit);
 
-    if (totalPages > 1) {
+    if (totalPages > totalPages) {
         const prevButton = document.createElement('button');
         prevButton.textContent = 'Previous';
         prevButton.disabled = currentPage === 1;
-        prevButton.onclick = () => loadGuruHome(currentPage - 1, limit, filter);
+        prevButton.onclick = () => loadGuruHome(currentPage - 1, limit, filter, search);
         pagination.appendChild(prevButton);
 
         for (let i = 1; i <= totalPages; i++) {
             const pageButton = document.createElement('button');
             pageButton.textContent = i;
             pageButton.disabled = i === currentPage;
-            pageButton.onclick = () => loadGuruHome(i, limit, filter);
+            pageButton.onclick = () => loadGuruHome(i, limit, filter, search);
             pagination.appendChild(pageButton);
         }
 
         const nextButton = document.createElement('button');
         nextButton.textContent = 'Next';
         nextButton.disabled = currentPage === totalPages;
-        nextButton.onclick = () => loadGuruHome(currentPage + 1, limit, filter);
+        nextButton.onclick = () => loadGuruHome(currentPage + 1, limit, filter, search);
         pagination.appendChild(nextButton);
     }
 }
 
-// Pagination for Atur Kode
-function setupPaginationManage(totalItems, currentPage, limit, filter) {
+// Paginasi untuk Atur Kode
+function setupPaginationManage(totalItems, currentPage, limit, filter, search) {
     const pagination = document.getElementById('pagination-manage');
     if (!pagination) return;
     pagination.innerHTML = '';
@@ -187,38 +245,36 @@ function setupPaginationManage(totalItems, currentPage, limit, filter) {
         const prevButton = document.createElement('button');
         prevButton.textContent = 'Previous';
         prevButton.disabled = currentPage === 1;
-        prevButton.onclick = () => loadGuruManage(currentPage - 1, limit, filter);
+        prevButton.onclick = () => loadGuruManage(currentPage - 1, limit, filter, search);
         pagination.appendChild(prevButton);
 
         for (let i = 1; i <= totalPages; i++) {
             const pageButton = document.createElement('button');
             pageButton.textContent = i;
             pageButton.disabled = i === currentPage;
-            pageButton.onclick = () => loadGuruManage(i, limit, filter);
+            pageButton.onclick = () => loadGuruManage(i, limit, filter, search);
             pagination.appendChild(pageButton);
         }
 
         const nextButton = document.createElement('button');
         nextButton.textContent = 'Next';
         nextButton.disabled = currentPage === totalPages;
-        nextButton.onclick = () => loadGuruManage(currentPage + 1, limit, filter);
+        nextButton.onclick = () => loadGuruManage(currentPage + 1, limit, filter, search);
         pagination.appendChild(nextButton);
     }
 }
 
-// Edit popup for Atur Kode
+// Edit popup untuk Atur Kode
 function openEditPopup(nama, kode, kadaluarsa) {
     const popup = document.getElementById('editPopup');
     const editKode = document.getElementById('editKode');
     const editKadaluarsa = document.getElementById('editKadaluarsa');
     if (popup && editKode && editKadaluarsa) {
         document.getElementById('editNama').value = nama;
-        editKode.value = kode;
+        editKode.value = kode; // Menampilkan kode asli
         editKadaluarsa.value = kadaluarsa;
         popup.classList.remove('hidden');
         editKode.addEventListener('input', function() {
-            if (editKode.value !== kode) editKadaluarsa.required = true;
-            else editKadaluarsa.required = false;
             validateEditForm();
         });
     }
@@ -237,7 +293,9 @@ function validateEditForm() {
     if (submitBtn) submitBtn.disabled = !(kodeValid && kadaluarsaValid);
 
     kodeError.style.display = kodeValid ? 'none' : 'block';
+    kodeError.textContent = kodeValid ? '' : 'Kode akses minimal 8 karakter, berisi huruf dan angka';
     kadaluarsaError.style.display = kadaluarsaValid ? 'none' : 'block';
+    kadaluarsaError.textContent = kadaluarsaValid ? '' : 'Kadaluarsa harus di masa depan';
 
     kode.style.borderColor = kodeValid ? '#EDF2F7' : '#F56565';
     kadaluarsa.style.borderColor = kadaluarsaValid ? '#EDF2F7' : '#F56565';
@@ -252,13 +310,17 @@ function setupEditForm() {
         const nama = document.getElementById('editNama').value;
         const kode = document.getElementById('editKode').value;
         const kadaluarsa = document.getElementById('editKadaluarsa').value;
+        const pageLoadingOverlay = document.getElementById('pageLoadingOverlay');
+        if (pageLoadingOverlay) pageLoadingOverlay.classList.remove('hidden');
 
         if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(kode)) {
-            alert('Kode akses minimal 8 karakter dan harus berisi huruf serta angka.');
+            showErrorPopup('Kode akses minimal 8 karakter dan harus berisi huruf serta angka.');
+            if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden');
             return;
         }
         if (kadaluarsa && new Date(kadaluarsa) <= new Date()) {
-            alert('Kadaluarsa harus di masa depan.');
+            showErrorPopup('Kadaluarsa harus di masa depan.');
+            if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden');
             return;
         }
 
@@ -269,25 +331,29 @@ function setupEditForm() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Update response:', data);
+            if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden'); // Perbaikan di sini
+            console.log('[Update Guru] Response:', data);
             if (data.status === 'sukses') {
-                alert(data.pesan);
                 closePopup();
-                loadGuruManage(1, 10, document.getElementById('manageStatusFilter').value);
+                loadGuruManage(1, 10, document.getElementById('manageStatusFilter').value, document.getElementById('manageSearch').value.trim());
             } else {
-                alert(data.pesan);
+                showErrorPopup(data.pesan);
             }
         })
-        .catch(error => console.error('Error updating guru:', error));
+        .catch(error => {
+            if (pageLoadingOverlay) pageLoadingOverlay.classList.add('hidden');
+            console.error('[Update Guru] Error:', error);
+            showErrorPopup('Terjadi kesalahan saat menyimpan data');
+        });
     });
 }
 
-// Form validation for Buat Akun Guru
+// Validasi form Buat Akun Guru
 function setupCreateAccountForm() {
-    console.log('Setup Create Account Form initialized');
+    console.log('Setup Form create account initialized');
     const form = document.getElementById('createAccountForm');
     if (!form) {
-        console.error('Form not found');
+        console.error('Form tidak ditemukan');
         return;
     }
 
@@ -305,7 +371,7 @@ function setupCreateAccountForm() {
     const pageLoadingOverlay = document.getElementById('pageLoadingOverlay');
 
     if (!nama || !kode || !kadaluarsa || !submitBtn || !namaError || !kodeError || !kadaluarsaError || !togglePassword || !successPopup || !pageLoadingOverlay) {
-        console.error('One or more form elements not found:', { nama, kode, kadaluarsa, submitBtn, namaError, kodeError, kadaluarsaError, togglePassword, successPopup, pageLoadingOverlay });
+        console.error('[setupCreateAccountForm] Form elemen tidak ditemukan:', { nama, kode, kadaluarsa, submitBtn, namaError, kodeError, kadaluarsaError, togglePassword, successPopup, pageLoadingOverlay });
         return;
     }
 
@@ -338,86 +404,90 @@ function setupCreateAccountForm() {
     });
 
     form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    console.log('Form submitted');
-    if (!submitBtn.disabled) {
-        submitText.style.display = 'none';
-        loadingSpinner.style.display = 'inline-block';
-        submitBtn.disabled = true;
+        e.preventDefault();
+        console.log('[submit form]');
+        if (!submitBtn.disabled) {
+            submitText.style.display = 'none';
+            loadingSpinner.style.display = 'inline-block';
+            submitBtn.disabled = true;
+            pageLoadingOverlay.classList.remove('hidden');
 
-        fetch('/admin/add_guru', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ nama: nama.value, kode_akses: kode.value, kadaluarsa: kadaluarsa.value })
-        })
-        .then(response => {
-            console.log('Fetch response:', response);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            console.log('Fetch data:', data);
-            submitText.style.display = 'inline';
-            loadingSpinner.style.display = 'none';
-            submitBtn.disabled = false;
-            if (successPopup && pageLoadingOverlay) { // Tambah pengecekan eksplisit
-                successPopup.classList.remove('hidden');
-                if (data.status === 'sukses') {
-                    successPopup.querySelector('h3').textContent = 'Sukses';
-                    successPopup.querySelector('p').textContent = 'Akun guru berhasil dibuat';
+            fetch('/admin/add_guru', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nama: nama.value, kode_akses: kode.value, kadaluarsa: kadaluarsa.value })
+            })
+            .then(response => {
+                console.log('Fetch response:', response);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                console.log('✅ data:', data);
+                submitText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+                pageLoadingOverlay.classList.add('hidden');
+                if (successPopup && pageLoadingOverlay) {
+                    successPopup.classList.remove('hidden');
+                    if (data.status === 'sukses') {
+                        successPopup.querySelector('h3').textContent = 'Sukses';
+                        successPopup.querySelector('p').textContent = 'Akun guru berhasil dibuat!';
+                        const closeBtn = successPopup.querySelector('button');
+                        closeBtn.onclick = () => {
+                            successPopup.classList.add('hidden');
+                            pageLoadingOverlay.classList.remove('hidden');
+                            setTimeout(() => {
+                                window.location.href = '/admin/adminDashboard';
+                            }, 1000);
+                        };
+                    } else {
+                        successPopup.querySelector('h3').textContent = 'Error';
+                        successPopup.querySelector('p').textContent = data.pesan || 'Terjamin kesalahan';
+                        const closeBtn = successPopup.querySelector('button');
+                        closeBtn.onclick = () => {
+                            successPopup.classList.add('hidden');
+                        };
+                    }
+                } else {
+                    console.error('Popup elemen tidak ditemukan:', { successPopup, pageLoadingOverlay });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                submitText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+                pageLoadingOverlay.classList.add('hidden');
+                if (successPopup) {
+                    successPopup.classList.remove('hidden');
+                    successPopup.querySelector('h3').textContent = 'Error';
+                    successPopup.querySelector('p').textContent = 'Terjamin kesalahan saat menyimpan data';
                     const closeBtn = successPopup.querySelector('button');
                     closeBtn.onclick = () => {
                         successPopup.classList.add('hidden');
-                        pageLoadingOverlay.classList.remove('hidden');
-                        setTimeout(() => {
-                            window.location.href = '/admin/adminDashboard';
-                        }, 1000);
                     };
                 } else {
-                    successPopup.querySelector('h3').textContent = 'Gagal';
-                    successPopup.querySelector('p').textContent = data.pesan || 'Terjadi kesalahan';
-                    const closeBtn = successPopup.querySelector('button');
-                    closeBtn.onclick = () => {
-                        successPopup.classList.add('hidden');
-                    };
+                    console.error('Success popup tidak ditemukan');
                 }
-            } else {
-                console.error('Popup elements not found:', { successPopup, pageLoadingOverlay });
-            }
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-            submitText.style.display = 'inline';
-            loadingSpinner.style.display = 'none';
-            submitBtn.disabled = false;
-            if (successPopup) {
-                successPopup.classList.remove('hidden');
-                successPopup.querySelector('h3').textContent = 'Gagal';
-                successPopup.querySelector('p').textContent = 'Terjadi kesalahan saat menyimpan data';
-                const closeBtn = successPopup.querySelector('button');
-                closeBtn.onclick = () => {
-                    successPopup.classList.add('hidden');
-                };
-            } else {
-                console.error('Success popup not found');
-            }
-        });
-    }
-});
+            });
+        }
+    });
 
     // Inisialisasi tanpa validasi awal
     submitBtn.disabled = true;
 }
 
-// Logout functionality
+// Logout
 function confirmLogout() {
-    console.log('Confirm logout called');
+    console.log('Confirm logout dipanggil');
     const logoutPopup = document.getElementById('logoutPopup');
     if (logoutPopup) {
         logoutPopup.classList.remove('hidden');
-        console.log('Logout popup displayed');
+        console.log('Logout popup ditampilkan');
     } else {
-        console.error('Logout popup not found');
+        console.error('Logout popup tidak ditemukan');
+        showErrorPopup('Error menunjukkan popup logout');
     }
 }
 
@@ -426,10 +496,12 @@ function closePopup() {
 }
 
 function performLogout() {
+    const pageLoadingOverlay = document.getElementById('pageLoadingOverlay');
+    if (pageLoadingOverlay) pageLoadingOverlay.classList.remove('hidden');
     window.location.href = '/admin/logout';
 }
 
-// Toggle dropdown on click
+// Toggle dropdown
 function setupDropdownToggle() {
     const dropdowns = document.querySelectorAll('.dropdown');
     dropdowns.forEach(dropdown => {
@@ -445,7 +517,7 @@ function setupDropdownToggle() {
         });
     });
 
-    // Close dropdown when clicking outside
+    // Tutup dropdown saat klik di luar
     document.addEventListener('click', (e) => {
         const isClickInside = e.target.closest('.dropdown');
         if (!isClickInside) {
@@ -454,15 +526,15 @@ function setupDropdownToggle() {
     });
 }
 
-// Load initial data
+// Load data awal
 window.onload = () => {
-    console.log('Window loaded');
+    console.log('Window dimuat');
     if (document.getElementById('home-section')) {
-        loadGuruHome(1, 10, 'all');
+        loadGuruHome(1, 8, 'all', '');
         setupSearchAndFilterHome();
     }
     if (document.getElementById('manageTable')) {
-        loadGuruManage(1, 10, 'all');
+        loadGuruManage(1, 10, 'all', '');
         setupSearchAndFilterManage();
         setupEditForm();
         const editKode = document.getElementById('editKode');
@@ -473,12 +545,12 @@ window.onload = () => {
     }
     setupDropdownToggle();
 
-    // Add logout event listener with logging
+    // Inisialisasi logout
     const logoutLinks = document.querySelectorAll('.logout');
-    console.log('Logout links found:', logoutLinks.length);
+    console.log('Logout links ditemukan:', logoutLinks.length);
     logoutLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            console.log('Logout clicked');
+            console.log('Logout diklik');
             e.preventDefault();
             confirmLogout();
         });
