@@ -11,7 +11,10 @@
     <div class="navbar">
         <div class="navbar-left">
             <div class="navbar-title">Admin</div>
-            <div id="datetime" class="datetime"></div>
+            <div class="datetime-container">
+                <div id="date" class="datetime"></div>
+                <div id="time" class="datetime"></div>
+            </div>
         </div>
         <div class="nav-links">
             <a href="{{ url_for('admin_dashboard') }}" class="nav-item" data-section="home">Home</a>
@@ -76,15 +79,6 @@
         </div>
     </div>
 
-    <div id="successPopup" class="popup hidden">
-        <div class="popup-content">
-            <h3>Status</h3>
-            <p>Pesan</p>
-            <button onclick="closePopup()">OK</button>
-        </div>
-    </div>
-
-    <!-- Overlay Loading untuk halaman -->
     <div id="pageLoadingOverlay" class="loading-overlay hidden">
         <div class="spinner"></div>
     </div>

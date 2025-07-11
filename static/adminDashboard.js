@@ -3,12 +3,22 @@ let debounceTimeout;
 // Update datetime real-time
 function updateDatetime() {
     const now = new Date();
-    const datetime = document.getElementById('datetime');
-    if (datetime) {
-        datetime.textContent = now.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const dateElement = document.getElementById('date');
+    const timeElement = document.getElementById('time');
+    if (dateElement && timeElement) {
+        dateElement.textContent = now.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        timeElement.textContent = now.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
     }
 }
-setInterval(updateDatetime, 60000); // Update every minute
+setInterval(updateDatetime, 1000); // Update every second for real-time
 updateDatetime();
 
 // Show error popup

@@ -52,9 +52,15 @@ def validate_guru_login(nama, kode_akses):
     try:
         with get_db() as db:
             cursor = db.cursor()
-            cursor.execute("SELECT kode_akses FROM guru WHERE nama = %s AND kadaluarsa > NOW()", (nama,))
+            cursor.execute("SELECT kode_akses, status, kadaluarsa FROM guru WHERE nama = %s", (nama,))
             result = cursor.fetchone()
             if result:
+                if not result['status']:
+                    logger.info(f"Login guru {nama} ditolak: akun nonaktif.")
+                    return False
+                if result['kadaluarsa'] and datetime.datetime.strptime(str(result['kadaluarsa']), '%Y-%m-%d') < datetime.datetime.now():
+                    logger.info(f"Login guru {nama} ditolak: akun kadaluarsa.")
+                    return False
                 try:
                     stored_kode = fernet.decrypt(result['kode_akses'].encode()).decode()
                     return stored_kode == kode_akses
@@ -238,7 +244,7 @@ def login_guru():
             return jsonify({'status': 'sukses', 'pesan': 'Login berhasil'})
         else:
             save_login_log(nama, 'gagal')
-            return jsonify({'status': 'gagal', 'pesan': 'Nama atau kode akses salah'}), 401
+            return jsonify({'status': 'gagal', 'pesan': 'Nama, kode akses salah, atau akun nonaktif/kadaluarsa'}), 401
     except Exception as e:
         logger.error(f"❌ Error saat login guru: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
@@ -288,6 +294,8 @@ def admin_dashboard():
     try:
         with get_db() as db:
             cursor = db.cursor()
+            cursor.execute("UPDATE guru SET status = 0 WHERE kadaluarsa IS NOT NULL AND kadaluarsa < CURDATE()")
+            db.commit()
             cursor.execute("SELECT nama, kode_akses, kadaluarsa, status FROM guru LIMIT 8")
             guru_list = cursor.fetchall()
             decrypted_guru_list = []
@@ -299,7 +307,7 @@ def admin_dashboard():
                 decrypted_guru_list.append({
                     'nama': guru['nama'],
                     'kode_akses': kode_akses,
-                    'kadaluarsa': guru['kadaluarsa'],
+                    'kadaluarsa': guru['kadaluarsa'].strftime('%Y-%m-%d') if guru['kadaluarsa'] else None,
                     'status': guru['status']
                 })
         return render_template('admin/adminDashboard.html', initial_guru=decrypted_guru_list)
@@ -314,6 +322,8 @@ def atur_kode_akses():
     try:
         with get_db() as db:
             cursor = db.cursor()
+            cursor.execute("UPDATE guru SET status = 0 WHERE kadaluarsa IS NOT NULL AND kadaluarsa < CURDATE()")
+            db.commit()
             cursor.execute("SELECT nama, kode_akses, kadaluarsa, status, terakhir_diperbarui FROM guru LIMIT 10")
             guru_list = cursor.fetchall()
             decrypted_guru_list = []
@@ -325,7 +335,7 @@ def atur_kode_akses():
                 decrypted_guru_list.append({
                     'nama': guru['nama'],
                     'kode_akses': kode_akses,
-                    'kadaluarsa': guru['kadaluarsa'],
+                    'kadaluarsa': guru['kadaluarsa'].strftime('%Y-%m-%d') if guru['kadaluarsa'] else None,
                     'status': guru['status'],
                     'terakhir_diperbarui': guru['terakhir_diperbarui']
                 })
@@ -348,6 +358,10 @@ def get_guru():
 
         with get_db() as db:
             cursor = db.cursor()
+            # Update status untuk akun kadaluarsa
+            cursor.execute("UPDATE guru SET status = 0 WHERE kadaluarsa IS NOT NULL AND kadaluarsa < CURDATE()")
+            db.commit()
+            
             query = """
                 SELECT nama, kode_akses, kadaluarsa, status, terakhir_diperbarui 
                 FROM guru
@@ -384,7 +398,7 @@ def get_guru():
                 guru_list.append({
                     'nama': row['nama'],
                     'kode_akses': kode_akses,
-                    'kadaluarsa': row['kadaluarsa'],
+                    'kadaluarsa': row['kadaluarsa'].strftime('%Y-%m-%d') if row['kadaluarsa'] else None,
                     'status': row['status'],
                     'terakhir_diperbarui': row['terakhir_diperbarui']
                 })
@@ -436,8 +450,8 @@ def add_guru():
         encrypted_kode = fernet.encrypt(kode_akses.encode()).decode()
         with get_db() as db:
             cursor = db.cursor()
-            cursor.execute("INSERT INTO guru (nama, kode_akses, kadaluarsa) VALUES (%s, %s, %s)",
-                          (nama, encrypted_kode, kadaluarsa))
+            cursor.execute("INSERT INTO guru (nama, kode_akses, kadaluarsa, status) VALUES (%s, %s, %s, %s)",
+                          (nama, encrypted_kode, kadaluarsa, 1))
             db.commit()
         logger.info(f"✅ Akun guru {nama} ditambahkan.")
         return jsonify({'status': 'sukses', 'pesan': 'Akun guru berhasil ditambahkan'})
@@ -460,14 +474,15 @@ def update_guru():
 
         if not re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', kode_akses):
             return jsonify({'status': 'gagal', 'pesan': 'Kode akses minimal 8 karakter dan harus berisi huruf serta angka'}), 400
+        status = 1
         if kadaluarsa and datetime.datetime.strptime(kadaluarsa, '%Y-%m-%d') <= datetime.datetime.now():
-            return jsonify({'status': 'gagal', 'pesan': 'Kadaluarsa harus di masa depan'}), 400
+            status = 0
 
         encrypted_kode = fernet.encrypt(kode_akses.encode()).decode()
         with get_db() as db:
             cursor = db.cursor()
-            cursor.execute("UPDATE guru SET kode_akses = %s, kadaluarsa = %s, terakhir_diperbarui = NOW() WHERE nama = %s",
-                          (encrypted_kode, kadaluarsa, nama))
+            cursor.execute("UPDATE guru SET kode_akses = %s, kadaluarsa = %s, status = %s, terakhir_diperbarui = NOW() WHERE nama = %s",
+                          (encrypted_kode, kadaluarsa, status, nama))
             db.commit()
         logger.info(f"✅ Akun guru {nama} diperbarui.")
         return jsonify({'status': 'sukses', 'pesan': 'Akun guru berhasil diperbarui'})
@@ -485,14 +500,17 @@ def toggle_guru_status():
     try:
         data = request.get_json()
         nama = data['nama']
-        status = 1 if data['status'] == 'aktif' else 0
-
         with get_db() as db:
             cursor = db.cursor()
+            cursor.execute("SELECT status FROM guru WHERE nama = %s", (nama,))
+            result = cursor.fetchone()
+            if not result:
+                return jsonify({'status': 'gagal', 'pesan': 'Guru tidak ditemukan'}), 404
+            new_status = 0 if result['status'] else 1
             cursor.execute("UPDATE guru SET status = %s, terakhir_diperbarui = NOW() WHERE nama = %s",
-                          (status, nama))
+                          (new_status, nama))
             db.commit()
-        logger.info(f"✅ Status guru {nama} diubah menjadi {data['status']}.")
+        logger.info(f"✅ Status guru {nama} diubah ke {new_status}.")
         return jsonify({'status': 'sukses', 'pesan': 'Status guru berhasil diubah'})
     except Exception as e:
         logger.error(f"❌ Error saat mengedit status guru: {e}")

@@ -14,42 +14,52 @@ body {
     color: white;
     padding: 10px 15px;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: flex-start; /* Mengubah ke flex-start untuk menjaga menu lebih ke kiri */
+    align-items: flex-start;
     width: 100%;
+    max-width: 100%; /* Memastikan navbar tidak melewati batas halaman */
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-sizing: border-box; /* Memastikan padding tidak menambah lebar */
 }
 
 .navbar-left {
     display: flex;
+    flex-direction: row; /* Mengubah ke row untuk menempatkan tanggal dan waktu di samping */
     align-items: center;
+    margin-right: 20px; /* Jarak dari menu */
 }
 
 .navbar-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 500;
 }
 
-.datetime {
-    font-size: 0.8rem;
+.datetime-container {
     margin-left: 10px;
+    display: flex;
+    flex-direction: column; /* Menjaga waktu di bawah tanggal */
+}
+
+.datetime {
+    font-size: 1rem;
+    margin-left: 0;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-left: 20px;
+    gap: 10px;
     flex-wrap: wrap;
-    max-width: 80%;
+    margin-left: auto; /* Memindahkan menu ke kanan tetapi tetap dalam batas */
+    max-width: 60%; /* Mengurangi lebar untuk mencegah tumpang tindih */
 }
 
 .nav-item {
     color: white;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     cursor: pointer;
 }
 
@@ -68,7 +78,7 @@ body {
     color: white;
     padding: 6px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
 }
 
 .dropdown-content {
@@ -88,7 +98,7 @@ body {
     padding: 8px 12px;
     text-decoration: none;
     display: block;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
 }
 
 .dropdown-content a:hover {
@@ -424,11 +434,12 @@ body {
 }
 
 .popup-buttons button {
-    padding: 6px 12px;
+    padding: 8px 15px;
     font-size: 0.9rem;
     border: none;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .popup-buttons button:first-child {
@@ -490,11 +501,12 @@ body {
     background-color: #2B6CB0;
     color: white;
     border: none;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 0.9rem;
     position: relative;
     overflow: hidden;
+    transition: background-color 0.2s;
 }
 
 .form-container button:hover {
@@ -510,17 +522,27 @@ body {
 @media (max-width: 768px) {
     .navbar {
         padding: 8px 10px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-left {
+        margin-bottom: 10px;
     }
 
     .nav-links {
-        flex-direction: column;
-        align-items: flex-start;
-        margin-left: 10px;
-        padding: 10px 0;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 0;
+        padding: 0;
+        justify-content: flex-start; /* Mengubah ke flex-start di layar kecil */
+        width: 100%;
+        gap: 8px;
     }
 
     .nav-item {
         margin: 5px 0;
+        font-size: 1rem;
     }
 
     .dropdown-content {
