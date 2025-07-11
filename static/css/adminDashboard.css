@@ -14,21 +14,21 @@ body {
     color: white;
     padding: 10px 15px;
     display: flex;
-    justify-content: flex-start; /* Mengubah ke flex-start untuk menjaga menu lebih ke kiri */
+    justify-content: flex-start;
     align-items: flex-start;
     width: 100%;
-    max-width: 100%; /* Memastikan navbar tidak melewati batas halaman */
+    max-width: 100%;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-sizing: border-box; /* Memastikan padding tidak menambah lebar */
+    box-sizing: border-box;
 }
 
 .navbar-left {
     display: flex;
-    flex-direction: row; /* Mengubah ke row untuk menempatkan tanggal dan waktu di samping */
+    flex-direction: row;
     align-items: center;
-    margin-right: 20px; /* Jarak dari menu */
+    margin-right: 20px;
 }
 
 .navbar-title {
@@ -39,7 +39,7 @@ body {
 .datetime-container {
     margin-left: 10px;
     display: flex;
-    flex-direction: column; /* Menjaga waktu di bawah tanggal */
+    flex-direction: column;
 }
 
 .datetime {
@@ -52,8 +52,7 @@ body {
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
-    margin-left: auto; /* Memindahkan menu ke kanan tetapi tetap dalam batas */
-    max-width: 60%; /* Mengurangi lebar untuk mencegah tumpang tindih */
+    margin-left: auto;
 }
 
 .nav-item {
@@ -185,6 +184,7 @@ body {
     border-radius: 10px;
     font-size: 0.8rem;
     font-weight: 500;
+    margin-left: 5px;
 }
 
 .status-aktif {
@@ -195,6 +195,11 @@ body {
 .status-nonaktif {
     background-color: #F56565;
     color: white;
+}
+
+.toggle-switch-label {
+    display: flex;
+    align-items: center;
 }
 
 .toggle-switch {
@@ -209,6 +214,7 @@ body {
     background-color: #E2E8F0;
     border-radius: 9px;
     cursor: pointer;
+    margin-right: 5px;
 }
 
 .toggle-switch + label::before {
@@ -535,7 +541,7 @@ body {
         align-items: center;
         margin-left: 0;
         padding: 0;
-        justify-content: flex-start; /* Mengubah ke flex-start di layar kecil */
+        justify-content: flex-start;
         width: 100%;
         gap: 8px;
     }
