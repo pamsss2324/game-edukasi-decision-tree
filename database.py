@@ -72,3 +72,33 @@ def save_login_log(nama, status):
     except Exception as e:
         logger.error(f"❌ Error saat simpan log login: {e}")
         raise
+
+def get_student_progress(page=1, limit=10, kelas_filter=None):
+    """Mengambil data progres siswa dengan paginasi dan filter kelas."""
+    try:
+        with get_db() as db:
+            cursor = db.cursor()
+            offset = (page - 1) * limit
+            query = """
+                SELECT s.id, s.nama, s.kelas, h.jumlah_benar, h.jumlah_salah, h.tanggal
+                FROM siswa s LEFT JOIN hasil_kuis h ON s.id = h.id_siswa
+            """
+            params = []
+            if kelas_filter and kelas_filter in ['3', '4', '5']:
+                query += " WHERE s.kelas = %s"
+                params.append(kelas_filter)
+            query += " ORDER BY h.tanggal DESC LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
+            cursor.execute(query, params)
+            results = cursor.fetchall()
+            total_query = "SELECT COUNT(DISTINCT s.id) as total FROM siswa s"
+            if kelas_filter and kelas_filter in ['3', '4', '5']:
+                total_query += " WHERE s.kelas = %s"
+                cursor.execute(total_query, [kelas_filter])
+            else:
+                cursor.execute(total_query)
+            total = cursor.fetchone()['total']
+            return results, total
+    except Exception as e:
+        logger.error(f"❌ Error saat mengambil progres siswa: {e}")
+        raise

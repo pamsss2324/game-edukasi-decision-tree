@@ -204,3 +204,42 @@ def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah,
     except Exception as e:
         logger.error(f"❌ Error dalam analyze_kesulitan: {e}")
         raise
+
+def analyze_topic_difficulty(db, kelas_filter=None):
+    """Menganalisis kesulitan topik berdasarkan semua hasil kuis."""
+    try:
+        cursor = db.cursor()
+        query = """
+            SELECT h.mapel, h.daftar_soal_dikerjakan, h.jumlah_benar, h.jumlah_salah, h.total_soal
+            FROM hasil_kuis h JOIN siswa s ON h.id_siswa = s.id
+        """
+        params = []
+        if kelas_filter and kelas_filter in ['3', '4', '5']:
+            query += " WHERE s.kelas = %s"
+            params.append(kelas_filter)
+        cursor.execute(query, params)
+        results = cursor.fetchall()
+        topic_stats = {}
+        for result in results:
+            soal_data = json.loads(result['daftar_soal_dikerjakan'])
+            soal_list = soal_data.get('soal', [])
+            for soal in soal_list:
+                topic = soal.get('topik', 'Tidak Diketahui')
+                if topic not in topic_stats:
+                    topic_stats[topic] = {'benar': 0, 'total': 0}
+                topic_stats[topic]['total'] += 1
+                if soal.get('benar', False):
+                    topic_stats[topic]['benar'] += 1
+        topic_difficulty = {}
+        for topic, stats in topic_stats.items():
+            persentase = (stats['benar'] / stats['total'] * 100) if stats['total'] > 0 else 0
+            if persentase < 50:
+                topic_difficulty[topic] = 'Sulit'
+            elif persentase <= 70:
+                topic_difficulty[topic] = 'Sedang'
+            else:
+                topic_difficulty[topic] = 'Mudah'
+        return topic_difficulty
+    except Exception as e:
+        logger.error(f"❌ Error dalam analyze_topic_difficulty: {e}")
+        raise

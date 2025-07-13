@@ -24,10 +24,8 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)
 
-# Konfigurasi Flask-Session
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+# Konfigurasi Flask-Session dari Config
+app.config.update(Config.SESSION_CONFIG)
 
 # Konfigurasi Fernet untuk enkripsi
 load_dotenv()
@@ -215,6 +213,14 @@ def get_soal():
         if not os.path.exists(filepath):
             raise FileNotFoundError(f"File soal {filename} tidak ditemukan.")
 
+        # Periksa status paket
+        status_file = os.path.join('soal', 'soal_status.json')
+        if os.path.exists(status_file):
+            with open(status_file, 'r', encoding='utf-8') as f:
+                status_data = json.load(f)
+            if status_data.get(filename, {}).get('status') != 'Aktif':
+                raise ValueError(f"Paket soal {filename} telah diarsipkan oleh {status_data.get(filename, {}).get('diarsipkan_oleh', 'Tidak Diketahui')} pada {status_data.get(filename, {}).get('terakhir_diarsip', 'Tidak Diketahui')}.")
+
         with open(filepath, 'r', encoding='utf-8') as f:
             soal_data = json.load(f)
         return jsonify({'status': 'sukses', 'soal': soal_data})
@@ -239,7 +245,7 @@ def login_guru():
         kode_akses = data['kode_akses']
         logger.info(f"Input login guru: nama={nama}, kode_akses={kode_akses}")
         if validate_guru_login(nama, kode_akses):
-            session['user'] = {'role': 'guru', 'nama': nama}
+            session['user'] = {'role': 'guru', 'nama_guru': nama}
             save_login_log(nama, 'sukses')
             return jsonify({'status': 'sukses', 'pesan': 'Login berhasil'})
         else:
@@ -274,17 +280,73 @@ def guru_dashboard():
     if not session.get('user') or session.get('user').get('role') != 'guru':
         return redirect(url_for('halaman_utama'))
     try:
+        page = request.args.get('page', 1, type=int)
+        limit = request.args.get('limit', 10, type=int)
+        kelas_filter = request.args.get('kelas', 'all', type=str)
+        offset = (page - 1) * limit
         with get_db() as db:
             cursor = db.cursor()
-            cursor.execute("SELECT DISTINCT id_siswa FROM hasil_kuis")
-            siswa_ids = [row['id_siswa'] for row in cursor.fetchall()]
-        hasil_siswa = {}
-        for id_siswa in siswa_ids:
-            hasil = get_hasil_kuis_by_siswa(id_siswa)
-            hasil_siswa[id_siswa] = hasil
-        return render_template('guru/dashboard.html', hasil_siswa=hasil_siswa)
+            query = "SELECT DISTINCT s.id, s.nama, s.kelas FROM siswa s LEFT JOIN hasil_kuis h ON s.id = h.id_siswa"
+            params = []
+            if kelas_filter != 'all' and kelas_filter in ['3', '4', '5']:
+                query += " WHERE s.kelas = %s"
+                params.append(kelas_filter)
+            query += " GROUP BY s.id, s.nama, s.kelas LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
+            cursor.execute(query, params)
+            siswa_list = cursor.fetchall()
+            total_query = "SELECT COUNT(DISTINCT s.id) as total FROM siswa s LEFT JOIN hasil_kuis h ON s.id = h.id_siswa"
+            if kelas_filter != 'all' and kelas_filter in ['3', '4', '5']:
+                total_query += " WHERE s.kelas = %s"
+                cursor.execute(total_query, [kelas_filter])
+            else:
+                cursor.execute(total_query)
+            total = cursor.fetchone()['total']
+        return render_template('guru/dashboard.html', siswa_list=siswa_list, total=total, page=page, limit=limit, kelas_filter=kelas_filter, nama_guru=session['user']['nama_guru'])
     except Exception as e:
         logger.error(f"❌ Error saat menampilkan dashboard guru: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+    
+@app.route('/guru/archive_soal', methods=['POST'])
+def archive_soal():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        data = request.get_json()
+        if 'filename' not in data:
+            raise ValueError("Parameter 'filename' wajib diisi.")
+        filename = data['filename']
+        filepath = os.path.join('soal', filename)
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"File soal {filename} tidak ditemukan.")
+
+        status_file = os.path.join('soal', 'soal_status.json')
+        if os.path.exists(status_file):
+            with open(status_file, 'r', encoding='utf-8') as f:
+                status_data = json.load(f)
+        else:
+            status_data = {}
+
+        nama_guru = session['user']['nama_guru']
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        status_data[filename] = {
+            'status': 'Diarsip',
+            'terakhir_diarsip': current_time,
+            'diarsipkan_oleh': nama_guru
+        }
+
+        with open(status_file, 'w', encoding='utf-8') as f:
+            json.dump(status_data, f, ensure_ascii=False, indent=2)
+        logger.info(f"✅ Paket soal {filename} diarsipkan oleh {nama_guru} pada {current_time}.")
+        return jsonify({'status': 'sukses', 'pesan': f'Paket soal {filename} berhasil diarsipkan'})
+    except FileNotFoundError:
+        logger.error(f"❌ File soal {filename} tidak ditemukan.")
+        return jsonify({'status': 'gagal', 'pesan': 'File soal tidak ditemukan'}), 404
+    except ValueError as ve:
+        logger.error(f"❌ Error validasi: {ve}")
+        return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
+    except Exception as e:
+        logger.error(f"❌ Error saat mengarsip soal: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
 
 @app.route('/admin/adminDashboard')
