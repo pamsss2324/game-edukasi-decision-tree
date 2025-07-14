@@ -4,24 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Guru</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/guruDashboard.css') }}" type="text/css">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
 </head>
 <body>
-    <h1>Selamat datang, {{ session['user']['nama'] }}!</h1>
-    <div>
-        {% for id_siswa, hasil_list in hasil_siswa.items() %}
-            <h2>Siswa ID: {{ id_siswa }}</h2>
-            {% for hasil in hasil_list %}
-                <div>
-                    <p>Tanggal: {{ hasil.tanggal }}</p>
-                    <p>Jumlah Benar: {{ hasil.jumlah_benar }}</p>
-                    <p>Jumlah Salah: {{ hasil.jumlah_salah }}</p>
-                    <p>Kesulitan Diduga: {{ hasil.kesulitan_diduga }}</p>
-                    <p>Pelajaran Sulit: {{ hasil.pelajaran_sulit|safe }}</p>
+    <nav class="navbar">
+        <div class="navbar-header">
+            <h1>Dashboard Guru</h1>
+            <div class="navbar-user">
+                <div class="dropdown">
+                    <button class="dropbtn">Selamat datang, {{ nama_guru }} <span class="dropdown-arrow">▼</span></button>
+                    <div class="dropdown-content">
+                        <a href="#" class="info-link" onclick="loadInformasi(event)">Informasi</a>
+                        <a href="#" class="logout" onclick="confirmLogout(event)">Logout</a>
+                    </div>
                 </div>
-                <hr>
-            {% endfor %}
-        {% endfor %}
+            </div>
+        </div>
+        <div class="navbar-menu">
+            <a href="#beranda" class="menu-item">Beranda</a>
+            <a href="#kelola-soal" class="menu-item">Kelola Soal</a>
+            <a href="#laporan-siswa" class="menu-item">Laporan Siswa</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="filter-section">
+            <input type="text" id="siswaSearch" placeholder="Cari nama siswa..." class="search-bar">
+            <select id="kelasFilter" class="filter-select">
+                <option value="all">Semua Kelas</option>
+                <option value="3">Kelas 3</option>
+                <option value="4">Kelas 4</option>
+                <option value="5">Kelas 5</option>
+            </select>
+        </div>
+        <table id="siswaTable">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Kelas</th>
+                    <th>Tingkat Kesulitan Diduga</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="pagination" class="pagination"></div>
     </div>
+
+    <!-- Popup untuk konfirmasi logout -->
+    <div id="logoutPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Konfirmasi Logout</h3>
+            <p>Apakah Anda yakin ingin logout?</p>
+            <div class="popup-buttons">
+                <button onclick="performLogout()">Ya</button>
+                <button onclick="closePopup()">Tidak</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup untuk informasi akun -->
+    <div id="informasiPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Informasi Akun</h3>
+            <p><strong>Nama Guru:</strong> <span id="popupNamaGuru"></span></p>
+            <p><strong>Kode Akses:</strong> <span id="popupKodeAkses"></span></p>
+            <p><strong>Tanggal Kadaluarsa:</strong> <span id="popupKadaluarsa"></span></p>
+            <button id="backInfoBtn" onclick="closePopup()">Kembali</button>
+        </div>
+    </div>
+
+    <!-- Popup untuk detail siswa -->
+    <div id="detailPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3 id="detailTitle">Detail Data Siswa</h3>
+            <table id="detailTable" class="detail-table">
+                <tr><th>Jumlah Benar</th><td id="detailBenar"></td></tr>
+                <tr><th>Jumlah Salah</th><td id="detailSalah"></td></tr>
+                <tr><th>Waktu Rata-rata per Soal</th><td id="detailWaktu"></td></tr>
+                <tr><th>Deteksi Asal</th><td id="detailAsal"></td></tr>
+                <tr><th>Tingkat Kesulitan</th><td id="detailKesulitan"></td></tr>
+                <tr><th>Pelajaran Sulit</th><td id="detailPelajaranSulit"></td></tr>
+            </table>
+            <button id="backDetailBtn" onclick="closePopup()">Kembali</button>
+        </div>
+    </div>
+
+    <!-- Overlay loading -->
+    <div id="pageLoadingOverlay" class="loading-overlay hidden"></div>
+
+    <!-- Script -->
+    <script src="{{ url_for('static', filename='guruDashboard.js') }}?v={{ timestamp }}" type="text/javascript"></script>
 </body>
 </html>

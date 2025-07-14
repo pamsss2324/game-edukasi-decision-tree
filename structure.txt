@@ -1,8 +1,11 @@
 quiz-app/
+    .env
     app.py
     config.py
     createAdmin.py
     database.py
+    generateKey.py
+    generateStatusSoal.py
     generateStructure.py
     models.py
     requirements.txt
@@ -13,12 +16,15 @@ quiz-app/
         training_data_asal.csv
         training_data_kesulitan.csv
     flask_session/
+        03bddec04be3f9fafd797c45d9e9973d
         1128e51fd4e43070eedead7ef5435d9f
         2029240f6d1128be89ddc32729463129
         5e2d1a2441df3e9444291da4fdbb5adf
         7cbd7a28dfef247d757d14fc9c7b708f
         8f424219d2fa85fdff69d90d92a5e7d6
         963213d4736ea59dbbe3f13c6c449685
+        9993cfe84d197dc1f501e1110235fe74
+        d38c7ffc404bcb291f807378bb19c207
     models/
         cart_asal_model.pkl
         cart_kesulitan_model.pkl
@@ -36,6 +42,7 @@ quiz-app/
         soal_kelas5_paket2.json
         soal_kelas5_paket3.json
         soal_kelas5_paket4.json
+        soal_status.json
     static/
         adminDashboard.js
         login.css

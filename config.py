@@ -19,8 +19,8 @@ class Config:
         'training_data_kesulitan': 'data/training_data_kesulitan.csv',
         'training_data_asal': 'data/training_data_asal.csv',
         'model_dir': 'models',
-        'motivasi': 'data/motivasi.json',
-        'rekomendasi': 'data/rekomendasi.json'
+        'motivasi': 'static/motivasi.json',
+        'rekomendasi': 'static/rekomendasi.json'
     }
 
     # Konfigurasi sesi Flask

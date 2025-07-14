@@ -24,13 +24,18 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)
 
-# Konfigurasi Flask-Session dari Config
+# Konfigurasi Flask-Session dan kunci dari .env
 app.config.update(Config.SESSION_CONFIG)
-
-# Konfigurasi Fernet untuk enkripsi
 load_dotenv()
-app.config['FERNET_KEY'] = os.getenv('FERNET_KEY') or Fernet.generate_key()
-fernet = Fernet(app.config['FERNET_KEY'])
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+if not app.config['SECRET_KEY']:
+    logger.warning("⚠️ SECRET_KEY tidak ditemukan di .env. Menggunakan kunci acak sementara.")
+    app.config['SECRET_KEY'] = Fernet.generate_key().decode()
+app.config['FERNET_KEY'] = os.getenv('FERNET_KEY')
+if not app.config['FERNET_KEY']:
+    logger.warning("⚠️ FERNET_KEY tidak ditemukan di .env. Menggunakan kunci acak sementara.")
+    app.config['FERNET_KEY'] = Fernet.generate_key().decode()
+fernet = Fernet(app.config['FERNET_KEY'].encode() if isinstance(app.config['FERNET_KEY'], str) else app.config['FERNET_KEY'].encode())
 
 # Muat model yang telah disimpan
 try:
@@ -236,21 +241,23 @@ def get_soal():
 
 @app.route('/login/guru', methods=['POST'])
 def login_guru():
-    logger.info("Rute /login/guru dipanggil")
     try:
         data = request.get_json()
-        if 'nama' not in data or 'kode_akses' not in data:
+        if not data or 'nama' not in data or 'kode_akses' not in data:
             return jsonify({'status': 'gagal', 'pesan': 'Nama dan kode akses wajib diisi'}), 400
         nama = data['nama']
         kode_akses = data['kode_akses']
-        logger.info(f"Input login guru: nama={nama}, kode_akses={kode_akses}")
         if validate_guru_login(nama, kode_akses):
-            session['user'] = {'role': 'guru', 'nama_guru': nama}
-            save_login_log(nama, 'sukses')
-            return jsonify({'status': 'sukses', 'pesan': 'Login berhasil'})
+            with get_db() as db:
+                cursor = db.cursor()
+                cursor.execute("SELECT * FROM guru WHERE nama = %s", (nama,))
+                guru = cursor.fetchone()
+                session['user'] = {'role': 'guru', 'nama': guru['nama'], 'kode_akses': guru['kode_akses'], 'kadaluarsa': guru['kadaluarsa']}
+                logger.info(f"✅ Log login untuk {nama} (sukses) disimpan.")
+                return jsonify({'status': 'sukses', 'pesan': 'Login berhasil'})
         else:
-            save_login_log(nama, 'gagal')
-            return jsonify({'status': 'gagal', 'pesan': 'Nama, kode akses salah, atau akun nonaktif/kadaluarsa'}), 401
+            logger.warning(f"❌ Login gagal untuk {nama}")
+            return jsonify({'status': 'gagal', 'pesan': 'Nama atau kode akses salah'}), 401
     except Exception as e:
         logger.error(f"❌ Error saat login guru: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
@@ -278,35 +285,52 @@ def login_admin():
 @app.route('/guru/dashboard')
 def guru_dashboard():
     if not session.get('user') or session.get('user').get('role') != 'guru':
-        return redirect(url_for('halaman_utama'))
+        return redirect(url_for('halaman_utama'))  # Arahkan ke halaman utama untuk menampilkan popup
     try:
         page = request.args.get('page', 1, type=int)
-        limit = request.args.get('limit', 10, type=int)
+        limit = request.args.get('limit', 6, type=int)
         kelas_filter = request.args.get('kelas', 'all', type=str)
         offset = (page - 1) * limit
         with get_db() as db:
             cursor = db.cursor()
-            query = "SELECT DISTINCT s.id, s.nama, s.kelas FROM siswa s LEFT JOIN hasil_kuis h ON s.id = h.id_siswa"
+            query = """
+                SELECT DISTINCT s.id, s.nama, s.kelas, h.kesulitan_diduga, h.tanggal
+                FROM siswa s
+                LEFT JOIN hasil_kuis h ON s.id = h.id_siswa
+                WHERE 1=1
+            """
+            count_query = "SELECT COUNT(DISTINCT s.id) as total FROM siswa s LEFT JOIN hasil_kuis h ON s.id = h.id_siswa WHERE 1=1"
             params = []
+
             if kelas_filter != 'all' and kelas_filter in ['3', '4', '5']:
-                query += " WHERE s.kelas = %s"
+                query += " AND s.kelas = %s"
+                count_query += " AND s.kelas = %s"
                 params.append(kelas_filter)
-            query += " GROUP BY s.id, s.nama, s.kelas LIMIT %s OFFSET %s"
+
+            query += " GROUP BY s.id, s.nama, s.kelas, h.kesulitan_diduga, h.tanggal LIMIT %s OFFSET %s"
             params.extend([limit, offset])
+
+            cursor.execute(count_query, params[:-2] if kelas_filter != 'all' else [])
+            total = cursor.fetchone()['total']
+
             cursor.execute(query, params)
             siswa_list = cursor.fetchall()
-            total_query = "SELECT COUNT(DISTINCT s.id) as total FROM siswa s LEFT JOIN hasil_kuis h ON s.id = h.id_siswa"
-            if kelas_filter != 'all' and kelas_filter in ['3', '4', '5']:
-                total_query += " WHERE s.kelas = %s"
-                cursor.execute(total_query, [kelas_filter])
-            else:
-                cursor.execute(total_query)
-            total = cursor.fetchone()['total']
-        return render_template('guru/dashboard.html', siswa_list=siswa_list, total=total, page=page, limit=limit, kelas_filter=kelas_filter, nama_guru=session['user']['nama_guru'])
+
+        return render_template(
+            'guru/dashboard.html',
+            nama_guru=session['user']['nama'],
+            kode_akses=session['user'].get('kode_akses', '********'),
+            kadaluarsa=session['user'].get('kadaluarsa', 'Tidak ada batas'),
+            siswa_list=[{'id': s['id'], 'nama': s['nama'], 'kelas': s['kelas'], 'kesulitan_diduga': s['kesulitan_diduga'] or 'Belum ada data', 'tanggal': s['tanggal']} for s in siswa_list],
+            total=total,
+            page=page,
+            limit=limit,
+            kelas_filter=kelas_filter
+        )
     except Exception as e:
         logger.error(f"❌ Error saat menampilkan dashboard guru: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
-    
+
 @app.route('/guru/archive_soal', methods=['POST'])
 def archive_soal():
     if not session.get('user') or session.get('user').get('role') != 'guru':
@@ -347,6 +371,90 @@ def archive_soal():
         return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
     except Exception as e:
         logger.error(f"❌ Error saat mengarsip soal: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+    
+@app.route('/guru/get_siswa', methods=['GET'])
+def get_siswa():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        page = request.args.get('page', 1, type=int)
+        limit = request.args.get('limit', 6, type=int)  # Diubah ke 6
+        offset = (page - 1) * limit
+        kelas_filter = request.args.get('kelas', 'all', type=str)
+        search = request.args.get('search', '', type=str)
+
+        with get_db() as db:
+            cursor = db.cursor()
+            query = """
+                SELECT DISTINCT s.id, s.nama, s.kelas, h.kesulitan_diduga, h.tanggal
+                FROM siswa s
+                LEFT JOIN hasil_kuis h ON s.id = h.id_siswa
+                WHERE 1=1
+            """
+            count_query = "SELECT COUNT(DISTINCT s.id) as total FROM siswa s LEFT JOIN hasil_kuis h ON s.id = h.id_siswa WHERE 1=1"
+            params = []
+
+            if kelas_filter != 'all' and kelas_filter in ['3', '4', '5']:
+                query += " AND s.kelas = %s"
+                count_query += " AND s.kelas = %s"
+                params.append(kelas_filter)
+
+            if search:
+                query += " AND LOWER(s.nama) LIKE %s"
+                count_query += " AND LOWER(s.nama) LIKE %s"
+                params.append(f"%{search.lower()}%")
+
+            query += " GROUP BY s.id, s.nama, s.kelas, h.kesulitan_diduga, h.tanggal LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
+
+            cursor.execute(count_query, params[:-2] if search or kelas_filter != 'all' else [])
+            total = cursor.fetchone()['total']
+
+            cursor.execute(query, params)
+            siswa_list = cursor.fetchall()
+
+        return jsonify({
+            'status': 'sukses',
+            'siswa': [{'id': s['id'], 'nama': s['nama'], 'kelas': s['kelas'], 'kesulitan_diduga': s['kesulitan_diduga'] or 'Belum ada data', 'tanggal': s['tanggal']} for s in siswa_list],
+            'total': total,
+            'page': page,
+            'limit': limit
+        })
+    except Exception as e:
+        logger.error(f"❌ Error saat mengambil daftar siswa: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+@app.route('/guru/get_detail_siswa', methods=['GET'])
+def get_detail_siswa():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        id_siswa = request.args.get('id_siswa', type=int)
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("""
+                SELECT jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, kesulitan_diduga, pelajaran_sulit
+                FROM hasil_kuis
+                WHERE id_siswa = %s
+                ORDER BY tanggal DESC
+                LIMIT 1
+            """, (id_siswa,))
+            result = cursor.fetchone()
+            if result:
+                return jsonify({
+                    'status': 'sukses',
+                    'jumlah_benar': result['jumlah_benar'],
+                    'jumlah_salah': result['jumlah_salah'],
+                    'waktu_rata2_per_soal': result['waktu_rata2_per_soal'],
+                    'dideteksi_asal': bool(result['dideteksi_asal']),
+                    'kesulitan_diduga': result['kesulitan_diduga'],
+                    'pelajaran_sulit': result['pelajaran_sulit'] or '[]'
+                })
+            else:
+                return jsonify({'status': 'gagal', 'pesan': 'Data tidak ditemukan'}), 404
+    except Exception as e:
+        logger.error(f"❌ Error saat mengambil detail siswa: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
 
 @app.route('/admin/adminDashboard')
