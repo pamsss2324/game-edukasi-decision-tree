@@ -291,6 +291,25 @@ def guru_dashboard():
         limit = request.args.get('limit', 6, type=int)
         kelas_filter = request.args.get('kelas', 'all', type=str)
         offset = (page - 1) * limit
+        
+        # Ambil data guru dari session
+        user_data = session['user']
+        nama_guru = user_data['nama']
+        kode_akses_encrypted = user_data.get('kode_akses', '********')  # Ambil dari session, masih terenkripsi
+        
+        # Dekripsi kode akses
+        try:
+            kode_akses = fernet.decrypt(kode_akses_encrypted.encode()).decode() if kode_akses_encrypted != '********' else '********'
+        except Exception as e:
+            logger.warning(f"❌ Gagal dekripsi kode akses untuk {nama_guru}: {e}. Menggunakan placeholder.")
+            kode_akses = '********'
+        
+        # Buat versi 2 karakter awal dengan sensor untuk tampilan awal
+        kode_akses_initial = kode_akses[:2] + '*' * (len(kode_akses) - 2) if kode_akses != '********' and len(kode_akses) > 2 else kode_akses
+        
+        # Ambil kadaluarsa apa adanya dari session tanpa konversi tambahan
+        kadaluarsa_date = user_data.get('kadaluarsa', '')
+
         with get_db() as db:
             cursor = db.cursor()
             query = """
@@ -318,9 +337,10 @@ def guru_dashboard():
 
         return render_template(
             'guru/dashboard.html',
-            nama_guru=session['user']['nama'],
-            kode_akses=session['user'].get('kode_akses', '********'),
-            kadaluarsa=session['user'].get('kadaluarsa', 'Tidak ada batas'),
+            nama_guru=nama_guru,
+            kode_akses=kode_akses,  # Kode asli untuk toggle
+            kode_akses_initial=kode_akses_initial,  # 2 karakter awal dengan sensor untuk tampilan awal
+            kadaluarsa_date=kadaluarsa_date,  # Tanggal apa adanya dari session
             siswa_list=[{'id': s['id'], 'nama': s['nama'], 'kelas': s['kelas'], 'kesulitan_diduga': s['kesulitan_diduga'] or 'Belum ada data', 'tanggal': s['tanggal']} for s in siswa_list],
             total=total,
             page=page,
@@ -452,7 +472,7 @@ def get_detail_siswa():
                     'pelajaran_sulit': result['pelajaran_sulit'] or '[]'
                 })
             else:
-                return jsonify({'status': 'gagal', 'pesan': 'Data tidak ditemukan'}), 404
+                return jsonify({'status': 'gagal', 'pesan': 'Data kuis siswa belum tersedia'}), 404
     except Exception as e:
         logger.error(f"❌ Error saat mengambil detail siswa: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500

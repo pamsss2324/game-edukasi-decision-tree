@@ -70,9 +70,21 @@
     <div id="informasiPopup" class="popup hidden">
         <div class="popup-content">
             <h3>Informasi Akun</h3>
-            <p><strong>Nama Guru:</strong> <span id="popupNamaGuru"></span></p>
-            <p><strong>Kode Akses:</strong> <span id="popupKodeAkses"></span></p>
-            <p><strong>Tanggal Kadaluarsa:</strong> <span id="popupKadaluarsa"></span></p>
+            <div class="info-grid">
+                <label><strong>Nama Guru:</strong></label>
+                <div class="field-container">
+                    <input type="text" class="info-field" value="{{ nama_guru }}" readonly>
+                </div>
+                <label><strong>Kode Akses:</strong></label>
+                <div class="field-container">
+                    <input type="text" id="popupKodeAkses" class="info-field masked-code" value="{{ kode_akses_initial }}" readonly data-full-code="{{ kode_akses }}">
+                    <span id="togglePassword" class="toggle-password">👁️</span>
+                </div>
+                <label><strong>Tanggal Kadaluarsa:</strong></label>
+                <div class="field-container">
+                    <input type="text" class="info-field" value="{{ kadaluarsa_date }}" readonly>
+                </div>
+            </div>
             <button id="backInfoBtn" onclick="closePopup()">Kembali</button>
         </div>
     </div>
@@ -93,8 +105,18 @@
         </div>
     </div>
 
+    <!-- Popup untuk alert custom -->
+    <div id="customAlert" class="popup hidden">
+        <div class="popup-content">
+            <p id="alertMessage">Data kuis siswa belum tersedia</p>
+            <button onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
     <!-- Overlay loading -->
-    <div id="pageLoadingOverlay" class="loading-overlay hidden"></div>
+    <div id="pageLoadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
 
     <!-- Script -->
     <script src="{{ url_for('static', filename='guruDashboard.js') }}?v={{ timestamp }}" type="text/javascript"></script>

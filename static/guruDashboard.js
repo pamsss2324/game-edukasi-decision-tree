@@ -2,15 +2,13 @@ let debounceTimeout;
 
 // Show error popup
 function showErrorPopup(message) {
-    const successPopup = document.getElementById('successPopup');
-    if (successPopup) {
-        successPopup.querySelector('h3').textContent = 'Gagal';
-        successPopup.querySelector('p').textContent = message;
-        successPopup.classList.remove('hidden');
-        const closeBtn = successPopup.querySelector('button');
-        closeBtn.onclick = () => successPopup.classList.add('hidden');
+    const customAlert = document.getElementById('customAlert');
+    if (customAlert) {
+        document.getElementById('alertMessage').textContent = message || 'Data kuis siswa belum tersedia';
+        customAlert.classList.remove('hidden');
+        customAlert.classList.add('visible');
     } else {
-        alert(message);
+        alert(message || 'Data kuis siswa belum tersedia');
     }
     console.log('Error Popup Shown:', message);
 }
@@ -47,7 +45,7 @@ async function loadSiswa(page = 1, limit = 6, kelasFilter = 'all', search = '') 
             });
             setupPagination(data.total, page, limit, kelasFilter, search);
         } else {
-            showErrorPopup(data.pesan || 'Gagal memuat data');
+            showErrorPopup(data.pesan || 'Data kuis siswa belum tersedia');
         }
     } catch (error) {
         showErrorPopup('Terjadi kesalahan saat memuat data');
@@ -113,24 +111,28 @@ async function showDetailSiswa(id_siswa, nama_siswa) {
         const response = await fetch(`/guru/get_detail_siswa?id_siswa=${id_siswa}`);
         const data = await response.json();
         if (data.status === 'sukses') {
-            const popup = document.getElementById('detailPopup');
-            if (popup) {
-                document.getElementById('detailTitle').textContent = `Detail Data Siswa/i ${nama_siswa}`;
-                document.getElementById('detailBenar').textContent = data.jumlah_benar || '0';
-                document.getElementById('detailSalah').textContent = data.jumlah_salah || '0';
-                document.getElementById('detailWaktu').textContent = data.waktu_rata2_per_soal || '0';
-                document.getElementById('detailAsal').textContent = data.dideteksi_asal ? 'Ya' : 'Tidak';
-                document.getElementById('detailKesulitan').textContent = data.kesulitan_diduga || 'Belum ada data';
-                document.getElementById('detailPelajaranSulit').textContent = data.pelajaran_sulit || 'Tidak ada';
-                popup.classList.add('visible');
-                popup.classList.remove('hidden');
-                console.log('Detail Popup Shown, Class:', popup.className);
-                setTimeout(() => console.log('After Delay, Class:', popup.className), 100);
+            if (!data.kesulitan_diduga || data.kesulitan_diduga === 'Belum ada data') {
+                showCustomAlert('Data kuis siswa belum tersedia');
             } else {
-                showErrorPopup('Popup detail tidak ditemukan');
+                const popup = document.getElementById('detailPopup');
+                if (popup) {
+                    document.getElementById('detailTitle').textContent = `Detail Data Siswa/i ${nama_siswa}`;
+                    document.getElementById('detailBenar').textContent = data.jumlah_benar || '0';
+                    document.getElementById('detailSalah').textContent = data.jumlah_salah || '0';
+                    document.getElementById('detailWaktu').textContent = data.waktu_rata2_per_soal || '0';
+                    document.getElementById('detailAsal').textContent = data.dideteksi_asal ? 'Ya' : 'Tidak';
+                    document.getElementById('detailKesulitan').textContent = data.kesulitan_diduga || 'Belum ada data';
+                    document.getElementById('detailPelajaranSulit').textContent = data.pelajaran_sulit || 'Tidak ada';
+                    popup.classList.add('visible');
+                    popup.classList.remove('hidden');
+                    console.log('Detail Popup Shown, Class:', popup.className);
+                    setTimeout(() => console.log('After Delay, Class:', popup.className), 100);
+                } else {
+                    showErrorPopup('Popup detail tidak ditemukan');
+                }
             }
         } else {
-            showErrorPopup(data.pesan || 'Gagal memuat detail siswa');
+            showErrorPopup(data.pesan || 'Data kuis siswa belum tersedia');
         }
     } catch (error) {
         showErrorPopup('Terjadi kesalahan saat memuat detail siswa');
@@ -145,15 +147,8 @@ function loadInformasi(event) {
     if (event) event.preventDefault();
     showLoadingOverlay();
     try {
-        // Ambil data dari sesi atau endpoint (placeholder untuk sekarang)
-        const namaGuru = "{{ nama_guru }}"; // Ganti dengan data sesi jika tersedia
-        const kodeAkses = "{{ session.get('kode_akses', '********') }}"; // Ganti dengan logika dekripsi jika ada
-        const kadaluarsa = "{{ session.get('kadaluarsa', 'Tidak ada batas') }}"; // Ganti dengan data sesi
         const popup = document.getElementById('informasiPopup');
         if (popup) {
-            document.getElementById('popupNamaGuru').textContent = namaGuru;
-            document.getElementById('popupKodeAkses').textContent = kodeAkses;
-            document.getElementById('popupKadaluarsa').textContent = kadaluarsa;
             popup.classList.add('visible');
             popup.classList.remove('hidden');
             console.log('Informasi Popup Shown, Class:', popup.className);
@@ -240,4 +235,31 @@ window.onload = () => {
             loadInformasi(e);
         });
     });
+
+    const togglePassword = document.getElementById('togglePassword');
+    const popupKodeAkses = document.getElementById('popupKodeAkses');
+    if (togglePassword && popupKodeAkses) {
+        let isVisible = false;
+        const originalCode = popupKodeAkses.dataset.fullCode || popupKodeAkses.value; // Fallback ke value jika data-full-code undefined
+        togglePassword.addEventListener('click', () => {
+            isVisible = !isVisible;
+            if (isVisible && originalCode) {
+                popupKodeAkses.value = originalCode;
+            } else if (originalCode) {
+                popupKodeAkses.value = originalCode.substring(0, 2) + '*'.repeat(Math.max(0, originalCode.length - 2));
+            }
+            togglePassword.textContent = isVisible ? '🙈' : '👁️';
+        });
+    }
 };
+
+function showCustomAlert(message) {
+    const popup = document.getElementById('customAlert');
+    if (popup) {
+        document.getElementById('alertMessage').textContent = message || 'Data kuis siswa belum tersedia';
+        popup.classList.add('visible');
+        popup.classList.remove('hidden');
+    } else {
+        showErrorPopup('Popup alert tidak ditemukan');
+    }
+}

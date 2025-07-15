@@ -45,6 +45,7 @@ quiz-app/
         soal_status.json
     static/
         adminDashboard.js
+        guruDashboard.js
         login.css
         login.js
         motivasi.json
@@ -55,6 +56,7 @@ quiz-app/
         style.css
         css/
             adminDashboard.css
+            guruDashboard.css
         images/
             Bg1.jpg
     templates/
