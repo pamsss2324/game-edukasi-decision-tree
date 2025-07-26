@@ -57,8 +57,11 @@ quiz-app/
         css/
             adminDashboard.css
             guruDashboard.css
+            kelolaSoal.css
         images/
             Bg1.jpg
+        js/
+            kelolaSoal.js
     templates/
         hasil.html
         index.html
@@ -69,6 +72,7 @@ quiz-app/
             buatAkunGuru.html
         guru/
             dashboard.html
+            kelolaSoal.html
             laporanIndividu.html
             laporanKesalahanUmum.html
             laporanRekomendasi.html

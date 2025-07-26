@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Soal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/guruDashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/kelolaSoal.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-header">
+            <h1>Kelola Soal</h1>
+            <div class="navbar-user">
+                <div class="dropdown">
+                    <button class="dropbtn">Selamat datang, {{ nama_guru }} <span
+                            class="dropdown-arrow">▼</span></button>
+                    <div class="dropdown-content">
+                        <a href="#" class="info-link" onclick="loadInformasi(event)">Informasi</a>
+                        <a href="#" class="logout" onclick="confirmLogout(event)">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar-menu">
+            <a href="/guru/dashboard" class="menu-item">Beranda</a>
+            <a href="/kelola-soal" class="menu-item">Kelola Soal</a>
+            <a href="#" class="menu-item">Laporan Siswa</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#" data-section="tambah" class="sidebar-item">Tambah Paket</a></li>
+                <li><a href="#" data-section="edit" class="sidebar-item">Edit Paket</a></li>
+                <li><a href="#" data-section="arsip" class="sidebar-item">Arsip Paket</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <!-- Tambah Paket -->
+            <div id="tambah-section" class="section">
+                <div class="control-panel">
+                    <div class="left-controls">
+                        <select id="kelasTambah">
+                            <option value="3">Kelas 3</option>
+                            <option value="4">Kelas 4</option>
+                            <option value="5">Kelas 5</option>
+                        </select>
+                        <button id="okTambah">OK</button>
+                        <select id="pilihSoalTambah" disabled>
+                            <option value="0">Pilih Soal</option>
+                        </select>
+                    </div>
+                    <div class="nav-buttons">
+                        <button id="prevTambah" type="button" disabled>Sebelumnya</button>
+                        <button id="nextTambah" type="button" disabled>Selanjutnya</button>
+                        <button id="previewTambah" type="button" disabled>Pratinjau Paket</button>
+                        <button id="submitTambah" type="button" disabled>Submit</button>
+                    </div>
+                </div>
+                <form class="soal-form" id="soalFormTambah" style="display: none;">
+                    <div>Soal <span id="soalInfoTambah"></span></div>
+                    <div><input type="text" id="pertanyaanTambah" placeholder="Pertanyaan" disabled><p class="validation-info">Wajib diisi, minimal 5 karakter.</p></div>
+                    <div><input type="text" id="pilihanATambah" placeholder="Pilihan A" disabled><p class="validation-info">Wajib diisi.</p></div>
+                    <div><input type="text" id="pilihanBTambah" placeholder="Pilihan B" disabled><p class="validation-info">Wajib diisi.</p></div>
+                    <div><input type="text" id="pilihanCTambah" placeholder="Pilihan C" disabled><p class="validation-info">Wajib diisi.</p></div>
+                    <div><input type="text" id="pilihanDTambah" placeholder="Pilihan D" disabled><p class="validation-info">Wajib diisi.</p></div>
+                    <div><input type="text" id="jawabanTambah" placeholder="Jawaban" disabled><p class="validation-info">Harus sesuai dengan salah satu pilihan (A, B, C, D).</p></div>
+                    <div><input type="text" id="topikTambah" placeholder="Topik" disabled><p class="validation-info">Wajib diisi, minimal 3 karakter.</p></div>
+                    <div><input type="text" id="kategoriTambah" placeholder="Kategori" disabled><p class="validation-info">Wajib diisi, minimal 3 karakter.</p></div>
+                    <div>
+                        <select id="pelajaranTambah" disabled>
+                            <option value="Matematika">Matematika</option>
+                            <option value="IPA">IPA</option>
+                            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                        </select><p class="validation-info">Pilih Matematika, IPA, atau Bahasa Indonesia.</p>
+                    </div>
+                    <div>
+                        <select id="tingkatKesulitanTambah" disabled>
+                            <option value="mudah">Mudah</option>
+                            <option value="sedang">Sedang</option>
+                            <option value="sulit">Sulit</option>
+                        </select><p class="validation-info">Pilih Mudah, Sedang, atau Sulit.</p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Edit Paket -->
+            <div id="edit-section" class="section" style="display: none;">
+                <div class="control-panel">
+                    <div class="left-controls">
+                        <select id="paketEdit">
+                            <option value="">Pilih Paket</option>
+                        </select>
+                        <button id="okEdit">OK</button>
+                        <select id="pilihSoalEdit" disabled>
+                            <option value="0">Pilih Soal</option>
+                        </select>
+                    </div>
+                    <div class="nav-buttons">
+                        <button id="prevEdit" type="button" disabled>Sebelumnya</button>
+                        <button id="nextEdit" type="button" disabled>Selanjutnya</button>
+                        <button id="previewEdit" type="button" disabled>Pratinjau Paket</button>
+                        <button id="submitEdit" type="button" disabled>Submit</button>
+                    </div>
+                </div>
+                <form class="soal-form" id="soalFormEdit" style="display: none;">
+                    <div>Soal <span id="soalInfoEdit"></span></div>
+                    <div><input type="text" id="pertanyaanEdit" placeholder="Pertanyaan" disabled><p class="validation-info">Wajib diisi, minimal 5 karakter.</p></div>
+                    <div><input type="text" id="pilihanAEdit" placeholder="Pilihan A" disabled><p class="validation-info">Wajib diisi.</p></div>
+                    <div><input type="text" id="pilihanBEdit" placeholder="Pilihan B" disabled><p class="validation-info">Wajib diisi.</p></div>
+                    <div><input type="text" id="pilihanCEdit" placeholder="Pilihan C" disabled><p class="validation-info">Wajib diisi.</p></div>
+                    <div><input type="text" id="pilihanDEdit" placeholder="Pilihan D" disabled><p class="validation-info">Wajib diisi.</p></div>
+                    <div><input type="text" id="jawabanEdit" placeholder="Jawaban" disabled><p class="validation-info">Harus sesuai dengan salah satu pilihan (A, B, C, D).</p></div>
+                    <div><input type="text" id="topikEdit" placeholder="Topik" disabled><p class="validation-info">Wajib diisi, minimal 3 karakter.</p></div>
+                    <div><input type="text" id="kategoriEdit" placeholder="Kategori" disabled><p class="validation-info">Wajib diisi, minimal 3 karakter.</p></div>
+                    <div>
+                        <select id="pelajaranEdit" disabled>
+                            <option value="Matematika">Matematika</option>
+                            <option value="IPA">IPA</option>
+                            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                        </select><p class="validation-info">Pilih Matematika, IPA, atau Bahasa Indonesia.</p>
+                    </div>
+                    <div>
+                        <select id="tingkatKesulitanEdit" disabled>
+                            <option value="mudah">Mudah</option>
+                            <option value="sedang">Sedang</option>
+                            <option value="sulit">Sulit</option>
+                        </select><p class="validation-info">Pilih Mudah, Sedang, atau Sulit.</p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Arsip Paket -->
+            <div id="arsip-section" class="section" style="display: none;">
+                <div class="table-controls">
+                    <input type="text" id="arsipSearch" placeholder="Cari paket..." class="search-bar">
+                    <select id="statusFilterArsip" class="filter-select">
+                        <option value="all">Semua Status</option>
+                        <option value="active">Aktif</option>
+                        <option value="archived">Diarsip</option>
+                    </select>
+                </div>
+                <div class="table-wrapper">
+                    <table id="arsipTable" class="guru-table">
+                        <thead>
+                            <tr>
+                                <th>Kelas</th>
+                                <th>Paket</th>
+                                <th>Tanggal Arsip</th>
+                                <th>Diarsipkan Oleh</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="paginationArsip" class="pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Pratinjau -->
+    <div id="previewPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Pratinjau Paket</h3>
+            <div id="previewContent"></div>
+            <button onclick="closePopup()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Popup Notifikasi -->
+    <div id="notificationPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Status</h3>
+            <p id="notificationMessage"></p>
+            <button onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+    <!-- Popup untuk konfirmasi logout -->
+    <div id="logoutPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Konfirmasi Logout</h3>
+            <p>Apakah Anda yakin ingin logout?</p>
+            <div class="popup-buttons">
+                <button>Ya</button>
+                <button>Tidak</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup untuk informasi akun -->
+    <div id="informasiPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Informasi Akun</h3>
+            <div class="info-grid">
+                <label><strong>Nama Guru:</strong></label>
+                <div class="field-container">
+                    <input type="text" class="info-field" id="infoNamaGuru" value="" data-initial="{{ nama_guru }}"
+                        readonly>
+                </div>
+                <label><strong>Kode Akses:</strong></label>
+                <div class="field-container">
+                    <input type="text" id="popupKodeAkses" class="info-field masked-code" value=""
+                        data-initial="{{ kode_akses_initial }}" data-full-code="{{ kode_akses }}" readonly>
+                    <span id="togglePassword" class="toggle-password">👁️</span>
+                </div>
+                <label><strong>Tanggal Kadaluarsa:</strong></label>
+                <div class="field-container">
+                    <input type="text" class="info-field" id="infoKadaluarsa" value=""
+                        data-initial="{{ kadaluarsa_date }}" readonly>
+                </div>
+            </div>
+            <button id="backInfoBtn" onclick="closePopup()">Kembali</button>
+        </div>
+    </div>
+
+    <!-- Overlay loading -->
+    <div id="pageLoadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/kelolaSoal.js') }}"></script>
+</body>
+
+</html>

@@ -425,3 +425,9 @@ body {
 #customAlert button:hover {
     background-color: #45a049;
 }
+
+.menu-item.active {
+    color: #fff;
+    background-color: #1E90FF;
+    border-radius: 4px;
+}

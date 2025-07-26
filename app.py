@@ -351,6 +351,33 @@ def guru_dashboard():
         logger.error(f"❌ Error saat menampilkan dashboard guru: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
 
+@app.route('/kelola-soal')
+def kelola_soal():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return redirect(url_for('halaman_utama'))  # Arahkan ke halaman utama untuk login
+    try:
+        user_data = session['user']
+        nama_guru = user_data['nama']
+        kode_akses_encrypted = user_data.get('kode_akses', '********')
+        try:
+            kode_akses = fernet.decrypt(kode_akses_encrypted.encode()).decode() if kode_akses_encrypted != '********' else '********'
+        except Exception as e:
+            logger.warning(f"❌ Gagal dekripsi kode akses untuk {nama_guru}: {e}. Menggunakan placeholder.")
+            kode_akses = '********'
+        kode_akses_initial = kode_akses[:2] + '*' * (len(kode_akses) - 2) if kode_akses != '********' and len(kode_akses) > 2 else kode_akses
+        kadaluarsa_date = user_data.get('kadaluarsa', '')
+        return render_template(
+        'guru/kelolaSoal.html',
+        nama_guru=nama_guru,
+        kode_akses=kode_akses,
+        kode_akses_initial=kode_akses_initial,
+        kadaluarsa_date=kadaluarsa_date,
+        timestamp=int(datetime.datetime.now().timestamp())
+        )
+    except Exception as e:
+        logger.error(f"❌ Error saat menampilkan halaman kelola soal: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
 @app.route('/guru/archive_soal', methods=['POST'])
 def archive_soal():
     if not session.get('user') or session.get('user').get('role') != 'guru':
@@ -371,7 +398,7 @@ def archive_soal():
         else:
             status_data = {}
 
-        nama_guru = session['user']['nama_guru']
+        nama_guru = session['user']['nama']
         current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         status_data[filename] = {
             'status': 'Diarsip',
@@ -391,6 +418,73 @@ def archive_soal():
         return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
     except Exception as e:
         logger.error(f"❌ Error saat mengarsip soal: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+    
+@app.route('/guru/get_last_paket', methods=['GET'])
+def get_last_paket():
+    kelas = request.args.get('kelas')
+    if kelas not in ['3', '4', '5']:
+        return jsonify({'status': 'gagal', 'pesan': 'Kelas tidak valid'}), 400
+    folder = 'soal'
+    last_paket = 0
+    for file in os.listdir(folder):
+        if file.startswith(f'soal_kelas{kelas}_paket') and file.endswith('.json'):
+            paket = int(file.split('_paket')[1].split('.json')[0])
+            last_paket = max(last_paket, paket)
+    return jsonify({'status': 'sukses', 'last_paket': last_paket})
+
+@app.route('/soal', methods=['GET'])
+def list_soal():
+    if request.args.get('list') == 'true':
+        folder = 'soal'
+        files = [f for f in os.listdir(folder) if f.endswith('.json')]
+        return jsonify({'status': 'sukses', 'files': files})
+    return jsonify({'status': 'gagal', 'pesan': 'Metode tidak didukung'}), 400
+
+@app.route('/soal/<path:filename>', methods=['POST'])
+def save_soal(filename):
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        data = request.get_json()
+        if not data or 'soal' not in data:
+            raise ValueError("Data 'soal' wajib diisi.")
+        filepath = os.path.join('soal', filename)
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data['soal'], f, ensure_ascii=False, indent=2)
+        return jsonify({'status': 'sukses', 'pesan': f'File {filename} berhasil disimpan'})
+    except ValueError as ve:
+        return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
+    except Exception as e:
+        logger.error(f"❌ Error saat menyimpan soal: {e}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+@app.route('/guru/get_arsip_data', methods=['GET'])
+def get_arsip_data():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 8))
+        filter_status = request.args.get('status', 'all')
+        search = request.args.get('search', '')
+        offset = (page - 1) * limit
+        status_file = os.path.join('soal', 'soal_status.json')
+        packages = []
+        if os.path.exists(status_file):
+            with open(status_file, 'r', encoding='utf-8') as f:
+                status_data = json.load(f)
+            for filename, info in status_data.items():
+                if search and search.lower() not in filename.lower():
+                    continue
+                if filter_status != 'all' and (filter_status == 'active' and info.get('status') != 'Aktif' or filter_status == 'archived' and info.get('status') != 'Diarsip'):
+                    continue
+                packages.append({'filename': filename, 'status': info.get('status', 'Aktif'), 'terakhir_diarsip': info.get('terakhir_diarsip', '-'), 'diarsipkan_oleh': info.get('diarsipkan_oleh', '-')})
+        total = len(packages)
+        packages = packages[offset:offset + limit]
+        return jsonify({'status': 'sukses', 'packages': packages, 'total': total})
+    except Exception as e:
+        logger.error(f"❌ Error saat mengambil data arsip: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
     
 @app.route('/guru/get_siswa', methods=['GET'])
