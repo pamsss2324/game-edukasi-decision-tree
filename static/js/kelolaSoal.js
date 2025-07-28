@@ -5,6 +5,7 @@ let currentPaket = null;
 let editSoalArray = [];
 let editCurrentIndex = 0;
 let editFilename = null;
+let originalEditSoalArray = [];
 
 function showLoadingOverlay() {
     const overlay = document.getElementById('pageLoadingOverlay');
@@ -105,7 +106,7 @@ async function showPreviewSoal(index, array) {
         const previewPopup = document.getElementById('previewPopup');
         const content = document.getElementById('previewContent');
         content.innerHTML = `
-            <div class="card">
+            <div class="preview-card">
                 <h4>ID: ${soal.id}</h4>
                 <p><strong>Pertanyaan:</strong> ${soal.pertanyaan}</p>
                 <p><strong>Pilihan:</strong></p>
@@ -127,7 +128,7 @@ async function showPreviewSoal(index, array) {
                 <select id="pilihSoalPreview">
                     ${array.map((_, i) => `<option value="${i}" ${i === index ? 'selected' : ''}>Soal ${i + 1}</option>`).join('')}
                 </select>
-                <button onclick="closePopup()">Kembali</button>
+                <button onclick="closePopup()">Tutup</button>
             </div>
         `;
         previewPopup.classList.remove('hidden');
@@ -187,7 +188,7 @@ async function submitPaket() {
         const response = await fetch(`/soal/soal_kelas${currentKelas}_paket${currentPaket}.json`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(soalArray)
+            body: JSON.stringify({ soal: soalArray })
         });
         const data = await response.json();
         if (data.status === 'sukses') {
@@ -218,10 +219,11 @@ async function submitPaket() {
 async function submitEditPaket() {
     showLoadingOverlay();
     try {
+        console.log('Data dikirim:', JSON.stringify({ soal: editSoalArray }));
         const response = await fetch(`/soal/${editFilename}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(editSoalArray)
+            body: JSON.stringify({ soal: editSoalArray })
         });
         const data = await response.json();
         if (data.status === 'sukses') {
@@ -229,10 +231,12 @@ async function submitEditPaket() {
             editSoalArray = [];
             editCurrentIndex = 0;
             editFilename = null;
+            originalEditSoalArray = [];
             const form = document.getElementById('soalFormEdit');
             if (form) form.reset();
             document.getElementById('prevEdit').disabled = true;
             document.getElementById('nextEdit').disabled = true;
+            document.getElementById('previewEdit').disabled = true;
             document.getElementById('submitEdit').disabled = true;
             document.getElementById('pilihSoalEdit').disabled = true;
             document.getElementById('soalInfoEdit').textContent = '';
@@ -319,31 +323,150 @@ function enableFormInputs(formId) {
     selects.forEach(select => select.disabled = false);
 }
 
-function updateNavigationButtons(formId, prevId, nextId, previewId, submitId, selectId, infoId) {
+function updateNavigationButtons(formId, prevId, nextId, previewId, submitId, selectId, infoId, duplicateId, deleteId, sortId) {
     const prevBtn = document.getElementById(prevId);
     const nextBtn = document.getElementById(nextId);
     const previewBtn = document.getElementById(previewId);
     const submitBtn = document.getElementById(submitId);
     const select = document.getElementById(selectId);
     const info = document.getElementById(infoId);
-    const expectedSoal = { '3': 15, '4': 18, '5': 21 }[currentKelas || (formId === 'soalFormEdit' && editSoalArray[0]?.id.split('-')[0])];
+    const duplicateBtn = document.getElementById(duplicateId);
+    const deleteBtn = document.getElementById(deleteId);
+    const sortBtn = document.getElementById(sortId);
+    const expectedSoal = { '3': 15, '4': 18, '5': 21 }[formId === 'soalFormTambah' ? currentKelas : (editSoalArray[0]?.id.split('-')[0] || '4')];
     const totalSoal = formId === 'soalFormTambah' ? currentSoalIndex + 1 : editCurrentIndex + 1;
     const array = formId === 'soalFormTambah' ? soalArray : editSoalArray;
     const currentIndex = formId === 'soalFormTambah' ? currentSoalIndex : editCurrentIndex;
 
-    prevBtn.disabled = currentIndex === 0;
-    nextBtn.disabled = currentIndex >= (expectedSoal - 1 || array.length - 1);
-    previewBtn.disabled = !array.every(soal => soal && soal.pertanyaan && soal.pilihan.every(p => p) && soal.jawaban && soal.topik && soal.kategori && soal.pelajaran && soal.tingkat_kesulitan) || formId !== 'soalFormTambah';
-    submitBtn.disabled = !array.every(soal => soal && soal.pertanyaan && soal.pilihan.every(p => p) && soal.jawaban && soal.topik && soal.kategori && soal.pelajaran && soal.tingkat_kesulitan) || (formId === 'soalFormTambah' && currentIndex < expectedSoal - 1) || formId !== 'soalFormTambah';
-    select.disabled = false;
-    info.textContent = `${totalSoal} dari ${expectedSoal || array.length}`;
-    select.innerHTML = '';
-    for (let i = 0; i < (formId === 'soalFormTambah' ? expectedSoal : array.length); i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `Soal ${i + 1}`;
-        if (i === currentIndex) option.selected = true;
-        select.appendChild(option);
+    if (prevBtn) prevBtn.disabled = currentIndex === 0;
+    if (nextBtn) nextBtn.disabled = currentIndex >= (expectedSoal - 1 || array.length - 1);
+    if (previewBtn) previewBtn.disabled = !array.every(soal => validateSoalForm(formId));
+    if (submitBtn) submitBtn.disabled = formId === 'soalFormEdit' ? !hasChanges() || !array.every(soal => validateSoalForm(formId)) : (formId === 'soalFormTambah' && currentIndex < expectedSoal - 1);
+    if (duplicateBtn) duplicateBtn.disabled = formId !== 'soalFormEdit';
+    if (deleteBtn) deleteBtn.disabled = formId !== 'soalFormEdit' || array.length <= 1;
+    if (sortBtn) sortBtn.disabled = formId !== 'soalFormEdit' || array.length <= 1;
+    if (select) select.disabled = false;
+    if (info) info.textContent = `${totalSoal} dari ${expectedSoal || array.length}`;
+    if (select) {
+        select.innerHTML = '';
+        for (let i = 0; i < (formId === 'soalFormTambah' ? expectedSoal : array.length); i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = `Soal ${i + 1}`;
+            if (i === currentIndex) option.selected = true;
+            select.appendChild(option);
+        }
+    }
+}
+
+function showConfirmPopup(message, onConfirm) {
+    const confirmPopup = document.getElementById('confirmPopup');
+    if (confirmPopup) {
+        confirmPopup.querySelector('#confirmMessage').textContent = message;
+        confirmPopup.classList.remove('hidden');
+        confirmPopup.classList.add('visible');
+        const yesButton = confirmPopup.querySelector('.popup-buttons button:first-child');
+        const noButton = confirmPopup.querySelector('.popup-buttons button:last-child');
+        yesButton.onclick = () => {
+            onConfirm();
+            closePopup();
+        };
+        noButton.onclick = closePopup;
+    }
+}
+
+function duplicateSoal(formId) {
+    const array = formId === 'soalFormTambah' ? soalArray : editSoalArray;
+    const currentIndex = formId === 'soalFormTambah' ? currentSoalIndex : editCurrentIndex;
+    const newIndex = array.length;
+    array.push({ ...array[currentIndex], id: `${array[0].id.split('-')[0]}-${editFilename.split('_paket')[1].split('.json')[0]}-${(newIndex + 1).toString().padStart(2, '0')}` });
+    if (formId === 'soalFormEdit') editCurrentIndex = newIndex;
+    updateNavigationButtons(formId, 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
+    showSuccessPopup('Soal berhasil diduplikasi');
+}
+
+function deleteSoal(formId) {
+    const array = formId === 'soalFormTambah' ? soalArray : editSoalArray;
+    const currentIndex = formId === 'soalFormTambah' ? currentSoalIndex : editCurrentIndex;
+    if (array.length > 1) {
+        array.splice(currentIndex, 1);
+        if (currentIndex >= array.length) editCurrentIndex = array.length - 1;
+        const form = document.getElementById(formId);
+        const soal = array[editCurrentIndex] || {};
+        form.querySelector('#pertanyaanEdit').value = soal.pertanyaan || '';
+        form.querySelector('#pilihanAEdit').value = soal.pilihan?.[0] || soal.pilihanA || '';
+        form.querySelector('#pilihanBEdit').value = soal.pilihan?.[1] || soal.pilihanB || '';
+        form.querySelector('#pilihanCEdit').value = soal.pilihan?.[2] || soal.pilihanC || '';
+        form.querySelector('#pilihanDEdit').value = soal.pilihan?.[3] || soal.pilihanD || '';
+        form.querySelector('#jawabanEdit').value = soal.jawaban || '';
+        form.querySelector('#topikEdit').value = soal.topik || '';
+        form.querySelector('#kategoriEdit').value = soal.kategori || '';
+        form.querySelector('#pelajaranEdit').value = soal.pelajaran || 'Matematika';
+        form.querySelector('#tingkatKesulitanEdit').value = soal.tingkat_kesulitan || soal.tingkatKesulitan || 'mudah';
+        updateNavigationButtons(formId, 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
+        showSuccessPopup('Soal berhasil dihapus');
+    } else {
+        showErrorPopup('Minimal harus ada 1 soal');
+    }
+}
+
+function sortSoal(formId, criteria = 'id') {
+    const array = formId === 'soalFormTambah' ? soalArray : editSoalArray;
+    array.sort((a, b) => a[criteria].localeCompare(b[criteria]));
+    editCurrentIndex = 0;
+    const form = document.getElementById(formId);
+    const soal = array[0];
+    form.querySelector('#pertanyaanEdit').value = soal.pertanyaan || '';
+    form.querySelector('#pilihanAEdit').value = soal.pilihan?.[0] || soal.pilihanA || '';
+    form.querySelector('#pilihanBEdit').value = soal.pilihan?.[1] || soal.pilihanB || '';
+    form.querySelector('#pilihanCEdit').value = soal.pilihan?.[2] || soal.pilihanC || '';
+    form.querySelector('#pilihanDEdit').value = soal.pilihan?.[3] || soal.pilihanD || '';
+    form.querySelector('#jawabanEdit').value = soal.jawaban || '';
+    form.querySelector('#topikEdit').value = soal.topik || '';
+    form.querySelector('#kategoriEdit').value = soal.kategori || '';
+    form.querySelector('#pelajaranEdit').value = soal.pelajaran || 'Matematika';
+    form.querySelector('#tingkatKesulitanEdit').value = soal.tingkat_kesulitan || soal.tingkatKesulitan || 'mudah';
+    updateNavigationButtons(formId, 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
+    showSuccessPopup(`Soal diurutkan berdasarkan ${criteria}`);
+}
+
+function hasChanges() {
+    const cleanOriginal = JSON.stringify(originalEditSoalArray).replace(/\s+/g, '');
+    const cleanCurrent = JSON.stringify(editSoalArray).replace(/\s+/g, '');
+    return cleanCurrent !== cleanOriginal;
+}
+
+function addFormListeners(formId) {
+    const form = document.getElementById(formId);
+    if (form) {
+        form.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', () => {
+                saveSoalToArray(formId, formId === 'soalFormTambah' ? soalArray : editSoalArray, formId === 'soalFormTambah' ? currentSoalIndex : editCurrentIndex, true);
+                updateNavigationButtons(formId, 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
+            });
+        });
+    }
+}
+
+function cancelChanges(formId) {
+    const currentIndex = formId === 'soalFormTambah' ? currentSoalIndex : editCurrentIndex;
+    const array = formId === 'soalFormTambah' ? soalArray : editSoalArray;
+    const originalSoal = originalEditSoalArray[currentIndex];
+    const form = document.getElementById(formId);
+    if (form && originalSoal) {
+        form.querySelector('#pertanyaanEdit').value = originalSoal.pertanyaan || '';
+        form.querySelector('#pilihanAEdit').value = originalSoal.pilihan?.[0] || originalSoal.pilihanA || '';
+        form.querySelector('#pilihanBEdit').value = originalSoal.pilihan?.[1] || originalSoal.pilihanB || '';
+        form.querySelector('#pilihanCEdit').value = originalSoal.pilihan?.[2] || originalSoal.pilihanC || '';
+        form.querySelector('#pilihanDEdit').value = originalSoal.pilihan?.[3] || originalSoal.pilihanD || '';
+        form.querySelector('#jawabanEdit').value = originalSoal.jawaban || '';
+        form.querySelector('#topikEdit').value = originalSoal.topik || '';
+        form.querySelector('#kategoriEdit').value = originalSoal.kategori || '';
+        form.querySelector('#pelajaranEdit').value = originalSoal.pelajaran || 'Matematika';
+        form.querySelector('#tingkatKesulitanEdit').value = originalSoal.tingkat_kesulitan || originalSoal.tingkatKesulitan || 'mudah';
+        saveSoalToArray(formId, array, currentIndex, true);
+        updateNavigationButtons(formId, 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
+        showSuccessPopup('Perubahan dibatalkan');
     }
 }
 
@@ -397,7 +520,8 @@ window.onload = () => {
                     form.style.display = 'block';
                     enableFormInputs('soalFormTambah');
                     form.reset();
-                    updateNavigationButtons('soalFormTambah', 'prevTambah', 'nextTambah', 'previewTambah', 'submitTambah', 'pilihSoalTambah', 'soalInfoTambah');
+                    updateNavigationButtons('soalFormTambah', 'prevTambah', 'nextTambah', 'previewTambah', 'submitTambah', 'pilihSoalTambah', 'soalInfoTambah', null, null, null);
+                    addFormListeners('soalFormTambah');
                     document.getElementById('pilihSoalTambah').addEventListener('change', (e) => {
                         currentSoalIndex = parseInt(e.target.value);
                         const soal = soalArray[currentSoalIndex] || {};
@@ -412,7 +536,7 @@ window.onload = () => {
                         form.querySelector('#kategoriTambah').value = soal.kategori || '';
                         form.querySelector('#pelajaranTambah').value = soal.pelajaran || 'Matematika';
                         form.querySelector('#tingkatKesulitanTambah').value = soal.tingkat_kesulitan || 'mudah';
-                        updateNavigationButtons('soalFormTambah', 'prevTambah', 'nextTambah', 'previewTambah', 'submitTambah', 'pilihSoalTambah', 'soalInfoTambah');
+                        updateNavigationButtons('soalFormTambah', 'prevTambah', 'nextTambah', 'previewTambah', 'submitTambah', 'pilihSoalTambah', 'soalInfoTambah', null, null, null);
                     });
                     showSuccessPopup('Data paket berhasil dimuat');
                 }
@@ -444,7 +568,7 @@ window.onload = () => {
             form.querySelector('#kategoriTambah').value = soal.kategori || '';
             form.querySelector('#pelajaranTambah').value = soal.pelajaran || 'Matematika';
             form.querySelector('#tingkatKesulitanTambah').value = soal.tingkat_kesulitan || 'mudah';
-            updateNavigationButtons('soalFormTambah', 'prevTambah', 'nextTambah', 'previewTambah', 'submitTambah', 'pilihSoalTambah', 'soalInfoTambah');
+            updateNavigationButtons('soalFormTambah', 'prevTambah', 'nextTambah', 'previewTambah', 'submitTambah', 'pilihSoalTambah', 'soalInfoTambah', null, null, null);
         }
     });
 
@@ -466,7 +590,7 @@ window.onload = () => {
             form.querySelector('#kategoriTambah').value = soal.kategori || '';
             form.querySelector('#pelajaranTambah').value = soal.pelajaran || 'Matematika';
             form.querySelector('#tingkatKesulitanTambah').value = soal.tingkat_kesulitan || 'mudah';
-            updateNavigationButtons('soalFormTambah', 'prevTambah', 'nextTambah', 'previewTambah', 'submitTambah', 'pilihSoalTambah', 'soalInfoTambah');
+            updateNavigationButtons('soalFormTambah', 'prevTambah', 'nextTambah', 'previewTambah', 'submitTambah', 'pilihSoalTambah', 'soalInfoTambah', null, null, null);
         }
     });
 
@@ -480,7 +604,7 @@ window.onload = () => {
     document.getElementById('submitTambah')?.addEventListener('click', (e) => {
         e.preventDefault();
         if (saveSoalToArray('soalFormTambah', soalArray, currentSoalIndex, true)) {
-            submitPaket();
+            showConfirmPopup('Apakah anda sudah yakin untuk melakukan submit soal?', submitPaket);
         }
     });
 
@@ -499,12 +623,12 @@ window.onload = () => {
                 if (editSoalArray.length === 0) throw new Error('Data soal kosong');
                 editCurrentIndex = 0;
                 editFilename = paketEdit;
+                originalEditSoalArray = JSON.parse(JSON.stringify(editSoalArray));
                 const form = document.getElementById('soalFormEdit');
                 const soal = editSoalArray[editCurrentIndex];
                 if (form) {
                     form.style.display = 'block';
                     enableFormInputs('soalFormEdit');
-                    // Hindari reset() karena form bukan elemen <form> asli
                     const inputs = form.querySelectorAll('input, select');
                     inputs.forEach(input => input.value = '');
                     form.querySelector('#pertanyaanEdit').value = soal.pertanyaan || '';
@@ -517,8 +641,9 @@ window.onload = () => {
                     form.querySelector('#kategoriEdit').value = soal.kategori || '';
                     form.querySelector('#pelajaranEdit').value = soal.pelajaran || 'Matematika';
                     form.querySelector('#tingkatKesulitanEdit').value = soal.tingkat_kesulitan || soal.tingkatKesulitan || 'mudah';
-                    updateNavigationButtons('soalFormEdit', 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit');
-                    document.getElementById('pilihSoalEdit')?.addEventListener('change', (e) => {
+                    updateNavigationButtons('soalFormEdit', 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
+                    addFormListeners('soalFormEdit');
+                    document.getElementById('pilihSoalEdit').addEventListener('change', (e) => {
                         editCurrentIndex = parseInt(e.target.value);
                         const soal = editSoalArray[editCurrentIndex];
                         const form = document.getElementById('soalFormEdit');
@@ -532,7 +657,7 @@ window.onload = () => {
                         form.querySelector('#kategoriEdit').value = soal.kategori || '';
                         form.querySelector('#pelajaranEdit').value = soal.pelajaran || 'Matematika';
                         form.querySelector('#tingkatKesulitanEdit').value = soal.tingkat_kesulitan || soal.tingkatKesulitan || 'mudah';
-                        updateNavigationButtons('soalFormEdit', 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit');
+                        updateNavigationButtons('soalFormEdit', 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
                     });
                     showSuccessPopup('Data paket berhasil dimuat');
                 }
@@ -564,7 +689,7 @@ window.onload = () => {
             form.querySelector('#kategoriEdit').value = soal.kategori;
             form.querySelector('#pelajaranEdit').value = soal.pelajaran;
             form.querySelector('#tingkatKesulitanEdit').value = soal.tingkat_kesulitan || soal.tingkatKesulitan;
-            updateNavigationButtons('soalFormEdit', 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit');
+            updateNavigationButtons('soalFormEdit', 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
         }
     });
 
@@ -585,16 +710,25 @@ window.onload = () => {
             form.querySelector('#kategoriEdit').value = soal.kategori;
             form.querySelector('#pelajaranEdit').value = soal.pelajaran;
             form.querySelector('#tingkatKesulitanEdit').value = soal.tingkat_kesulitan || soal.tingkatKesulitan;
-            updateNavigationButtons('soalFormEdit', 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit');
+            updateNavigationButtons('soalFormEdit', 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
+        }
+    });
+
+    document.getElementById('previewEdit')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (saveSoalToArray('soalFormEdit', editSoalArray, editCurrentIndex, true)) {
+            showPreviewSoal(editCurrentIndex, editSoalArray);
         }
     });
 
     document.getElementById('submitEdit')?.addEventListener('click', (e) => {
         e.preventDefault();
         if (saveSoalToArray('soalFormEdit', editSoalArray, editCurrentIndex, true)) {
-            submitEditPaket();
+            showConfirmPopup('Apakah anda sudah yakin untuk melakukan submit soal?', submitEditPaket);
         }
     });
+
+    document.getElementById('cancelChanges')?.addEventListener('click', () => cancelChanges('soalFormEdit'));
 
     fetch('/soal?list=true')
         .then(response => response.json())

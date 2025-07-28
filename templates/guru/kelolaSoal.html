@@ -109,6 +109,7 @@
                     </div>
                 </div>
                 <form class="soal-form" id="soalFormEdit" style="display: none;">
+                    <button id="cancelChanges" type="button">Batalkan Perubahan</button>
                     <div>Soal <span id="soalInfoEdit"></span></div>
                     <div><input type="text" id="pertanyaanEdit" placeholder="Pertanyaan" disabled><p class="validation-info">Wajib diisi, minimal 5 karakter.</p></div>
                     <div><input type="text" id="pilihanAEdit" placeholder="Pilihan A" disabled><p class="validation-info">Wajib diisi.</p></div>
@@ -169,7 +170,6 @@
         <div class="popup-content">
             <h3>Pratinjau Paket</h3>
             <div id="previewContent"></div>
-            <button onclick="closePopup()">Tutup</button>
         </div>
     </div>
 
@@ -220,12 +220,21 @@
         </div>
     </div>
 
+    <!-- Popup untuk konfirmasi submit -->
+    <div id="confirmPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Konfirmasi</h3>
+            <p id="confirmMessage"></p>
+            <div class="popup-buttons">
+                <button>Ya</button>
+                <button>Tidak</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Overlay loading -->
     <div id="pageLoadingOverlay" class="loading-overlay hidden">
         <div class="spinner"></div>
     </div>
 
     <script src="{{ url_for('static', filename='js/kelolaSoal.js') }}"></script>
-</body>
-
-</html>

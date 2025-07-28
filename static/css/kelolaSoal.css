@@ -144,28 +144,32 @@ body {
     justify-content: space-between;
     margin-bottom: 1.5rem;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .left-controls, .right-controls {
     display: flex;
     gap: 1.5rem;
+    align-items: center;
 }
 
-#kelasTambah, #paketEdit, #pilihSoalTambah, #pilihSoalEdit, #statusFilterArsip {
-    padding: 0.75rem;
+#kelasTambah, #paketEdit, #pilihSoalTambah, #pilihSoalEdit, #statusFilterArsip,
+#okTambah, #okEdit, #prevTambah, #nextTambah, #previewTambah, #submitTambah,
+#prevEdit, #nextEdit, #previewEdit, #submitEdit, #cancelChanges,
+.nav-buttons button, .nav-buttons select, .search-bar, .filter-select {
+    padding: 0.5rem 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
+    height: 38px;
+    box-sizing: border-box;
 }
 
 #okTambah, #okEdit {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
     background-color: #4CAF50;
     color: white;
     cursor: pointer;
-    font-size: 1rem;
+    border: none;
 }
 
 #okTambah:hover, #okEdit:hover {
@@ -214,39 +218,23 @@ button:disabled {
     margin-top: 1rem;
 }
 
-#prevTambah, #nextTambah, #previewTambah, #submitTambah, #prevEdit, #nextEdit, #submitEdit {
-    padding: 0.75rem 1.5rem;
+#prevTambah, #nextTambah, #previewTambah, #submitTambah, #prevEdit, #nextEdit, #previewEdit, #submitEdit, #cancelChanges {
+    padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
     background-color: #4CAF50;
     color: white;
     cursor: pointer;
     font-size: 1rem;
+    height: 38px;
+    box-sizing: border-box;
 }
 
-#prevTambah:hover, #nextTambah:hover, #previewTambah:hover, #submitTambah:hover, #prevEdit:hover, #nextEdit:hover, #submitEdit:hover {
+#prevTambah:hover, #nextTambah:hover, #previewTambah:hover, #submitTambah:hover, #prevEdit:hover, #nextEdit:hover, #previewEdit:hover, #submitEdit:hover, #cancelChanges:hover {
     background-color: #45a049;
 }
 
-#previewPopup .card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: left;
-}
-
-#previewPopup .card ul {
-    list-style: none;
-    padding: 0;
-}
-
-#previewPopup .card li {
-    margin: 0.75rem 0;
-}
-
+/* Preview Popup Styles */
 .popup {
     position: fixed;
     top: 0;
@@ -270,9 +258,79 @@ button:disabled {
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
+    width: 90%;
+    max-width: 700px;
     text-align: center;
     position: relative;
+}
+
+.preview-card {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    background-color: #fff;
+}
+
+.preview-card h4 {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #2d3748;
+}
+
+.preview-card p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.preview-card ul {
+    list-style-type: none;
+    padding-left: 1rem;
+}
+
+.preview-card ul li {
+    margin: 0.5rem 0;
+    padding-left: 0.5rem;
+    border-left: 2px solid #4CAF50;
+    color: #444;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.nav-buttons button,
+.nav-buttons select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #2d3748;
+    cursor: pointer;
+    font-size: 1rem;
+    height: 38px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+.nav-buttons button:hover,
+.nav-buttons select:hover {
+    background-color: #e9e9e9;
+}
+
+.nav-buttons button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 #notificationPopup.success {
@@ -360,10 +418,12 @@ button:disabled {
 }
 
 .search-bar, .filter-select {
-    padding: 0.75rem;
+    padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
+    height: 38px;
+    box-sizing: border-box;
 }
 
 .table-wrapper {
@@ -496,7 +556,18 @@ button:disabled {
     .soal-form {
         padding: 0.75rem;
     }
-    #previewPopup .card {
+    .popup-content {
+        width: 85%;
         max-width: 90%;
+    }
+    .preview-card {
+        max-height: 300px;
+    }
+    #kelasTambah, #paketEdit, #pilihSoalTambah, #pilihSoalEdit, #statusFilterArsip,
+    #okTambah, #okEdit, #prevTambah, #nextTambah, #previewTambah, #submitTambah,
+    #prevEdit, #nextEdit, #previewEdit, #submitEdit, #cancelChanges,
+    .nav-buttons button, .nav-buttons select, .search-bar, .filter-select {
+        height: 36px;
+        padding: 0.4rem;
     }
 }
