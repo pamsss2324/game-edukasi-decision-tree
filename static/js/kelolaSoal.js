@@ -6,6 +6,7 @@ let editSoalArray = [];
 let editCurrentIndex = 0;
 let editFilename = null;
 let originalEditSoalArray = [];
+let currentHistoryFilename = null;
 
 function showLoadingOverlay() {
     const overlay = document.getElementById('pageLoadingOverlay');
@@ -254,7 +255,7 @@ async function submitEditPaket() {
 async function loadArsipTable(page = 1, search = '', status = '') {
     showLoadingOverlay();
     try {
-        const response = await fetch(`/guru/get_arsip_data?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}`);
+        const response = await fetch(`/guru/get_arsip_data?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}&limit=7`);
         const data = await response.json();
         if (data.status === 'sukses') {
             const tbody = document.querySelector('#arsipTable tbody');
@@ -262,19 +263,21 @@ async function loadArsipTable(page = 1, search = '', status = '') {
             data.packages.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${item.filename.split('_')[1]}</td>
+                    <td>${item.filename.split('_')[1].replace('kelas', 'Kelas ').replace(/(\d+)/, ' $1')}</td>
                     <td>${item.filename.split('_paket')[1].split('.json')[0]}</td>
                     <td>${item.terakhir_diarsip || '-'}</td>
-                    <td>${item.diarsipkan_oleh || '-'}</td>
-                    <td>${item.status}</td>
-                    <td><button class="archive-btn" data-file="${item.filename}">${item.status === 'Aktif' ? 'Arsipkan' : 'Aktifkan'}</button></td>
+                    <td>${item.terakhir_diaktif || '-'}</td>
+                    <td>${item.diarsipkan_diaktifkan_oleh || '-'}</td>
+                    <td class="status-cell ${item.status === 'Aktif' ? 'active' : 'archived'}" data-file="${item.filename}" data-status="${item.status}">
+                        ${item.status}
+                    </td>
                 `;
                 tbody.appendChild(row);
             });
 
             const pagination = document.getElementById('paginationArsip');
             pagination.innerHTML = '';
-            for (let i = 1; i <= Math.ceil(data.total / 8); i++) {
+            for (let i = 1; i <= Math.ceil(data.total / 7); i++) {
                 const btn = document.createElement('button');
                 btn.textContent = i;
                 btn.className = i === page ? 'active' : '';
@@ -282,15 +285,16 @@ async function loadArsipTable(page = 1, search = '', status = '') {
                 pagination.appendChild(btn);
             }
 
-            document.querySelectorAll('.archive-btn').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    const filename = btn.dataset.file;
+            document.querySelectorAll('.status-cell').forEach(cell => {
+                cell.addEventListener('click', async () => {
+                    const filename = cell.dataset.file;
+                    const currentStatus = cell.dataset.status;
                     showLoadingOverlay();
                     try {
                         const response = await fetch('/guru/archive_soal', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ nama_file: filename })
+                            body: JSON.stringify({ filename })
                         });
                         const data = await response.json();
                         if (data.status === 'sukses') {
@@ -306,6 +310,11 @@ async function loadArsipTable(page = 1, search = '', status = '') {
                     }
                 });
             });
+
+            // Tambahkan event listener untuk klik baris (kecuali kolom status)
+            tbody.querySelectorAll('tr').forEach(row => {
+                row.addEventListener('click', toggleHistoryPopup);
+            });
         } else {
             showErrorPopup(data.pesan || 'Gagal memuat data arsip');
         }
@@ -313,6 +322,72 @@ async function loadArsipTable(page = 1, search = '', status = '') {
         showErrorPopup('Terjadi kesalahan saat memuat data arsip');
     } finally {
         hideLoadingOverlay();
+    }
+}
+
+async function loadHistoryPopup(filename) {
+    currentHistoryFilename = filename;
+    const historyPopup = document.getElementById('historyPopup');
+    if (!historyPopup) return;
+
+    showLoadingOverlay();
+    try {
+        const search = document.getElementById('historySearch')?.value || '';
+        const status = document.getElementById('historyStatusFilter')?.value || 'all';
+        const date = document.getElementById('historyDateFilter')?.value || '';
+        const page = parseInt(document.getElementById('historyPage')?.value) || 1;
+
+        const response = await fetch(`/guru/get_history?filename=${encodeURIComponent(filename)}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}&date=${encodeURIComponent(date)}&page=${page}&limit=10`);
+        const data = await response.json();
+        if (data.status === 'sukses') {
+            const tbody = historyPopup.querySelector('#historyTable tbody');
+            tbody.innerHTML = '';
+            data.history.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${(page - 1) * 10 + index + 1}</td>
+                    <td class="${item.status === 'Aktif' ? 'active' : 'archived'}">${item.status}</td>
+                    <td>${item.tanggal}</td>
+                    <td>${item.diarsipkan_diaktifkan_oleh || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            const pagination = historyPopup.querySelector('.pagination');
+            pagination.innerHTML = '';
+            for (let i = 1; i <= Math.ceil(data.total / 10); i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.className = i === page ? 'active' : '';
+                btn.addEventListener('click', () => {
+                    document.getElementById('historyPage').value = i;
+                    loadHistoryPopup(filename);
+                });
+                pagination.appendChild(btn);
+            }
+        } else {
+            showErrorPopup(data.pesan || 'Gagal memuat riwayat');
+        }
+    } catch (error) {
+        showErrorPopup('Terjadi kesalahan saat memuat riwayat');
+    } finally {
+        hideLoadingOverlay();
+        historyPopup.classList.remove('hidden');
+        historyPopup.classList.add('visible');
+    }
+}
+
+function toggleHistoryPopup(event) {
+    const cell = event.target.closest('td');
+    if (cell && cell.classList.contains('status-cell')) return; // Pengecualian untuk kolom status
+
+    const row = event.target.closest('tr');
+    if (row) {
+        const filename = row.querySelector('.status-cell')?.dataset.file;
+        if (filename) {
+            closePopup();
+            loadHistoryPopup(filename);
+        }
     }
 }
 
@@ -761,6 +836,30 @@ window.onload = () => {
         const status = document.getElementById('statusFilterArsip').value;
         loadArsipTable(1, search, status);
     });
+
+    document.getElementById('arsipSearch')?.addEventListener('input', debounce(() => {
+        const search = document.getElementById('arsipSearch').value;
+        const status = document.getElementById('statusFilterArsip').value;
+        loadArsipTable(1, search, status);
+    }, 300));
+
+    document.getElementById('statusFilterArsip')?.addEventListener('change', () => {
+        const search = document.getElementById('arsipSearch').value;
+        const status = document.getElementById('statusFilterArsip').value;
+        loadArsipTable(1, search, status);
+    });
+
+    // Tambahkan event listener untuk kontrol di pop-up riwayat
+    document.getElementById('historySearch')?.addEventListener('input', debounce(() => {
+        loadHistoryPopup(currentHistoryFilename);
+    }, 300));
+    document.getElementById('historyStatusFilter')?.addEventListener('change', () => {
+        loadHistoryPopup(currentHistoryFilename);
+    });
+    document.getElementById('historyDateFilter')?.addEventListener('change', () => {
+        loadHistoryPopup(currentHistoryFilename);
+    });
+    document.getElementById('closeHistoryPopup')?.addEventListener('click', closePopup);
 
     document.querySelectorAll('.info-link').forEach(link => {
         link.addEventListener('click', (e) => {

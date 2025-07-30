@@ -102,3 +102,35 @@ def get_student_progress(page=1, limit=10, kelas_filter=None):
     except Exception as e:
         logger.error(f"❌ Error saat mengambil progres siswa: {e}")
         raise
+
+def save_soal_status(filename, status, nama_guru, timestamp, db):
+    """Menyimpan atau memperbarui status soal di database dan mencatat ke history."""
+    cursor = db.cursor()
+    # Update tabel soal_status dengan logika toggle waktu
+    cursor.execute("""
+        INSERT INTO soal_status (filename, status, terakhir_diarsip, terakhir_diaktif, diarsipkan_diaktifkan_oleh)
+        VALUES (%s, %s, %s, %s, %s)
+        ON DUPLICATE KEY UPDATE 
+            status = %s,
+            terakhir_diarsip = CASE WHEN %s = 'Diarsip' THEN %s ELSE NULL END,
+            terakhir_diaktif = CASE WHEN %s = 'Aktif' THEN %s ELSE NULL END,
+            diarsipkan_diaktifkan_oleh = %s
+    """, (filename, status, timestamp if status == 'Diarsip' else None, timestamp if status == 'Aktif' else None, nama_guru,
+          status, status, timestamp, status, timestamp, nama_guru))
+    # Catat ke tabel history menggunakan filename
+    cursor.execute("""
+        INSERT INTO history (filename, status, tanggal, diarsipkan_diaktifkan_oleh)
+        VALUES (%s, %s, %s, %s)
+    """, (filename, status, timestamp, nama_guru))
+    db.commit()
+    logger.info(f"✅ Status soal {filename} diperbarui ke {status} oleh {nama_guru} pada {timestamp}.")
+
+def get_soal_status(filename, db):
+    """Mengambil status soal dari database."""
+    cursor = db.cursor()
+    cursor.execute("SELECT status, terakhir_diarsip, terakhir_diaktif, diarsipkan_diaktifkan_oleh FROM soal_status WHERE filename = %s", (filename,))
+    result = cursor.fetchone()
+    return result if result else {'status': 'Aktif', 'terakhir_diarsip': None, 'terakhir_diaktif': None, 'diarsipkan_diaktifkan_oleh': None}
+
+if __name__ == '__main__':
+    pass  # Tidak ada eksekusi migrasi di sini, pindah ke migrate.py

@@ -12,7 +12,7 @@ import datetime
 import logging
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
-from database import save_siswa, save_hasil_kuis, get_db, save_login_log
+from database import save_siswa, save_hasil_kuis, get_db, save_login_log, save_soal_status, get_soal_status
 from models import calculate_asal_features, analyze_kesulitan
 from config import Config
 import bcrypt
@@ -218,13 +218,11 @@ def get_soal():
         if not os.path.exists(filepath):
             raise FileNotFoundError(f"File soal {filename} tidak ditemukan.")
 
-        # Periksa status paket
-        status_file = os.path.join('soal', 'soal_status.json')
-        if os.path.exists(status_file):
-            with open(status_file, 'r', encoding='utf-8') as f:
-                status_data = json.load(f)
-            if status_data.get(filename, {}).get('status') != 'Aktif':
-                raise ValueError(f"Paket soal {filename} telah diarsipkan oleh {status_data.get(filename, {}).get('diarsipkan_oleh', 'Tidak Diketahui')} pada {status_data.get(filename, {}).get('terakhir_diarsip', 'Tidak Diketahui')}.")
+        # Periksa status paket dari database
+        with get_db() as db:
+            status_data = get_soal_status(filename, db)
+            if status_data and status_data['status'] != 'Aktif':
+                raise ValueError(f"Paket soal {filename} telah diarsipkan pada {status_data.get('terakhir_diarsip', 'Tidak Diketahui')} oleh {status_data.get('diarsipkan_diaktifkan_oleh', 'Tidak Diketahui')}.")
 
         with open(filepath, 'r', encoding='utf-8') as f:
             soal_data = json.load(f)
@@ -391,25 +389,16 @@ def archive_soal():
         if not os.path.exists(filepath):
             raise FileNotFoundError(f"File soal {filename} tidak ditemukan.")
 
-        status_file = os.path.join('soal', 'soal_status.json')
-        if os.path.exists(status_file):
-            with open(status_file, 'r', encoding='utf-8') as f:
-                status_data = json.load(f)
-        else:
-            status_data = {}
-
         nama_guru = session['user']['nama']
         current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        status_data[filename] = {
-            'status': 'Diarsip',
-            'terakhir_diarsip': current_time,
-            'diarsipkan_oleh': nama_guru
-        }
 
-        with open(status_file, 'w', encoding='utf-8') as f:
-            json.dump(status_data, f, ensure_ascii=False, indent=2)
-        logger.info(f"✅ Paket soal {filename} diarsipkan oleh {nama_guru} pada {current_time}.")
-        return jsonify({'status': 'sukses', 'pesan': f'Paket soal {filename} berhasil diarsipkan'})
+        # Toggle status di database
+        with get_db() as db:
+            current_status = get_soal_status(filename, db)
+            new_status = 'Aktif' if current_status and current_status.get('status') == 'Diarsip' else 'Diarsip'
+            save_soal_status(filename, new_status, nama_guru, current_time, db)
+            logger.info(f"✅ Paket soal {filename} {new_status.lower()} oleh {nama_guru} pada {current_time}.")
+            return jsonify({'status': 'sukses', 'pesan': f'Paket soal {filename} berhasil {new_status.lower()}'})
     except FileNotFoundError:
         logger.error(f"❌ File soal {filename} tidak ditemukan.")
         return jsonify({'status': 'gagal', 'pesan': 'File soal tidak ditemukan'}), 404
@@ -452,6 +441,9 @@ def save_soal(filename):
         filepath = os.path.join('soal', filename)
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(data['soal'], f, ensure_ascii=False, indent=2)
+        # Tambahkan status awal 'Aktif' ke database saat soal baru disimpan
+        with get_db() as db:
+            save_soal_status(filename, 'Aktif', session['user']['nama'], datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), db)
         return jsonify({'status': 'sukses', 'pesan': f'File {filename} berhasil disimpan'})
     except ValueError as ve:
         return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
@@ -465,23 +457,46 @@ def get_arsip_data():
         return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
     try:
         page = int(request.args.get('page', 1))
-        limit = int(request.args.get('limit', 8))
+        limit = int(request.args.get('limit', 7))  # Ubah ke 7 baris
+        offset = (page - 1) * limit
         filter_status = request.args.get('status', 'all')
         search = request.args.get('search', '')
-        offset = (page - 1) * limit
-        status_file = os.path.join('soal', 'soal_status.json')
-        packages = []
-        if os.path.exists(status_file):
-            with open(status_file, 'r', encoding='utf-8') as f:
-                status_data = json.load(f)
-            for filename, info in status_data.items():
-                if search and search.lower() not in filename.lower():
-                    continue
-                if filter_status != 'all' and (filter_status == 'active' and info.get('status') != 'Aktif' or filter_status == 'archived' and info.get('status') != 'Diarsip'):
-                    continue
-                packages.append({'filename': filename, 'status': info.get('status', 'Aktif'), 'terakhir_diarsip': info.get('terakhir_diarsip', '-'), 'diarsipkan_oleh': info.get('diarsipkan_oleh', '-')})
-        total = len(packages)
-        packages = packages[offset:offset + limit]
+
+        with get_db() as db:
+            cursor = db.cursor()
+            query = """
+                SELECT filename, status, terakhir_diarsip, terakhir_diaktif, diarsipkan_diaktifkan_oleh
+                FROM soal_status
+                WHERE 1=1
+            """
+            count_query = "SELECT COUNT(*) as total FROM soal_status WHERE 1=1"
+            params = []
+
+            if filter_status != 'all':
+                query += " AND status = %s"
+                count_query += " AND status = %s"
+                params.append('Aktif' if filter_status == 'active' else 'Diarsip')
+
+            if search:
+                query += " AND LOWER(filename) LIKE %s"
+                count_query += " AND LOWER(filename) LIKE %s"
+                params.append(f"%{search.lower()}%")
+
+            query += " LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
+
+            cursor.execute(count_query, params[:-2] if search or filter_status != 'all' else [])
+            total = cursor.fetchone()['total']
+
+            cursor.execute(query, params)
+            packages = [{
+                'filename': row['filename'],
+                'status': row['status'],
+                'terakhir_diarsip': row['terakhir_diarsip'] or '-',
+                'terakhir_diaktif': row['terakhir_diaktif'] or '-',
+                'diarsipkan_diaktifkan_oleh': row['diarsipkan_diaktifkan_oleh'] or '-'
+            } for row in cursor.fetchall()]
+
         return jsonify({'status': 'sukses', 'packages': packages, 'total': total})
     except Exception as e:
         logger.error(f"❌ Error saat mengambil data arsip: {e}")
@@ -765,7 +780,7 @@ def update_guru():
         encrypted_kode = fernet.encrypt(kode_akses.encode()).decode()
         with get_db() as db:
             cursor = db.cursor()
-            cursor.execute("UPDATE guru SET kode_akses = %s, kadaluarsa = %s, status = %s, terakhir_diperbarui = NOW() WHERE nama = %s",
+            cursor.execute("UPDATE guru SET kode_akses = %s, kadaluarsa = %s, status = %s WHERE nama = %s",
                           (encrypted_kode, kadaluarsa, status, nama))
             db.commit()
         logger.info(f"✅ Akun guru {nama} diperbarui.")
@@ -791,7 +806,7 @@ def toggle_guru_status():
             if not result:
                 return jsonify({'status': 'gagal', 'pesan': 'Guru tidak ditemukan'}), 404
             new_status = 0 if result['status'] else 1
-            cursor.execute("UPDATE guru SET status = %s, terakhir_diperbarui = NOW() WHERE nama = %s",
+            cursor.execute("UPDATE guru SET status = %s WHERE nama = %s",
                           (new_status, nama))
             db.commit()
         logger.info(f"✅ Status guru {nama} diubah ke {new_status}.")

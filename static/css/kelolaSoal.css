@@ -130,8 +130,9 @@ body {
 
 .content {
     padding: 1.5rem;
-    max-height: calc(100vh - 60px - 3rem);
+    max-height: calc(100vh - 10px - 2.5rem - 10px); /* Kurangi tinggi untuk pagination dan kontrol */
     overflow-y: auto;
+    padding-bottom: 0px; /* Tambahkan padding bawah */
 }
 
 .section {
@@ -413,8 +414,8 @@ button:disabled {
 
 .table-controls {
     display: flex;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .search-bar, .filter-select {
@@ -428,6 +429,7 @@ button:disabled {
 
 .table-wrapper {
     overflow-x: auto;
+    margin-bottom: 1rem; /* Jarak dari pagination */
 }
 
 #arsipTable {
@@ -440,41 +442,61 @@ button:disabled {
 #arsipTable th, #arsipTable td {
     padding: 0.75rem;
     border-bottom: 1px solid #ddd;
-    text-align: left;
+    text-align: center;
 }
 
 #arsipTable th {
     background-color: #2d3748;
     color: white;
+    text-align: center;
 }
 
-#arsipTable .archive-btn {
-    padding: 0.25rem 0.5rem;
-    background-color: #1E90FF;
-    color: white;
-    border: none;
-    border-radius: 4px;
+#arsipTable th:nth-child(1) { width: 10%; } /* Kelas */
+#arsipTable th:nth-child(2) { width: 10%; } /* Paket */
+#arsipTable th:nth-child(3) { width: 20%; } /* Tanggal Arsip */
+#arsipTable th:nth-child(4) { width: 20%; } /* Tanggal Aktif */
+#arsipTable th:nth-child(5) { width: 25%; } /* Diarsipkan/Diaktifkan oleh */
+#arsipTable th:nth-child(6) { width: 15%; } /* Status */
+
+#arsipTable .status-cell {
     cursor: pointer;
+    padding: 8px;
+    text-align: center;
+    transition: background-color 0.3s;
 }
 
-#arsipTable .archive-btn:hover {
-    background-color: #187bcd;
+#arsipTable .status-cell.active {
+    background-color: #d4edda; /* Hijau muda */
+    color: #155724; /* Hijau tua */
+}
+
+#arsipTable .status-cell.active:hover {
+    background-color: #c3e6cb; /* Hijau lebih terang saat hover */
+}
+
+#arsipTable .status-cell.archived {
+    background-color: #f8d7da; /* Merah muda */
+    color: #721c24; /* Merah tua */
+}
+
+#arsipTable .status-cell.archived:hover {
+    background-color: #f5c6cb; /* Merah lebih terang saat hover */
 }
 
 .pagination {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
 }
 
 .pagination button {
     padding: 0.25rem 0.5rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 1px;
     background-color: #4CAF50;
     color: white;
     cursor: pointer;
+    margin-bottom: 0;
 }
 
 .pagination button.active {
@@ -482,6 +504,62 @@ button:disabled {
 }
 
 .pagination button:hover {
+    background-color: #45a049;
+}
+
+#historyPopup .table-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+#historyPopup #historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#historyPopup #historyTable th,
+#historyPopup #historyTable td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+#historyPopup #historyTable th {
+    background-color: #2d3748;
+    color: white;
+}
+
+#historyPopup #historyTable th:nth-child(1) { width: 10%; } /* No */
+#historyPopup #historyTable th:nth-child(2) { width: 20%; } /* Status */
+#historyPopup #historyTable th:nth-child(3) { width: 35%; } /* Tanggal */
+#historyPopup #historyTable th:nth-child(4) { width: 35%; } /* Diarsipkan/Diaktifkan oleh */
+
+#historyPopup .active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+#historyPopup .archived {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+#historyPopup #closeHistoryPopup {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+#historyPopup #closeHistoryPopup:hover {
     background-color: #45a049;
 }
 
