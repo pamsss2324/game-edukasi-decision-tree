@@ -19,10 +19,17 @@ function hideLoadingOverlay() {
 }
 
 function closePopup() {
-    document.querySelectorAll('.popup').forEach(popup => {
-        if (popup.classList.contains('visible')) {
-            popup.classList.remove('visible');
-            popup.classList.add('hidden');
+    const popups = document.querySelectorAll('.popup');
+    popups.forEach(popup => {
+        popup.classList.remove('visible');
+        popup.classList.add('hidden');
+        if (popup.id === 'historyPopup') {
+            const searchInput = document.getElementById('historySearch');
+            const statusSelect = document.getElementById('historyStatusFilter');
+            const dateInput = document.getElementById('historyDateFilter');
+            if (searchInput) searchInput.value = '';
+            if (statusSelect) statusSelect.value = 'all';
+            if (dateInput) dateInput.value = '';
         }
     });
 }
@@ -43,19 +50,21 @@ function showErrorPopup(message) {
         notificationPopup.querySelector('#notificationMessage').textContent = message;
         notificationPopup.classList.remove('hidden');
         notificationPopup.classList.add('visible');
-        setTimeout(() => closePopup(), 3000);
+        setTimeout(() => {
+            if (notificationPopup.classList.contains('visible')) {
+                closePopup();
+            }
+        }, 3000);
     }
 }
 
 function validateSoalForm(formId) {
     const form = document.getElementById(formId);
     if (!form) return false;
-
     const getInputValue = (id) => {
         const el = form.querySelector(id) || form.querySelector(`[id$="${id.split('#')[1]}"]`);
         return el ? el.value.trim() : '';
     };
-
     const pertanyaan = getInputValue(`#${formId === 'soalFormTambah' ? 'pertanyaanTambah' : 'pertanyaanEdit'}`);
     const pilihanA = getInputValue(`#${formId === 'soalFormTambah' ? 'pilihanATambah' : 'pilihanAEdit'}`);
     const pilihanB = getInputValue(`#${formId === 'soalFormTambah' ? 'pilihanBTambah' : 'pilihanBEdit'}`);
@@ -66,7 +75,6 @@ function validateSoalForm(formId) {
     const kategori = getInputValue(`#${formId === 'soalFormTambah' ? 'kategoriTambah' : 'kategoriEdit'}`);
     const pelajaran = getInputValue(`#${formId === 'soalFormTambah' ? 'pelajaranTambah' : 'pelajaranEdit'}`);
     const tingkatKesulitan = getInputValue(`#${formId === 'soalFormTambah' ? 'tingkatKesulitanTambah' : 'tingkatKesulitanEdit'}`);
-
     if (!pertanyaan || pertanyaan.length < 5) {
         showErrorPopup('Pertanyaan wajib diisi dan minimal 5 karakter.');
         return false;
@@ -147,16 +155,13 @@ async function showPreviewSoal(index, array) {
 function saveSoalToArray(formId, array, index, validate = false) {
     const form = document.getElementById(formId);
     if (!form) return false;
-
     const getInputValue = (id) => {
         const el = form.querySelector(id) || form.querySelector(`[id$="${id.split('#')[1]}"]`);
         return el ? el.value.trim() : '';
     };
-
     if (validate && !validateSoalForm(formId)) return false;
-
     const soal = {
-        id: formId === 'soalFormTambah' ? 
+        id: formId === 'soalFormTambah' ?
             `${currentKelas}-${currentPaket}-${(index + 1).toString().padStart(2, '0')}` :
             array[index]?.id || `${editSoalArray[0]?.id.split('-')[0]}-${editFilename.split('_paket')[1].split('.json')[0]}-${(index + 1).toString().padStart(2, '0')}`,
         pertanyaan: getInputValue(`#${formId === 'soalFormTambah' ? 'pertanyaanTambah' : 'pertanyaanEdit'}`),
@@ -172,7 +177,6 @@ function saveSoalToArray(formId, array, index, validate = false) {
         pelajaran: getInputValue(`#${formId === 'soalFormTambah' ? 'pelajaranTambah' : 'pelajaranEdit'}`),
         tingkat_kesulitan: getInputValue(`#${formId === 'soalFormTambah' ? 'tingkatKesulitanTambah' : 'tingkatKesulitanEdit'}`)
     };
-
     array[index] = soal;
     return true;
 }
@@ -183,7 +187,6 @@ async function submitPaket() {
         showErrorPopup(`Paket harus berisi ${expectedSoal} soal. Saat ini: ${soalArray.length} soal.`);
         return;
     }
-
     showLoadingOverlay();
     try {
         const response = await fetch(`/soal/soal_kelas${currentKelas}_paket${currentPaket}.json`, {
@@ -255,13 +258,14 @@ async function submitEditPaket() {
 async function loadArsipTable(page = 1, search = '', status = '') {
     showLoadingOverlay();
     try {
-        const response = await fetch(`/guru/get_arsip_data?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}&limit=7`);
+        const response = await fetch(`/guru/get_arsip_data?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}&limit=5`);
         const data = await response.json();
         if (data.status === 'sukses') {
             const tbody = document.querySelector('#arsipTable tbody');
             tbody.innerHTML = '';
             data.packages.forEach(item => {
                 const row = document.createElement('tr');
+                row.classList.add('table-row-clickable');
                 row.innerHTML = `
                     <td>${item.filename.split('_')[1].replace('kelas', 'Kelas ').replace(/(\d+)/, ' $1')}</td>
                     <td>${item.filename.split('_paket')[1].split('.json')[0]}</td>
@@ -274,17 +278,15 @@ async function loadArsipTable(page = 1, search = '', status = '') {
                 `;
                 tbody.appendChild(row);
             });
-
             const pagination = document.getElementById('paginationArsip');
             pagination.innerHTML = '';
-            for (let i = 1; i <= Math.ceil(data.total / 7); i++) {
+            for (let i = 1; i <= Math.ceil(data.total / 5); i++) {
                 const btn = document.createElement('button');
                 btn.textContent = i;
                 btn.className = i === page ? 'active' : '';
                 btn.addEventListener('click', () => loadArsipTable(i, search, status));
                 pagination.appendChild(btn);
             }
-
             document.querySelectorAll('.status-cell').forEach(cell => {
                 cell.addEventListener('click', async () => {
                     const filename = cell.dataset.file;
@@ -310,8 +312,6 @@ async function loadArsipTable(page = 1, search = '', status = '') {
                     }
                 });
             });
-
-            // Tambahkan event listener untuk klik baris (kecuali kolom status)
             tbody.querySelectorAll('tr').forEach(row => {
                 row.addEventListener('click', toggleHistoryPopup);
             });
@@ -329,30 +329,52 @@ async function loadHistoryPopup(filename) {
     currentHistoryFilename = filename;
     const historyPopup = document.getElementById('historyPopup');
     if (!historyPopup) return;
-
     showLoadingOverlay();
     try {
         const search = document.getElementById('historySearch')?.value || '';
         const status = document.getElementById('historyStatusFilter')?.value || 'all';
         const date = document.getElementById('historyDateFilter')?.value || '';
         const page = parseInt(document.getElementById('historyPage')?.value) || 1;
-
-        const response = await fetch(`/guru/get_history?filename=${encodeURIComponent(filename)}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}&date=${encodeURIComponent(date)}&page=${page}&limit=10`);
+        const statusMapping = {
+            'all': 'all',
+            'active': 'Aktif',
+            'archived': 'Diarsip'
+        };
+        const mappedStatus = statusMapping[status] || 'all';
+        const kelasMatch = filename.match(/kelas(\d+)/);
+        const paketMatch = filename.match(/paket(\d+)/);
+        const kelas = kelasMatch ? `Kelas ${kelasMatch[1]}` : 'Kelas Tidak Diketahui';
+        const paket = paketMatch ? `Paket ${paketMatch[1]}` : 'Paket Tidak Diketahui';
+        const title = `Riwayat Soal ${kelas} ${paket}`;
+        const titleElement = document.getElementById('historyTitle');
+        if (titleElement) {
+            titleElement.textContent = title;
+        }
+        const response = await fetch(`/guru/get_history?filename=${encodeURIComponent(filename)}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(mappedStatus)}&date=${encodeURIComponent(date)}&page=${page}&limit=10`);
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status} - ${response.statusText}`);
+        }
         const data = await response.json();
+        console.log('Respons dari /guru/get_history:', data);
         if (data.status === 'sukses') {
             const tbody = historyPopup.querySelector('#historyTable tbody');
             tbody.innerHTML = '';
-            data.history.forEach((item, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${(page - 1) * 10 + index + 1}</td>
-                    <td class="${item.status === 'Aktif' ? 'active' : 'archived'}">${item.status}</td>
-                    <td>${item.tanggal}</td>
-                    <td>${item.diarsipkan_diaktifkan_oleh || '-'}</td>
-                `;
-                tbody.appendChild(row);
-            });
-
+            if (data.history.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">Tidak ada riwayat ditemukan.</td></tr>';
+            } else {
+                data.history.forEach((item, index) => {
+                    if (status === 'all' || item.status === statusMapping[status]) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${(page - 1) * 10 + index + 1}</td>
+                            <td class="${item.status === 'Aktif' ? 'active' : 'archived'}">${item.status}</td>
+                            <td>${item.tanggal}</td>
+                            <td>${item.diarsipkan_diaktifkan_oleh || '-'}</td>
+                        `;
+                        tbody.appendChild(row);
+                    }
+                });
+            }
             const pagination = historyPopup.querySelector('.pagination');
             pagination.innerHTML = '';
             for (let i = 1; i <= Math.ceil(data.total / 10); i++) {
@@ -366,21 +388,27 @@ async function loadHistoryPopup(filename) {
                 pagination.appendChild(btn);
             }
         } else {
-            showErrorPopup(data.pesan || 'Gagal memuat riwayat');
+            const tbody = historyPopup.querySelector('#historyTable tbody');
+            tbody.innerHTML = '<tr><td colspan="4">' + (data.pesan || 'Gagal memuat riwayat') + '</td></tr>';
         }
     } catch (error) {
-        showErrorPopup('Terjadi kesalahan saat memuat riwayat');
+        console.error('Error saat memuat riwayat:', error);
+        const tbody = historyPopup.querySelector('#historyTable tbody');
+        tbody.innerHTML = '<tr><td colspan="4">Terjadi kesalahan: ' + error.message + '</td></tr>';
     } finally {
         hideLoadingOverlay();
         historyPopup.classList.remove('hidden');
         historyPopup.classList.add('visible');
+        const closeBtn = document.getElementById('closeHistoryPopup');
+        if (closeBtn) {
+            closeBtn.onclick = () => closePopup();
+        }
     }
 }
 
 function toggleHistoryPopup(event) {
     const cell = event.target.closest('td');
-    if (cell && cell.classList.contains('status-cell')) return; // Pengecualian untuk kolom status
-
+    if (cell && cell.classList.contains('status-cell')) return;
     const row = event.target.closest('tr');
     if (row) {
         const filename = row.querySelector('.status-cell')?.dataset.file;
@@ -412,11 +440,10 @@ function updateNavigationButtons(formId, prevId, nextId, previewId, submitId, se
     const totalSoal = formId === 'soalFormTambah' ? currentSoalIndex + 1 : editCurrentIndex + 1;
     const array = formId === 'soalFormTambah' ? soalArray : editSoalArray;
     const currentIndex = formId === 'soalFormTambah' ? currentSoalIndex : editCurrentIndex;
-
     if (prevBtn) prevBtn.disabled = currentIndex === 0;
     if (nextBtn) nextBtn.disabled = currentIndex >= (expectedSoal - 1 || array.length - 1);
-    if (previewBtn) previewBtn.disabled = !array.every(soal => validateSoalForm(formId));
-    if (submitBtn) submitBtn.disabled = formId === 'soalFormEdit' ? !hasChanges() || !array.every(soal => validateSoalForm(formId)) : (formId === 'soalFormTambah' && currentIndex < expectedSoal - 1);
+    if (previewBtn) previewBtn.disabled = false; // Nonaktifkan validasi otomatis di sini
+    if (submitBtn) submitBtn.disabled = formId === 'soalFormEdit' ? !hasChanges() : (formId === 'soalFormTambah' && currentIndex < expectedSoal - 1);
     if (duplicateBtn) duplicateBtn.disabled = formId !== 'soalFormEdit';
     if (deleteBtn) deleteBtn.disabled = formId !== 'soalFormEdit' || array.length <= 1;
     if (sortBtn) sortBtn.disabled = formId !== 'soalFormEdit' || array.length <= 1;
@@ -516,7 +543,7 @@ function addFormListeners(formId) {
     if (form) {
         form.querySelectorAll('input, select').forEach(input => {
             input.addEventListener('input', () => {
-                saveSoalToArray(formId, formId === 'soalFormTambah' ? soalArray : editSoalArray, formId === 'soalFormTambah' ? currentSoalIndex : editCurrentIndex, true);
+                saveSoalToArray(formId, formId === 'soalFormTambah' ? soalArray : editSoalArray, formId === 'soalFormTambah' ? currentSoalIndex : editCurrentIndex, false);
                 updateNavigationButtons(formId, 'prevEdit', 'nextEdit', 'previewEdit', 'submitEdit', 'pilihSoalEdit', 'soalInfoEdit', 'duplicateEdit', 'deleteEdit', 'sortEdit');
             });
         });
@@ -849,16 +876,18 @@ window.onload = () => {
         loadArsipTable(1, search, status);
     });
 
-    // Tambahkan event listener untuk kontrol di pop-up riwayat
     document.getElementById('historySearch')?.addEventListener('input', debounce(() => {
         loadHistoryPopup(currentHistoryFilename);
     }, 300));
+
     document.getElementById('historyStatusFilter')?.addEventListener('change', () => {
         loadHistoryPopup(currentHistoryFilename);
     });
+
     document.getElementById('historyDateFilter')?.addEventListener('change', () => {
         loadHistoryPopup(currentHistoryFilename);
     });
+
     document.getElementById('closeHistoryPopup')?.addEventListener('click', closePopup);
 
     document.querySelectorAll('.info-link').forEach(link => {
@@ -875,12 +904,10 @@ window.onload = () => {
                     kode_akses.value = kode_akses.getAttribute('data-initial') || kode_akses.value || '';
                     kode_akses.dataset.fullCode = kode_akses.dataset.fullCode || '';
                     kadaluarsa.value = kadaluarsa.getAttribute('data-initial') || kadaluarsa.value || '';
-
                     if (!nama_guru.value || !kode_akses.value || !kadaluarsa.value) {
                         showErrorPopup('Data informasi belum tersedia. Silakan coba lagi.');
                         return;
                     }
-
                     const informasiPopup = document.getElementById('informasiPopup');
                     if (informasiPopup) {
                         informasiPopup.classList.remove('hidden');

@@ -392,7 +392,7 @@ def archive_soal():
         nama_guru = session['user']['nama']
         current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        # Toggle status di database
+        # Toggle status di database dan simpan riwayat
         with get_db() as db:
             current_status = get_soal_status(filename, db)
             new_status = 'Aktif' if current_status and current_status.get('status') == 'Diarsip' else 'Diarsip'
@@ -457,7 +457,7 @@ def get_arsip_data():
         return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
     try:
         page = int(request.args.get('page', 1))
-        limit = int(request.args.get('limit', 7))  # Ubah ke 7 baris
+        limit = int(request.args.get('limit', 5))
         offset = (page - 1) * limit
         filter_status = request.args.get('status', 'all')
         search = request.args.get('search', '')
@@ -501,7 +501,81 @@ def get_arsip_data():
     except Exception as e:
         logger.error(f"❌ Error saat mengambil data arsip: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
-    
+
+@app.route('/guru/get_history', methods=['GET'])
+def get_history():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        filename = request.args.get('filename')
+        search = request.args.get('search', '')
+        status = request.args.get('status', 'all')
+        date = request.args.get('date', '')
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 10))
+
+        if not filename:
+            raise ValueError("Parameter 'filename' wajib diisi.")
+
+        status_mapping = {'all': None, 'active': 'Aktif', 'archived': 'Diarsip'}
+
+        with get_db() as db:
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            query = """
+                SELECT status, tanggal, diarsipkan_diaktifkan_oleh 
+                FROM history 
+                WHERE filename = %s
+            """
+            count_query = "SELECT COUNT(*) as total FROM history WHERE filename = %s"
+            params = [filename]
+
+            if search:
+                query += " AND LOWER(diarsipkan_diaktifkan_oleh) LIKE %s"
+                count_query += " AND LOWER(diarsipkan_diaktifkan_oleh) LIKE %s"
+                params.append(f"%{search.lower()}%")
+            if status_mapping.get(status):
+                query += " AND status = %s"
+                count_query += " AND status = %s"
+                params.append(status_mapping[status])
+            if date:
+                query += " AND DATE(tanggal) = %s"
+                count_query += " AND DATE(tanggal) = %s"
+                params.append(date)
+
+            query += " ORDER BY tanggal DESC"
+            offset = (page - 1) * limit
+            query += " LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
+
+            cursor.execute(count_query, params[:-2])
+            total = cursor.fetchone()
+            if total is None:
+                logger.warning(f"Tidak ada data untuk filename: {filename}")
+                return jsonify({'status': 'sukses', 'history': [], 'total': 0})
+
+            cursor.execute(query, params)
+            history = [dict(row) for row in cursor.fetchall()]
+
+            logger.debug(f"Query executed: {query}, Params: {params}, Results: {history}")
+            if not history:
+                logger.warning(f"Tidak ada riwayat ditemukan untuk filename: {filename} dengan status: {status}")
+                return jsonify({'status': 'sukses', 'history': [], 'total': total['total']})
+
+        return jsonify({
+            'status': 'sukses',
+            'history': history,
+            'total': total['total']
+        })
+    except ValueError as ve:
+        logger.error(f"❌ Error validasi: {ve}")
+        return jsonify({'status': 'gagal', 'pesan': str(ve)}), 400
+    except pymysql.Error as e:
+        logger.error(f"❌ Error database: {str(e)} - Query: {query}, Params: {params}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan pada database'}), 500
+    except Exception as e:
+        logger.error(f"❌ Error tak terduga: {str(e)} - Query: {query}, Params: {params}")
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
 @app.route('/guru/get_siswa', methods=['GET'])
 def get_siswa():
     if not session.get('user') or session.get('user').get('role') != 'guru':

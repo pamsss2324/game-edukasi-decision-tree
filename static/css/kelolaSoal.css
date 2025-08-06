@@ -483,6 +483,23 @@ button:disabled {
     background-color: #f5c6cb; /* Merah lebih terang saat hover */
 }
 
+.table-row-clickable {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.table-row-clickable:hover {
+    background-color: #f0f0f0; /* Warna netral untuk hover, cocok dengan tema */
+}
+
+.table-row-clickable:active {
+    background-color: #e0e0e0; /* Warna saat diklik, opsional */
+}
+
+#historyPopup .popup-content {
+    min-height: 300px; /* Memastikan pop-up cukup besar untuk konten */
+}
+
 .pagination {
     margin-top: 1rem;
     position: relative;

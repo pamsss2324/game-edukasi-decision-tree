@@ -11,6 +11,7 @@ body {
     align-items: center;
     text-align: center;
     position: relative;
+    overflow-y: auto; /* Biarkan body memiliki scroll jika diperlukan */
 }
 
 h1 {
@@ -402,8 +403,8 @@ button:focus {
 .container-hasil {
     text-align: center;
     padding: 20px;
-    max-width: 600px;
-    width: 100%;
+    width: auto; /* Dinamis menyesuaikan konten */
+    max-width: 600px; /* Batas maksimum untuk lebar */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -413,6 +414,7 @@ button:focus {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 1;
+    margin: 80px auto 50px auto; /* Jarak wajar dari atas dan bawah, tetap dinamis */
 }
 
 .card-hasil {
@@ -459,8 +461,9 @@ button:focus {
     max-width: 400px;
     line-height: 1.5;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-height: 200px;
-    overflow-y: auto;
+    max-height: none; /* Hilangkan batasan tinggi */
+    overflow-y: hidden; /* Hilangkan scroll */
+    width: fit-content; /* Ukuran dinamis sesuai isi */
 }
 
 .speech-bubble::after {
@@ -477,18 +480,24 @@ button:focus {
     margin-bottom: -15px;
 }
 
+#motivasiText {
+    margin: 0 0 10px 0; /* Jarak bawah untuk memisahkan dengan rekomendasi */
+    font-size: 1.3rem;
+}
+
 .rekomendasi-list {
     list-style-type: none;
     padding-left: 0;
-    margin: 10px 0 0 0;
+    margin: 0;
 }
 
 .rekomendasi-list li {
     position: relative;
     padding-left: 25px;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Jarak antar item rekomendasi */
     color: #2c3e50;
     font-size: 1rem;
+    display: list-item; /* Pastikan setiap item terpisah */
 }
 
 .rekomendasi-list li:before {
@@ -577,5 +586,14 @@ button:focus {
         max-width: 90%;
         padding: 10px;
         font-size: 0.9rem;
+    }
+    #motivasiText {
+        font-size: 1.1rem;
+    }
+    .container-hasil {
+        max-width: 350px; /* Penyesuaian lebar maksimum di layar kecil */
+    }
+    .card-hasil {
+        max-width: 300px; /* Penyesuaian card di layar kecil */
     }
 }
