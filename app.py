@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template, session, redirect, url_for
+from flask import Flask, request, jsonify, send_from_directory, render_template, session, redirect, url_for, Response
 from flask_cors import CORS
 from flask_session import Session
 import json
@@ -9,13 +9,19 @@ import pandas as pd
 import joblib
 import re
 import datetime
+import time
 import logging
+import pdfkit
+import base64
+import io
+import matplotlib.pyplot as plt
+import bcrypt
+from functools import wraps
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 from database import save_siswa, save_hasil_kuis, get_db, save_login_log, save_soal_status, get_soal_status
 from models import calculate_asal_features, analyze_kesulitan
 from config import Config
-import bcrypt
 
 # Konfigurasi logging
 logging.basicConfig(level=logging.INFO)
@@ -24,7 +30,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)
 
-# Konfigurasi Flask-Session dan kunci dari .env
+# Load konfigurasi sesi dari Config dan tambahkan pengaturan tambahan
 app.config.update(Config.SESSION_CONFIG)
 load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -36,6 +42,15 @@ if not app.config['FERNET_KEY']:
     logger.warning("⚠️ FERNET_KEY tidak ditemukan di .env. Menggunakan kunci acak sementara.")
     app.config['FERNET_KEY'] = Fernet.generate_key().decode()
 fernet = Fernet(app.config['FERNET_KEY'].encode() if isinstance(app.config['FERNET_KEY'], str) else app.config['FERNET_KEY'].encode())
+
+# Tambahkan pengaturan sesi tambahan untuk mendukung permintaan PDF
+app.config.update({
+    'SESSION_USE_SIGNER': True,
+    'SESSION_COOKIE_SECURE': False,  # Ubah ke True jika menggunakan HTTPS
+    'SESSION_COOKIE_HTTPONLY': True,
+    'SESSION_COOKIE_SAMESITE': 'Lax',  # Sesuaikan dengan 'None' jika HTTPS
+})
+Session(app)
 
 # Muat model yang telah disimpan
 try:
@@ -79,6 +94,16 @@ def validate_admin_login(username, password):
     admin_username = "admin"
     admin_password_hash = b"$2b$12$jWuwbXTRDCG2H5R7bEw0TuQG1I7EtQDw2nr66L3W/S5p38l0te8SS"
     return username == admin_username and bcrypt.checkpw(password.encode(), admin_password_hash)
+
+def require_login_guru(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        logger.info(f"Sesi guru: {session.get('user')}")
+        if not session.get('user') or session.get('user').get('role') != 'guru':
+            logger.info(f"Akses ditolak: Sesi tidak valid atau bukan guru.")
+            return redirect(url_for('halaman_utama'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Fungsi untuk mengambil data guru
 def get_hasil_kuis_by_siswa(id_siswa):
@@ -281,31 +306,25 @@ def login_admin():
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
 
 @app.route('/guru/dashboard')
+@require_login_guru
 def guru_dashboard():
-    if not session.get('user') or session.get('user').get('role') != 'guru':
-        return redirect(url_for('halaman_utama'))  # Arahkan ke halaman utama untuk menampilkan popup
     try:
         page = request.args.get('page', 1, type=int)
         limit = request.args.get('limit', 6, type=int)
         kelas_filter = request.args.get('kelas', 'all', type=str)
         offset = (page - 1) * limit
         
-        # Ambil data guru dari session
         user_data = session['user']
         nama_guru = user_data['nama']
-        kode_akses_encrypted = user_data.get('kode_akses', '********')  # Ambil dari session, masih terenkripsi
+        kode_akses_encrypted = user_data.get('kode_akses', '********')
         
-        # Dekripsi kode akses
         try:
             kode_akses = fernet.decrypt(kode_akses_encrypted.encode()).decode() if kode_akses_encrypted != '********' else '********'
         except Exception as e:
             logger.warning(f"❌ Gagal dekripsi kode akses untuk {nama_guru}: {e}. Menggunakan placeholder.")
             kode_akses = '********'
         
-        # Buat versi 2 karakter awal dengan sensor untuk tampilan awal
         kode_akses_initial = kode_akses[:2] + '*' * (len(kode_akses) - 2) if kode_akses != '********' and len(kode_akses) > 2 else kode_akses
-        
-        # Ambil kadaluarsa apa adanya dari session tanpa konversi tambahan
         kadaluarsa_date = user_data.get('kadaluarsa', '')
 
         with get_db() as db:
@@ -336,9 +355,9 @@ def guru_dashboard():
         return render_template(
             'guru/dashboard.html',
             nama_guru=nama_guru,
-            kode_akses=kode_akses,  # Kode asli untuk toggle
-            kode_akses_initial=kode_akses_initial,  # 2 karakter awal dengan sensor untuk tampilan awal
-            kadaluarsa_date=kadaluarsa_date,  # Tanggal apa adanya dari session
+            kode_akses=kode_akses,
+            kode_akses_initial=kode_akses_initial,
+            kadaluarsa_date=kadaluarsa_date,
             siswa_list=[{'id': s['id'], 'nama': s['nama'], 'kelas': s['kelas'], 'kesulitan_diduga': s['kesulitan_diduga'] or 'Belum ada data', 'tanggal': s['tanggal']} for s in siswa_list],
             total=total,
             page=page,
@@ -350,9 +369,8 @@ def guru_dashboard():
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
 
 @app.route('/kelola-soal')
+@require_login_guru
 def kelola_soal():
-    if not session.get('user') or session.get('user').get('role') != 'guru':
-        return redirect(url_for('halaman_utama'))  # Arahkan ke halaman utama untuk login
     try:
         user_data = session['user']
         nama_guru = user_data['nama']
@@ -365,12 +383,12 @@ def kelola_soal():
         kode_akses_initial = kode_akses[:2] + '*' * (len(kode_akses) - 2) if kode_akses != '********' and len(kode_akses) > 2 else kode_akses
         kadaluarsa_date = user_data.get('kadaluarsa', '')
         return render_template(
-        'guru/kelolaSoal.html',
-        nama_guru=nama_guru,
-        kode_akses=kode_akses,
-        kode_akses_initial=kode_akses_initial,
-        kadaluarsa_date=kadaluarsa_date,
-        timestamp=int(datetime.datetime.now().timestamp())
+            'guru/kelolaSoal.html',
+            nama_guru=nama_guru,
+            kode_akses=kode_akses,
+            kode_akses_initial=kode_akses_initial,
+            kadaluarsa_date=kadaluarsa_date,
+            timestamp=int(time.time())
         )
     except Exception as e:
         logger.error(f"❌ Error saat menampilkan halaman kelola soal: {e}")
@@ -660,6 +678,436 @@ def get_detail_siswa():
         logger.error(f"❌ Error saat mengambil detail siswa: {e}")
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
 
+# Rute untuk halaman utama laporan (tambahkan baru)
+@app.route('/guru/reports')
+@require_login_guru
+def reports():
+    try:
+        user_data = session['user']
+        nama_guru = user_data['nama']
+        kode_akses_encrypted = user_data.get('kode_akses', '********')
+        try:
+            kode_akses = fernet.decrypt(kode_akses_encrypted.encode()).decode() if kode_akses_encrypted != '********' else '********'
+        except Exception as e:
+            logger.warning(f"Gagal dekripsi kode akses untuk {nama_guru}: {e}. Menggunakan placeholder.")
+            kode_akses = '********'
+        kode_akses_initial = kode_akses[:2] + '*' * (len(kode_akses) - 2) if kode_akses != '********' and len(kode_akses) > 2 else kode_akses
+        kadaluarsa_date = user_data.get('kadaluarsa', '')
+        return render_template(
+            'guru/reports.html',
+            nama_guru=nama_guru,
+            kode_akses=kode_akses,
+            kode_akses_initial=kode_akses_initial,
+            kadaluarsa_date=kadaluarsa_date,
+            timestamp=int(time.time())
+        )
+    except Exception as e:
+        logger.error(f"Error saat menampilkan halaman laporan: {e}")
+        traceback.print_exc()
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+# Rute untuk mengambil daftar paket (tambahkan baru)
+@app.route('/guru/get_paket', methods=['GET'])
+def get_paket():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        kelas = request.args.get('kelas', '3')
+        if kelas not in ['3', '4', '5']:
+            return jsonify({'status': 'gagal', 'pesan': 'Kelas tidak valid'}), 400
+        with get_db() as db:
+            cursor = db.cursor()
+            query = """
+                SELECT DISTINCT JSON_EXTRACT(daftar_soal_dikerjakan, '$.paket') AS paket
+                FROM hasil_kuis
+                WHERE JSON_EXTRACT(daftar_soal_dikerjakan, '$.paket') IS NOT NULL
+                AND id_siswa IN (SELECT id FROM siswa WHERE kelas = %s)
+            """
+            cursor.execute(query, (kelas,))
+            paket = [row['paket'] for row in cursor.fetchall()]
+            return jsonify({'status': 'sukses', 'paket': sorted(paket)})
+    except Exception as e:
+        logger.error(f"Error saat mengambil daftar paket: {e}")
+        traceback.print_exc()
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+# Rute untuk laporan individu (perbarui dari /generate_report/individu)
+@app.route('/guru/report/individu/<int:id_siswa>')
+@require_login_guru
+def laporan_individu(id_siswa):
+    logger.info(f"Menampilkan laporan individu untuk id_siswa: {id_siswa}, guru: {session['user']['nama']}")
+    try:
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("""
+                SELECT h.*, s.nama, s.kelas 
+                FROM hasil_kuis h 
+                JOIN siswa s ON h.id_siswa = s.id 
+                WHERE h.id_siswa = %s 
+                ORDER BY h.tanggal DESC 
+                LIMIT 1
+            """, (id_siswa,))
+            result = cursor.fetchone()
+            if not result:
+                logger.warning(f"Data kuis tidak ditemukan untuk id_siswa: {id_siswa}")
+                return jsonify({'status': 'gagal', 'pesan': 'Data kuis siswa tidak ditemukan'}), 404
+
+            data = {
+                'nama': result['nama'],
+                'kelas': result['kelas'],
+                'mapel': result['mapel'],
+                'jumlah_benar': result['jumlah_benar'],
+                'jumlah_salah': result['jumlah_salah'],
+                'total_soal': result['jumlah_benar'] + result['jumlah_salah'],
+                'waktu_rata2_per_soal': result['waktu_rata2_per_soal'],
+                'kesulitan_diduga': result['kesulitan_diduga'],
+                'tanggal': result['tanggal'].strftime('%d-%m-%Y'),
+                'pelajaran_stats': {},
+                'topik_stats': {}
+            }
+
+            try:
+                soal_data = json.loads(result['daftar_soal_dikerjakan'])
+                soal_list = soal_data.get('soal', [])
+            except json.JSONDecodeError:
+                logger.error(f"Data soal tidak valid untuk id_siswa: {id_siswa}")
+                return jsonify({'status': 'gagal', 'pesan': 'Data soal tidak valid'}), 400
+
+            for soal in soal_list:
+                pelajaran = soal.get('pelajaran', 'Tidak Diketahui')
+                topik = soal.get('topik', 'Tidak Diketahui')
+                benar = soal.get('benar', False)
+
+                if pelajaran not in data['pelajaran_stats']:
+                    data['pelajaran_stats'][pelajaran] = {'benar': 0, 'salah': 0}
+                if benar:
+                    data['pelajaran_stats'][pelajaran]['benar'] += 1
+                else:
+                    data['pelajaran_stats'][pelajaran]['salah'] += 1
+
+                if pelajaran not in data['topik_stats']:
+                    data['topik_stats'][pelajaran] = {}
+                if topik not in data['topik_stats'][pelajaran]:
+                    data['topik_stats'][pelajaran][topik] = {'benar': 0, 'total': 0}
+                data['topik_stats'][pelajaran][topik]['total'] += 1
+                if benar:
+                    data['topik_stats'][pelajaran][topik]['benar'] += 1
+                data['topik_stats'][pelajaran][topik]['persentase'] = (
+                    data['topik_stats'][pelajaran][topik]['benar'] / data['topik_stats'][pelajaran][topik]['total'] * 100
+                )
+
+            logger.info(f"Data laporan individu untuk id_siswa {id_siswa}: {data}")
+            # Cek apakah ini permintaan AJAX
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return jsonify(data)
+            return render_template('guru/laporanIndividu.html', data=data, nama_guru=session['user']['nama'], 
+                                 kode_akses_initial=session['user']['kode_akses'][:2] + '*' * (len(session['user']['kode_akses']) - 2), 
+                                 kode_akses=session['user']['kode_akses'], kadaluarsa_date=session['user'].get('kadaluarsa', 'N/A'), 
+                                 timestamp=int(time.time()))
+    except Exception as e:
+        logger.error(f"Error saat membuat laporan individu untuk id_siswa {id_siswa}: {e}")
+        traceback.print_exc()
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+    
+# Rute untuk laporan kesalahan umum (pratinjau)
+@app.route('/guru/report/kesalahan_kelas')
+@require_login_guru
+def laporan_kesalahan_kelas():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        kelas = request.args.get('kelas', '3')
+        paket = request.args.get('paket', 'all')
+        if kelas not in ['3', '4', '5']:
+            return jsonify({'status': 'gagal', 'pesan': 'Kelas tidak valid'}), 400
+
+        with get_db() as db:
+            cursor = db.cursor()
+            query = """
+                SELECT h.daftar_soal_dikerjakan, h.jumlah_benar, h.jumlah_salah
+                FROM hasil_kuis h JOIN siswa s ON h.id_siswa = s.id
+                WHERE s.kelas = %s
+            """
+            params = [kelas]
+            if paket != 'all':
+                query += " AND JSON_EXTRACT(h.daftar_soal_dikerjakan, '$.paket') = %s"
+                params.append(paket)
+            cursor.execute(query, params)
+            results = cursor.fetchall()
+            if not results:
+                return jsonify({'status': 'gagal', 'pesan': 'Data tidak ditemukan'}), 404
+
+            topik_stats = {}
+            for result in results:
+                soal_data = json.loads(result['daftar_soal_dikerjakan'])
+                for soal in soal_data.get('soal', []):
+                    topik = soal.get('topik', 'Tidak Diketahui')
+                    if topik not in topik_stats:
+                        topik_stats[topik] = {'benar': 0, 'total': 0}
+                    topik_stats[topik]['total'] += 1
+                    if soal.get('benar', False):
+                        topik_stats[topik]['benar'] += 1
+
+            # Ambil rekomendasi
+            with open('data/rekomendasi.json', 'r', encoding='utf-8') as f:
+                rekomendasi_map = json.load(f)
+            rekomendasi_text = []
+            for topik, stats in topik_stats.items():
+                if stats['total'] > 0 and (stats['total'] - stats['benar']) / stats['total'] > 0.5:
+                    for soal in soal_data.get('soal', []):
+                        if soal['topik'] == topik:
+                            pelajaran = soal['pelajaran']
+                            kategori = soal['kategori']
+                            saran = rekomendasi_map.get(pelajaran, {}).get(kategori, {}).get(topik, 'Latihan lagi ya!')
+                            rekomendasi_text.append(f"{topik}: {saran}")
+                            break
+
+            data = {
+                'kelas': kelas,
+                'paket': paket,
+                'topik_stats': {k: {'benar': v['benar'], 'total': v['total'], 'persentase_salah': ((v['total'] - v['benar']) / v['total'] * 100) if v['total'] > 0 else 0} for k, v in topik_stats.items()},
+                'rekomendasi': rekomendasi_text
+            }
+            return jsonify({'status': 'sukses', 'data': data})
+    except Exception as e:
+        logger.error(f"Error saat membuat laporan kesalahan kelas: {e}")
+        traceback.print_exc()
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+    
+# Rute untuk laporan perbandingan (pratinjau dengan pagination)
+@app.route('/guru/report/perbandingan')
+@require_login_guru
+def laporan_perbandingan():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        kelas = request.args.get('kelas', '3')
+        paket = request.args.get('paket', 'all')
+        page = request.args.get('page', 1, type=int)
+        limit = request.args.get('limit', 10, type=int)  # Default 10 siswa
+        offset = (page - 1) * limit
+        if kelas not in ['3', '4', '5']:
+            return jsonify({'status': 'gagal', 'pesan': 'Kelas tidak valid'}), 400
+
+        with get_db() as db:
+            cursor = db.cursor()
+            query = """
+                SELECT s.id, s.nama, h.jumlah_benar, h.jumlah_salah, h.waktu_rata2_per_soal, h.kesulitan_diduga,
+                       h.daftar_soal_dikerjakan
+                FROM hasil_kuis h JOIN siswa s ON h.id_siswa = s.id
+                WHERE s.kelas = %s
+            """
+            count_query = """
+                SELECT COUNT(DISTINCT s.id) as total
+                FROM hasil_kuis h JOIN siswa s ON h.id_siswa = s.id
+                WHERE s.kelas = %s
+            """
+            params = [kelas]
+            if paket != 'all':
+                query += " AND JSON_EXTRACT(h.daftar_soal_dikerjakan, '$.paket') = %s"
+                count_query += " AND JSON_EXTRACT(h.daftar_soal_dikerjakan, '$.paket') = %s"
+                params.append(paket)
+            query += " ORDER BY h.jumlah_benar DESC LIMIT %s OFFSET %s"
+            params.extend([limit, offset])
+
+            cursor.execute(count_query, params[:-2] if paket != 'all' else params[:-2])
+            total = cursor.fetchone()['total']
+
+            cursor.execute(query, params)
+            results = cursor.fetchall()
+            if not results:
+                return jsonify({'status': 'gagal', 'pesan': 'Data tidak ditemukan'}), 404
+
+            siswa_data = []
+            for result in results:
+                soal_data = json.loads(result['daftar_soal_dikerjakan'])
+                topik_stats = {}
+                for soal in soal_data.get('soal', []):
+                    topik = soal.get('topik', 'Tidak Diketahui')
+                    if topik not in topik_stats:
+                        topik_stats[topik] = {'benar': 0, 'total': 0}
+                    topik_stats[topik]['total'] += 1
+                    if soal.get('benar', False):
+                        topik_stats[topik]['benar'] += 1
+                persentase = (result['jumlah_benar'] / (result['jumlah_benar'] + result['jumlah_salah']) * 100) if (result['jumlah_benar'] + result['jumlah_salah']) > 0 else 0
+                siswa_data.append({
+                    'id': result['id'],
+                    'nama': result['nama'],
+                    'jumlah_benar': result['jumlah_benar'],
+                    'jumlah_salah': result['jumlah_salah'],
+                    'persentase': persentase,
+                    'waktu_rata2': result['waktu_rata2_per_soal'],
+                    'kesulitan_diduga': result['kesulitan_diduga'],
+                    'topik_stats': {k: {'benar': v['benar'], 'total': v['total'], 'persentase': (v['benar'] / v['total'] * 100) if v['total'] > 0 else 0} for k, v in topik_stats.items()}
+                })
+
+            return jsonify({
+                'status': 'sukses',
+                'data': {
+                    'kelas': kelas,
+                    'paket': paket,
+                    'siswa': siswa_data,
+                    'total': total,
+                    'page': page,
+                    'limit': limit
+                }
+            })
+    except Exception as e:
+        logger.error(f"Error saat membuat laporan perbandingan: {e}")
+        traceback.print_exc()
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+# Rute untuk membuat PDF laporan individu (disebut dari pratinjau)
+@app.route('/guru/report/individu/pdf/<int:id_siswa>')
+@require_login_guru
+def laporan_individu_pdf(id_siswa):
+    logger.info(f"Memeriksa sesi untuk PDF: {session.get('user', 'Tidak ada sesi')}")
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        logger.info(f"Akses ditolak untuk PDF id_siswa {id_siswa}: Tidak ada sesi guru.")
+        return redirect(url_for('halaman_utama'))
+    logger.info(f"Menghasilkan PDF untuk id_siswa: {id_siswa}, guru: {session['user']['nama']}")
+    try:
+        with get_db() as db:
+            cursor = db.cursor()
+            cursor.execute("""
+                SELECT h.*, s.nama, s.kelas 
+                FROM hasil_kuis h 
+                JOIN siswa s ON h.id_siswa = s.id 
+                WHERE h.id_siswa = %s 
+                ORDER BY h.tanggal DESC 
+                LIMIT 1
+            """, (id_siswa,))
+            result = cursor.fetchone()
+            if not result:
+                logger.warning(f"Data kuis tidak ditemukan untuk id_siswa: {id_siswa}")
+                return jsonify({'status': 'gagal', 'pesan': 'Data kuis siswa tidak ditemukan'}), 404
+
+            data = {
+                'nama': result['nama'],
+                'kelas': result['kelas'],
+                'mapel': result['mapel'],
+                'jumlah_benar': result['jumlah_benar'],
+                'jumlah_salah': result['jumlah_salah'],
+                'total_soal': result['jumlah_benar'] + result['jumlah_salah'],
+                'waktu_rata2_per_soal': result['waktu_rata2_per_soal'],
+                'kesulitan_diduga': result['kesulitan_diduga'],
+                'tanggal': result['tanggal'].strftime('%d-%m-%Y'),
+                'pelajaran_stats': {},
+                'topik_stats': {}
+            }
+
+            try:
+                soal_data = json.loads(result['daftar_soal_dikerjakan'])
+                soal_list = soal_data.get('soal', [])
+            except json.JSONDecodeError:
+                logger.error(f"Data soal tidak valid untuk id_siswa: {id_siswa}")
+                return jsonify({'status': 'gagal', 'pesan': 'Data soal tidak valid'}), 400
+
+            for soal in soal_list:
+                pelajaran = soal.get('pelajaran', 'Tidak Diketahui')
+                topik = soal.get('topik', 'Tidak Diketahui')
+                benar = soal.get('benar', False)
+
+                if pelajaran not in data['pelajaran_stats']:
+                    data['pelajaran_stats'][pelajaran] = {'benar': 0, 'salah': 0}
+                if benar:
+                    data['pelajaran_stats'][pelajaran]['benar'] += 1
+                else:
+                    data['pelajaran_stats'][pelajaran]['salah'] += 1
+
+                if pelajaran not in data['topik_stats']:
+                    data['topik_stats'][pelajaran] = {}
+                if topik not in data['topik_stats'][pelajaran]:
+                    data['topik_stats'][pelajaran][topik] = {'benar': 0, 'total': 0}
+                data['topik_stats'][pelajaran][topik]['total'] += 1
+                if benar:
+                    data['topik_stats'][pelajaran][topik]['benar'] += 1
+                data['topik_stats'][pelajaran][topik]['persentase'] = (
+                    data['topik_stats'][pelajaran][topik]['benar'] / data['topik_stats'][pelajaran][topik]['total'] * 100
+                )
+
+            # Generate image grafik menggunakan matplotlib (warna penuh)
+            fig, ax = plt.subplots(figsize=(8, 6))
+            labels = list(data['pelajaran_stats'].keys())
+            benar = [v['benar'] for v in data['pelajaran_stats'].values()]
+            salah = [v['salah'] for v in data['pelajaran_stats'].values()]
+
+            x = range(len(labels))
+            ax.bar(x, benar, width=0.4, label='Benar', color='#4CAF50')
+            ax.bar([p + 0.4 for p in x], salah, width=0.4, label='Salah', color='#d32f2f')
+
+            ax.set_xlabel('Pelajaran')
+            ax.set_ylabel('Jumlah Soal')
+            ax.set_title('Performa per Pelajaran')
+            ax.set_xticks([p + 0.2 for p in x])
+            ax.set_xticklabels(labels)
+            ax.legend()
+
+            buf = io.BytesIO()
+            fig.savefig(buf, format='png')
+            buf.seek(0)
+            grafik_image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+            plt.close(fig)
+
+            logger.info(f"Data PDF untuk id_siswa {id_siswa}: {data}")
+            rendered = render_template('laporanIndividuPDF.html', data=data, grafik_image_base64=grafik_image_base64, nama_guru=session['user']['nama'],
+                                     kode_akses_initial=session['user']['kode_akses'][:2] + '*' * (len(session['user']['kode_akses']) - 2),
+                                     kode_akses=session['user']['kode_akses'], kadaluarsa_date=session['user'].get('kadaluarsa', 'N/A'))
+
+            pdf = pdfkit.from_string(rendered, False, options={'enable-local-file-access': '', 'javascript-delay': 1000})
+            return Response(pdf, mimetype='application/pdf',
+                           headers={'Content-Disposition': f'attachment;filename=laporan_individu_{id_siswa}.pdf'})
+    except Exception as e:
+        logger.error(f"Error saat membuat PDF laporan individu untuk id_siswa {id_siswa}: {e}")
+        traceback.print_exc()
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+# Rute serupa untuk laporan kesalahan umum PDF
+@app.route('/guru/report/kesalahan_kelas/pdf')
+@require_login_guru
+def laporan_kesalahan_kelas_pdf():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        kelas = request.args.get('kelas', '3')
+        paket = request.args.get('paket', 'all')
+        response = laporan_kesalahan_kelas()
+        data = response.json['data'] if 'data' in response.json else {}
+        rendered = render_template('laporanKesalahanUmum.html', **data)
+
+        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        pdf = pdfkit.from_string(rendered, False, configuration=config)
+
+        return Response(pdf, mimetype='application/pdf', headers={'Content-Disposition': f'attachment; filename=laporan_kesalahan_kelas_{kelas}.pdf'})
+    except Exception as e:
+        logger.error(f"Error saat membuat PDF laporan kesalahan kelas: {e}")
+        traceback.print_exc()
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+
+# Rute serupa untuk laporan perbandingan PDF
+@app.route('/guru/report/perbandingan/pdf')
+@require_login_guru
+def laporan_perbandingan_pdf():
+    if not session.get('user') or session.get('user').get('role') != 'guru':
+        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    try:
+        kelas = request.args.get('kelas', '3')
+        paket = request.args.get('paket', 'all')
+        page = request.args.get('page', 1, type=int)
+        limit = request.args.get('limit', 10, type=int)
+        response = laporan_perbandingan()
+        data = response.json['data'] if 'data' in response.json else {}
+        rendered = render_template('laporanPerbandingan.html', **data)
+
+        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        pdf = pdfkit.from_string(rendered, False, configuration=config)
+
+        return Response(pdf, mimetype='application/pdf', headers={'Content-Disposition': f'attachment; filename=laporan_perbandingan_{kelas}.pdf'})
+    except Exception as e:
+        logger.error(f"Error saat membuat PDF laporan perbandingan: {e}")
+        traceback.print_exc()
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+    
 @app.route('/admin/adminDashboard')
 def admin_dashboard():
     if not session.get('user') or session.get('user').get('role') != 'admin':
@@ -891,8 +1339,13 @@ def toggle_guru_status():
 
 @app.route('/admin/logout')
 def admin_logout():
-    session.pop('user', None)
-    return redirect(url_for('halaman_utama'))
+    try:
+        session.pop('user', None)
+        return redirect(url_for('halaman_utama'))
+    except Exception as e:
+        logger.error(f"Error saat logout: {e}")
+        traceback.print_exc()
+        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

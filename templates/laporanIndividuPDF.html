@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Individu - {{ data.nama }}</title>
+    <style>
+        /* Gaya dasar dari guruDashboard.css dan laporanIndividu.css, diadaptasi untuk PDF */
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 1cm;
+            font-size: 12pt;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 21cm; /* Lebar A4 */
+        }
+
+        .summary-section, .chart-section, .detail-section {
+            margin-bottom: 1cm;
+            page-break-inside: avoid;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 14pt;
+            margin-bottom: 0.5cm;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 0.3cm;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #2d3748;
+            color: white;
+        }
+
+        table td {
+            background-color: #f9f9f9;
+        }
+
+        .chart-section img {
+            width: 100%;
+            height: auto;
+        }
+
+        .detail-table {
+            margin-top: 0.5cm;
+        }
+
+        /* Header laporan */
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 1cm;
+            font-weight: bold;
+            font-size: 16pt;
+        }
+
+        /* Gaya print A4 */
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-header">
+        Laporan Individu Siswa
+        <p>Nama: {{ data.nama }} | Kelas: {{ data.kelas }} | Tanggal: {{ data.tanggal }}</p>
+    </div>
+
+    <div class="container">
+        <div class="summary-section">
+            <h2>Ringkasan</h2>
+            <table>
+                <tr>
+                    <th>Nama</th>
+                    <td>{{ data.nama }}</td>
+                </tr>
+                <tr>
+                    <th>Kelas</th>
+                    <td>{{ data.kelas }}</td>
+                </tr>
+                <tr>
+                    <th>Mapel</th>
+                    <td>{{ data.mapel }}</td>
+                </tr>
+                <tr>
+                    <th>Jumlah Benar</th>
+                    <td>{{ data.jumlah_benar }}</td>
+                </tr>
+                <tr>
+                    <th>Jumlah Salah</th>
+                    <td>{{ data.jumlah_salah }}</td>
+                </tr>
+                <tr>
+                    <th>Total Soal</th>
+                    <td>{{ data.total_soal }}</td>
+                </tr>
+                <tr>
+                    <th>Waktu Rata-rata per Soal</th>
+                    <td>{{ data.waktu_rata2_per_soal | round(2) }} detik</td>
+                </tr>
+                <tr>
+                    <th>Tingkat Kesulitan</th>
+                    <td>{{ data.kesulitan_diduga }}</td>
+                </tr>
+                <tr>
+                    <th>Tanggal</th>
+                    <td>{{ data.tanggal }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="chart-section">
+            <h2>Performa per Pelajaran</h2>
+            <!-- Placeholder for grafik image, generated in backend -->
+            <img src="data:image/png;base64,{{ grafik_image_base64 }}" alt="Grafik Performa per Pelajaran" style="width: 100%; height: auto;">
+        </div>
+
+        <div class="detail-section">
+            <h2>Detail per Topik</h2>
+            {% for pelajaran, topiks in data.topik_stats.items() %}
+                <h3>{{ pelajaran }}</h3>
+                <table class="detail-table">
+                    <thead>
+                        <tr>
+                            <th>Topik</th>
+                            <th>Benar</th>
+                            <th>Total</th>
+                            <th>Persentase Benar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for topik, stats in topiks.items() %}
+                            <tr>
+                                <td>{{ topik }}</td>
+                                <td>{{ stats.benar }}</td>
+                                <td>{{ stats.total }}</td>
+                                <td>{{ stats.persentase | round(2) }}%</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

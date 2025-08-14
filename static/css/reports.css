@@ -1,0 +1,71 @@
+/* Gaya untuk tab Bootstrap */
+.nav-tabs {
+    border-bottom: 2px solid #2d3748;
+}
+
+.nav-tabs .nav-link {
+    color: #2d3748;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #1E90FF;
+    color: white;
+    border-color: #1E90FF;
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: #f1f1f1;
+    color: #2d3748;
+}
+
+.tab-content {
+    background-color: white;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-top: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-pane {
+    min-height: 300px;
+}
+
+/* Gaya untuk tabel di tab Laporan Individu */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #2d3748;
+    color: white;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Gaya untuk tombol */
+.btn-primary {
+    background-color: #1E90FF;
+    border-color: #1E90FF;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: #1a7cd3;
+    border-color: #1a7cd3;
+}
