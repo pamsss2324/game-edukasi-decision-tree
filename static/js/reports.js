@@ -1,5 +1,6 @@
 let debounceTimeout;
 let overviewChart = null;
+let pieChart = null;
 
 function showErrorPopup(message) {
     const customAlert = document.getElementById('customAlert');
@@ -92,7 +93,7 @@ function setupDropdownToggle() {
 }
 
 async function loadSiswa(page = 1, limit = 6, kelasFilter = 'all', search = '') {
-    if (!document.getElementById('siswaTable')) return; // Hentikan jika bukan halaman reports
+    if (!document.getElementById('siswaTable')) return;
     showLoadingOverlay();
     try {
         console.log(`Loading siswa: page=${page}, limit=${limit}, kelas=${kelasFilter}, search=${search}`);
@@ -113,7 +114,6 @@ async function loadSiswa(page = 1, limit = 6, kelasFilter = 'all', search = '') 
                     `;
                     tbody.appendChild(row);
                 });
-                // Pasang event listener untuk tombol "Lihat Laporan"
                 document.querySelectorAll('.lihat-laporan').forEach(button => {
                     button.addEventListener('click', () => {
                         const id_siswa = button.getAttribute('data-id');
@@ -122,8 +122,6 @@ async function loadSiswa(page = 1, limit = 6, kelasFilter = 'all', search = '') 
                     });
                 });
                 setupPagination(data.total, page, limit, kelasFilter, search);
-            } else {
-                console.warn('Elemen #siswaTable tbody tidak ditemukan');
             }
         } else {
             showErrorPopup(data.pesan || 'Data kuis siswa belum tersedia');
@@ -164,34 +162,40 @@ function setupPagination(totalItems, currentPage, limit = 6, kelasFilter, search
             nextButton.onclick = () => loadSiswa(currentPage + 1, limit, kelasFilter, search);
             pagination.appendChild(nextButton);
         }
-    } else {
-        console.warn('Elemen #pagination tidak ditemukan');
     }
 }
 
 async function loadPaket(kelasSelectId, paketSelectId) {
-    const kelas = document.getElementById(kelasSelectId).value;
+    const kelas = document.getElementById(kelasSelectId)?.value;
     const paketSelect = document.getElementById(paketSelectId);
-    if (paketSelect) {
-        try {
-            const response = await fetch(`/guru/get_paket?kelas=${kelas}`);
-            const data = await response.json();
-            if (data.status === 'sukses') {
-                paketSelect.innerHTML = '<option value="all">Semua Paket</option>';
+    if (!kelas || !paketSelect) {
+        console.warn(`Elemen ${kelasSelectId} atau ${paketSelectId} tidak ditemukan`);
+        return;
+    }
+    try {
+        console.log(`Memuat paket untuk kelas: ${kelas}`);
+        const response = await fetch(`/guru/get_paket?kelas=${kelas}`);
+        const data = await response.json();
+        console.log('Respons dari server:', data);
+        if (data.status === 'sukses') {
+            paketSelect.innerHTML = '<option value="all">Semua Paket</option>';
+            if (Array.isArray(data.paket) && data.paket.length > 0) {
                 data.paket.forEach(paket => {
                     const option = document.createElement('option');
                     option.value = paket;
                     option.textContent = `Paket ${paket}`;
                     paketSelect.appendChild(option);
                 });
+                console.log(`Paket dimuat: ${data.paket.join(', ')}`);
             } else {
-                showErrorPopup(data.pesan || 'Gagal memuat daftar paket');
+                console.warn('Tidak ada paket yang dikembalikan dari server untuk kelas', kelas);
             }
-        } catch (error) {
-            showErrorPopup('Terjadi kesalahan saat memuat daftar paket');
+        } else {
+            showErrorPopup(data.pesan || 'Gagal memuat daftar paket');
         }
-    } else {
-        console.warn(`Elemen #${paketSelectId} tidak ditemukan`);
+    } catch (error) {
+        console.error('Error saat memuat paket:', error);
+        showErrorPopup('Terjadi kesalahan saat memuat daftar paket');
     }
 }
 
@@ -201,21 +205,16 @@ function viewLaporanIndividu(id_siswa) {
 }
 
 async function fetchLaporanIndividu(id_siswa) {
-    if (!document.getElementById('nama-siswa')) return; // Hentikan jika bukan halaman laporan individu
+    if (!document.getElementById('nama-siswa')) return;
     showLoadingOverlay();
     try {
         console.log(`Fetching laporan individu untuk id_siswa: ${id_siswa}`);
         const response = await fetch(`/guru/report/individu/${id_siswa}`, {
             method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        console.log('Data laporan individu diterima:', data);
         if (data) {
             const namaElem = document.getElementById('nama-siswa');
             const kelasElem = document.getElementById('kelas-siswa');
@@ -257,42 +256,25 @@ function renderChart(pelajaran_stats) {
         console.warn('Canvas overviewChart tidak ditemukan');
         return;
     }
-    // Hancurkan instance chart lama jika ada
     if (overviewChart) {
         console.log('Menghancurkan instance chart lama');
         overviewChart.destroy();
         overviewChart = null;
     }
-    // Buat instance chart baru
     console.log('Merender chart baru dengan data:', pelajaran_stats);
     overviewChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: Object.keys(pelajaran_stats),
             datasets: [
-                {
-                    label: 'Benar',
-                    data: Object.values(pelajaran_stats).map(s => s.benar),
-                    backgroundColor: '#4CAF50',
-                },
-                {
-                    label: 'Salah',
-                    data: Object.values(pelajaran_stats).map(s => s.salah),
-                    backgroundColor: '#d32f2f',
-                }
+                { label: 'Benar', data: Object.values(pelajaran_stats).map(s => s.benar), backgroundColor: '#4CAF50' },
+                { label: 'Salah', data: Object.values(pelajaran_stats).map(s => s.salah), backgroundColor: '#d32f2f' }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    suggestedMax: Math.max(...Object.values(pelajaran_stats).map(s => s.benar + s.salah)) + 2, // Batasi tinggi berdasarkan data
-                    title: { display: true, text: 'Jumlah Soal' }
-                },
-                x: { title: { display: true, text: 'Pelajaran' } }
-            },
+            scales: { y: { beginAtZero: true, suggestedMax: Math.max(...Object.values(pelajaran_stats).map(s => s.benar + s.salah)) + 2, title: { display: true, text: 'Jumlah Soal' } }, x: { title: { display: true, text: 'Pelajaran' } } },
             plugins: { legend: { position: 'top' } }
         }
     });
@@ -318,24 +300,10 @@ function renderAccordion(topik_stats, pelajaran_filter) {
             <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" data-bs-parent="#topikAccordion">
                 <div class="accordion-body">
                     <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Topik</th>
-                                <th>Benar</th>
-                                <th>Total</th>
-                                <th>Persentase Benar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${Object.entries(topiks).map(([topik, stats]) => `
-                                <tr>
-                                    <td>${topik}</td>
-                                    <td>${stats.benar}</td>
-                                    <td>${stats.total}</td>
-                                    <td>${stats.persentase.toFixed(2)}%</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
+                        <thead><tr><th>Topik</th><th>Benar</th><th>Total</th><th>Persentase Benar</th></tr></thead>
+                        <tbody>${Object.entries(topiks).map(([topik, stats]) => `
+                            <tr><td>${topik}</td><td>${stats.benar}</td><td>${stats.total}</td><td>${stats.persentase.toFixed(2)}%</td></tr>
+                        `).join('')}</tbody>
                     </table>
                 </div>
             </div>
@@ -358,44 +326,75 @@ function setupPelajaranFilter(topik_stats) {
 
 function downloadPDF() {
     showLoadingOverlay();
-    const id_siswa = window.location.pathname.split('/').pop();
-    console.log(`Mengunduh PDF untuk id_siswa: ${id_siswa}`);
-    fetch(`/guru/report/individu/pdf/${id_siswa}`, {
-        method: 'GET',
-        credentials: 'include', // Pastikan cookie sesi dikirim
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.blob();
-    })
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `laporan_individu_${id_siswa}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-        hideLoadingOverlay();
-    })
-    .catch(error => {
-        console.error('Error saat mengunduh PDF:', error);
-        showErrorPopup('Terjadi kesalahan saat mengunduh PDF');
-        hideLoadingOverlay();
-    });
+    const id_siswa = window.location.pathname.match(/\/guru\/report\/individu\/(\d+)/)?.[1];
+    if (id_siswa) {
+        console.log(`Mengunduh PDF untuk id_siswa: ${id_siswa}`);
+        fetch(`/guru/report/individu/pdf/${id_siswa}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `laporan_individu_${id_siswa}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            hideLoadingOverlay();
+        })
+        .catch(error => {
+            console.error('Error saat mengunduh PDF:', error);
+            showErrorPopup('Terjadi kesalahan saat mengunduh PDF');
+            hideLoadingOverlay();
+        });
+    } else {
+        // Ambil kelas dan paket dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const kelas = urlParams.get('kelas') || '3';
+        const paket = urlParams.get('paket') || 'all';
+        console.log(`Mengunduh PDF untuk kelas: ${kelas}, paket: ${paket}`);
+        fetch(`/guru/report/kesalahan_kelas/pdf?kelas=${kelas}&paket=${paket}`, { credentials: 'include' })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `laporan_kesalahan_kelas_${kelas}_${paket}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error saat mengunduh PDF:', error);
+            showErrorPopup('Terjadi kesalahan saat mengunduh PDF');
+        })
+        .finally(() => hideLoadingOverlay());
+    }
+}
+
+function setupSearchAndFilter() {
+    const searchInput = document.getElementById('siswaSearch');
+    const kelasFilter = document.getElementById('kelasFilter');
+    if (searchInput && kelasFilter) {
+        searchInput.addEventListener('input', () => loadSiswa(1, 6, kelasFilter.value, searchInput.value));
+        kelasFilter.addEventListener('change', () => loadSiswa(1, 6, kelasFilter.value, searchInput.value));
+    }
 }
 
 function setupTabInteractions() {
     const kelasKesalahan = document.getElementById('kelasKesalahan');
     const kelasPerbandingan = document.getElementById('kelasPerbandingan');
-    const lihatKesalahan = document.getElementById('lihatKesalahan');
-    const lihatPerbandingan = document.getElementById('lihatPerbandingan');
 
     if (kelasKesalahan) {
         kelasKesalahan.addEventListener('change', () => loadPaket('kelasKesalahan', 'paketKesalahan'));
@@ -403,12 +402,27 @@ function setupTabInteractions() {
     if (kelasPerbandingan) {
         kelasPerbandingan.addEventListener('change', () => loadPaket('kelasPerbandingan', 'paketPerbandingan'));
     }
-    if (lihatKesalahan) {
-        lihatKesalahan.addEventListener('click', viewLaporanKesalahan);
-    }
-    if (lihatPerbandingan) {
-        lihatPerbandingan.addEventListener('click', viewLaporanPerbandingan);
-    }
+
+    document.addEventListener('click', (e) => {
+        const tabContent = document.querySelector('.tab-pane.active');
+        if (tabContent && tabContent.id === 'kesalahan' && e.target.id === 'lihatKesalahan') {
+            console.log('Button lihatKesalahan diklik');
+            const kelas = document.getElementById('kelasKesalahan').value;
+            const paket = document.getElementById('paketKesalahan').value;
+            console.log(`Mengalihkan ke laporan kesalahan: kelas=${kelas}, paket=${paket}`);
+            if (kelas && (paket || paket === 'all')) {
+                window.location.href = `/guru/report/kesalahan_kelas?kelas=${kelas}&paket=${paket}`;
+            } else {
+                console.warn('Parameter kelas atau paket tidak valid');
+            }
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'lihatPerbandingan') {
+            viewLaporanPerbandingan();
+        }
+    });
 }
 
 function viewLaporanKesalahan() {
@@ -423,6 +437,125 @@ function viewLaporanPerbandingan() {
     const paket = document.getElementById('paketPerbandingan').value;
     console.log(`Mengalihkan ke laporan perbandingan: kelas=${kelas}, paket=${paket}`);
     window.location.href = `/guru/report/perbandingan?kelas=${kelas}&paket=${paket}`;
+}
+
+async function fetchLaporanKesalahan(kelas, paket) {
+    showLoadingOverlay();
+    try {
+        const response = await fetch(`/guru/report/kesalahan_kelas?kelas=${kelas}&paket=${paket}`);
+        const data = await response.json();
+        if (data.status === 'sukses') {
+            renderPieChart(data.data.topik_stats);
+        } else {
+            showErrorPopup(data.pesan || 'Data laporan tidak ditemukan');
+        }
+    } catch (error) {
+        showErrorPopup('Terjadi kesalahan saat memuat data');
+    } finally {
+        hideLoadingOverlay();
+    }
+}
+
+function renderPieChart(topik_stats) {
+    const ctx = document.getElementById('pieChart')?.getContext('2d');
+    if (!ctx) {
+        console.warn('Canvas pieChart tidak ditemukan');
+        return;
+    }
+    if (pieChart) pieChart.destroy();
+
+    // Kelompokkan topik ke pelajaran berdasarkan kata kunci
+    const pelajaran_stats = {};
+    const pelajaran_map = {
+        'Matematika': ['Penjumlahan', 'Pengurangan', 'Perkalian', 'Bangun Datar', 'Satuan Waktu'],
+        'Bahasa': ['Jenis Kata', 'Penulisan Kalimat', 'Jenis Kalimat', 'Tanda Baca', 'Sinonim/Antonim', 'Kosa Kata', 'Kalimat Perintah', 'Kalimat Benar'],
+        'IPA': ['Bagian Tumbuhan', 'Indera Manusia', 'Kebutuhan Tumbuhan', 'Organ Tubuh', 'Organ Pernapasan', 'Perubahan Wujud Benda', 'Proses Alam', 'Sifat Benda']
+    };
+
+    for (const topik in topik_stats) {
+        const stats = topik_stats[topik];
+        let pelajaran = 'Lain-lain';
+        for (const [subj, topics] of Object.entries(pelajaran_map)) {
+            if (topics.includes(topik)) {
+                pelajaran = subj;
+                break;
+            }
+        }
+        if (!pelajaran_stats[pelajaran]) {
+            pelajaran_stats[pelajaran] = { total: 0, benar: 0 };
+        }
+        pelajaran_stats[pelajaran].total += stats.total;
+        pelajaran_stats[pelajaran].benar += stats.benar;
+    }
+
+    const pelajaran_data = {};
+    for (const pelajaran in pelajaran_stats) {
+        const stats = pelajaran_stats[pelajaran];
+        pelajaran_data[pelajaran] = ((stats.total - stats.benar) / stats.total * 100) || 0;
+    }
+
+    const sorted_data = Object.entries(pelajaran_data).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    const labels = sorted_data.map(item => item[0]);
+    const data = sorted_data.map(item => item[1]);
+
+    pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{ data: data, backgroundColor: ['#FF9999', '#66B2FF', '#99FF99'] }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { callbacks: { label: (context) => `${context.label}: ${context.raw.toFixed(2)}%` } }
+            },
+            onClick: (event, elements) => {
+                if (elements.length > 0) {
+                    const index = elements[0].index;
+                    const selected = labels[index];
+                    // Filter topik_stats berdasarkan pelajaran yang dipilih
+                    const filtered_stats = {};
+                    for (const topik in topik_stats) {
+                        if (Object.values(pelajaran_map).some(topics => topics.includes(topik) && pelajaran_map[selected] && pelajaran_map[selected].includes(topik))) {
+                            filtered_stats[topik] = topik_stats[topik];
+                        }
+                    }
+                    updateDetailTable(filtered_stats);
+                    document.getElementById('selectedPelajaran').textContent = selected;
+                    document.getElementById('detailSection').style.display = 'block';
+                }
+            }
+        }
+    });
+}
+
+function updateDetailTable(stats) {
+    const tbody = document.querySelector('#topikTable tbody');
+    if (tbody) {
+        tbody.innerHTML = '';
+        const top10 = Object.entries(stats).sort((a, b) => (b[1].total - b[1].benar) / b[1].total - (a[1].total - a[1].benar) / a[1].total).slice(0, 10);
+        top10.forEach(([topik, data]) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${topik}</td>
+                <td>${data.total}</td>
+                <td>${data.total - data.benar}</td>
+                <td>${((data.total - data.benar) / data.total * 100).toFixed(2)}%</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+}
+
+function setupSearchAndFilter() {
+    const searchInput = document.getElementById('siswaSearch');
+    const kelasFilter = document.getElementById('kelasFilter');
+    if (searchInput && kelasFilter) {
+        searchInput.addEventListener('input', () => loadSiswa(1, 6, kelasFilter.value, searchInput.value));
+        kelasFilter.addEventListener('change', () => loadSiswa(1, 6, kelasFilter.value, searchInput.value));
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -459,25 +592,56 @@ document.addEventListener('DOMContentLoaded', () => {
         const originalCode = popupKodeAkses.dataset.fullCode || popupKodeAkses.value;
         togglePassword.addEventListener('click', () => {
             isVisible = !isVisible;
-            if (isVisible && originalCode) {
-                popupKodeAkses.value = originalCode;
-            } else if (originalCode) {
-                popupKodeAkses.value = originalCode.substring(0, 2) + '*'.repeat(Math.max(0, originalCode.length - 2));
-            }
+            popupKodeAkses.value = isVisible && originalCode ? originalCode : originalCode.substring(0, 2) + '*'.repeat(Math.max(0, originalCode.length - 2));
             togglePassword.textContent = isVisible ? '🙈' : '👁️';
         });
     }
 
-    if (document.getElementById('kelasKesalahan')) {
-        loadPaket('kelasKesalahan', 'paketKesalahan');
-    }
-    if (document.getElementById('kelasPerbandingan')) {
-        loadPaket('kelasPerbandingan', 'paketPerbandingan');
-    }
+    // Pastikan event tab berfungsi setelah Bootstrap dimuat
+    document.querySelectorAll('#reportTabs .nav-link').forEach(tab => {
+        tab.addEventListener('shown.bs.tab', (e) => {
+            if (e.target.getAttribute('data-bs-target') === '#kesalahan') {
+                console.log('Tab Kesalahan Umum aktif, memuat paket');
+                loadPaket('kelasKesalahan', 'paketKesalahan');
+            }
+        });
+    });
 
     const id_siswa = window.location.pathname.match(/\/guru\/report\/individu\/(\d+)/)?.[1];
     if (id_siswa) {
         console.log(`Inisialisasi laporan individu untuk id_siswa: ${id_siswa}`);
         fetchLaporanIndividu(id_siswa);
+    }
+
+    // Inisialisasi untuk laporan kesalahan umum hanya jika di halaman yang sesuai
+    if (window.location.pathname.includes('/guru/report/kesalahan_kelas')) {
+        const container = document.querySelector('.container');
+        if (container) {
+            const topikStatsJson = container.getAttribute('data-topik-stats');
+            if (topikStatsJson) {
+                try {
+                    const topikStats = JSON.parse(topikStatsJson);
+                    if (Object.keys(topikStats).length > 0) {
+                        console.log('Data topikStats:', topikStats);
+                        renderPieChart(topikStats);
+                    } else {
+                        console.warn('Data topikStats kosong.');
+                        showErrorPopup('Tidak ada data kesalahan untuk ditampilkan.');
+                    }
+                } catch (error) {
+                    console.error('Error parsing topikStats:', error);
+                    showErrorPopup('Terjadi kesalahan dalam memuat data kesalahan.');
+                }
+            } else {
+                console.warn('Data topik-stats tidak ditemukan di elemen container.');
+                showErrorPopup('Data kesalahan tidak tersedia.');
+            }
+        }
+    } else if (document.getElementById('pieChart') && !window.location.pathname.includes('/guru/report/individu')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const kelas = urlParams.get('kelas') || '3';
+        const paket = urlParams.get('paket') || 'all';
+        console.log(`Inisialisasi laporan kesalahan untuk kelas: ${kelas}, paket: ${paket}`);
+        fetchLaporanKesalahan(kelas, paket);
     }
 });

@@ -1,0 +1,32 @@
+.pie-container {
+    cursor: pointer;
+}
+
+.chart-section {
+    margin-bottom: 2rem; /* Jarak dari detail section */
+}
+
+.detail-section {
+    margin-top: 1.5rem; /* Jarak dari chart section */
+}
+
+canvas#pieChart {
+    max-height: 400px; /* Batasi tinggi maksimum */
+    width: 100% !important; /* Pastikan lebar penuh */
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+@media print {
+    .navbar, .header-section {
+        display: none;
+    }
+    .chart-section canvas {
+        max-width: 100% !important;
+        max-height: 300px !important;
+    }
+}

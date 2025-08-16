@@ -47,8 +47,16 @@ body {
 }
 
 .chart-section {
-    max-height: 500px; /* Tinggi maksimum untuk menampung hingga nilai 12 tanpa scroll */
-    overflow-y: auto; /* Tambahkan scroll jika melebihi 500px */
+    margin-bottom: 2rem; /* Jarak dari detail section */
+}
+
+canvas#overviewChart {
+    max-height: 400px; /* Batasi tinggi maksimum */
+    width: 100% !important; /* Pastikan lebar penuh */
+}
+
+.detail-section {
+    margin-top: 1.5rem; /* Jarak dari chart section */
 }
 
 @media print {

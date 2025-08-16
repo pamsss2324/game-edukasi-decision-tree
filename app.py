@@ -15,6 +15,8 @@ import pdfkit
 import base64
 import io
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 import bcrypt
 from functools import wraps
 from cryptography.fernet import Fernet
@@ -715,17 +717,14 @@ def get_paket():
         kelas = request.args.get('kelas', '3')
         if kelas not in ['3', '4', '5']:
             return jsonify({'status': 'gagal', 'pesan': 'Kelas tidak valid'}), 400
-        with get_db() as db:
-            cursor = db.cursor()
-            query = """
-                SELECT DISTINCT JSON_EXTRACT(daftar_soal_dikerjakan, '$.paket') AS paket
-                FROM hasil_kuis
-                WHERE JSON_EXTRACT(daftar_soal_dikerjakan, '$.paket') IS NOT NULL
-                AND id_siswa IN (SELECT id FROM siswa WHERE kelas = %s)
-            """
-            cursor.execute(query, (kelas,))
-            paket = [row['paket'] for row in cursor.fetchall()]
-            return jsonify({'status': 'sukses', 'paket': sorted(paket)})
+        folder = 'soal'
+        paket_list = []
+        for file in os.listdir(folder):
+            if file.startswith(f'soal_kelas{kelas}_paket') and file.endswith('.json'):
+                paket = int(file.split('_paket')[1].split('.json')[0])
+                if paket not in paket_list:  # Hindari duplikat
+                    paket_list.append(paket)
+        return jsonify({'status': 'sukses', 'paket': sorted(paket_list)})
     except Exception as e:
         logger.error(f"Error saat mengambil daftar paket: {e}")
         traceback.print_exc()
@@ -810,11 +809,9 @@ def laporan_individu(id_siswa):
         return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
     
 # Rute untuk laporan kesalahan umum (pratinjau)
-@app.route('/guru/report/kesalahan_kelas')
+@app.route('/guru/report/kesalahan_kelas', methods=['GET'])
 @require_login_guru
 def laporan_kesalahan_kelas():
-    if not session.get('user') or session.get('user').get('role') != 'guru':
-        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
     try:
         kelas = request.args.get('kelas', '3')
         paket = request.args.get('paket', 'all')
@@ -834,41 +831,51 @@ def laporan_kesalahan_kelas():
                 params.append(paket)
             cursor.execute(query, params)
             results = cursor.fetchall()
-            if not results:
-                return jsonify({'status': 'gagal', 'pesan': 'Data tidak ditemukan'}), 404
 
             topik_stats = {}
-            for result in results:
-                soal_data = json.loads(result['daftar_soal_dikerjakan'])
-                for soal in soal_data.get('soal', []):
-                    topik = soal.get('topik', 'Tidak Diketahui')
-                    if topik not in topik_stats:
-                        topik_stats[topik] = {'benar': 0, 'total': 0}
-                    topik_stats[topik]['total'] += 1
-                    if soal.get('benar', False):
-                        topik_stats[topik]['benar'] += 1
-
-            # Ambil rekomendasi
-            with open('data/rekomendasi.json', 'r', encoding='utf-8') as f:
-                rekomendasi_map = json.load(f)
-            rekomendasi_text = []
-            for topik, stats in topik_stats.items():
-                if stats['total'] > 0 and (stats['total'] - stats['benar']) / stats['total'] > 0.5:
-                    for soal in soal_data.get('soal', []):
-                        if soal['topik'] == topik:
-                            pelajaran = soal['pelajaran']
-                            kategori = soal['kategori']
-                            saran = rekomendasi_map.get(pelajaran, {}).get(kategori, {}).get(topik, 'Latihan lagi ya!')
-                            rekomendasi_text.append(f"{topik}: {saran}")
-                            break
+            if results:
+                for result in results:
+                    try:
+                        soal_data = json.loads(result['daftar_soal_dikerjakan'])
+                        for soal in soal_data.get('soal', []):
+                            topik = soal.get('topik', 'Tidak Diketahui')
+                            if topik not in topik_stats:
+                                topik_stats[topik] = {'benar': 0, 'total': 0}
+                            topik_stats[topik]['total'] += 1
+                            if soal.get('benar', False):
+                                topik_stats[topik]['benar'] += 1
+                    except json.JSONDecodeError:
+                        logger.warning(f"Data JSON tidak valid untuk hasil kuis: {result}")
+                        continue
 
             data = {
                 'kelas': kelas,
                 'paket': paket,
-                'topik_stats': {k: {'benar': v['benar'], 'total': v['total'], 'persentase_salah': ((v['total'] - v['benar']) / v['total'] * 100) if v['total'] > 0 else 0} for k, v in topik_stats.items()},
-                'rekomendasi': rekomendasi_text
+                'topik_stats': {k: {'benar': v['benar'], 'total': v['total'], 'persentase_salah': ((v['total'] - v['benar']) / v['total'] * 100) if v['total'] > 0 else 0} for k, v in topik_stats.items()} if topik_stats else {}
             }
-            return jsonify({'status': 'sukses', 'data': data})
+
+            logger.info(f"Data laporan kesalahan umum: {data}")
+
+            user_data = session['user']
+            nama_guru = user_data['nama']
+            kode_akses_encrypted = user_data.get('kode_akses', '********')
+            try:
+                kode_akses = fernet.decrypt(kode_akses_encrypted.encode()).decode() if kode_akses_encrypted != '********' else '********'
+            except Exception as e:
+                logger.warning(f"Gagal dekripsi kode akses untuk {nama_guru}: {e}. Menggunakan placeholder.")
+                kode_akses = '********'
+            kode_akses_initial = kode_akses[:2] + '*' * (len(kode_akses) - 2) if kode_akses != '********' and len(kode_akses) > 2 else kode_akses
+            kadaluarsa_date = user_data.get('kadaluarsa', '')
+
+            return render_template(
+                'guru/laporanKesalahanUmum.html',
+                nama_guru=nama_guru,
+                kode_akses=kode_akses,
+                kode_akses_initial=kode_akses_initial,
+                kadaluarsa_date=kadaluarsa_date,
+                data=data,
+                timestamp=int(time.time())
+            )
     except Exception as e:
         logger.error(f"Error saat membuat laporan kesalahan kelas: {e}")
         traceback.print_exc()
@@ -1071,14 +1078,108 @@ def laporan_kesalahan_kelas_pdf():
     try:
         kelas = request.args.get('kelas', '3')
         paket = request.args.get('paket', 'all')
-        response = laporan_kesalahan_kelas()
-        data = response.json['data'] if 'data' in response.json else {}
-        rendered = render_template('laporanKesalahanUmum.html', **data)
+        if kelas not in ['3', '4', '5']:
+            return jsonify({'status': 'gagal', 'pesan': 'Kelas tidak valid'}), 400
 
-        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
-        pdf = pdfkit.from_string(rendered, False, configuration=config)
+        with get_db() as db:
+            cursor = db.cursor()
+            query = """
+                SELECT h.daftar_soal_dikerjakan, h.jumlah_benar, h.jumlah_salah, s.kelas
+                FROM hasil_kuis h JOIN siswa s ON h.id_siswa = s.id
+                WHERE s.kelas = %s
+            """
+            params = [kelas]
+            if paket != 'all':
+                query += " AND JSON_EXTRACT(h.daftar_soal_dikerjakan, '$.paket') = %s"
+                params.append(paket)
+            cursor.execute(query, params)
+            results = cursor.fetchall()
 
-        return Response(pdf, mimetype='application/pdf', headers={'Content-Disposition': f'attachment; filename=laporan_kesalahan_kelas_{kelas}.pdf'})
+            if not results:
+                return jsonify({'status': 'gagal', 'pesan': 'Data tidak ditemukan'}), 404
+
+            # Hitung jumlah siswa unik
+            cursor.execute("SELECT COUNT(DISTINCT id) as jumlah_siswa FROM siswa WHERE kelas = %s", (kelas,))
+            jumlah_siswa = cursor.fetchone()['jumlah_siswa']
+
+            pelajaran_stats = {}
+            topik_stats = {}
+            for result in results:
+                soal_data = json.loads(result['daftar_soal_dikerjakan'])
+                for soal in soal_data.get('soal', []):
+                    pelajaran = soal.get('pelajaran', 'Tidak Diketahui')
+                    topik = soal.get('topik', 'Tidak Diketahui')
+                    if pelajaran not in pelajaran_stats:
+                        pelajaran_stats[pelajaran] = {'salah': 0, 'total': 0}
+                    pelajaran_stats[pelajaran]['total'] += 1
+                    if not soal.get('benar', False):
+                        pelajaran_stats[pelajaran]['salah'] += 1
+
+                    if pelajaran not in topik_stats:
+                        topik_stats[pelajaran] = {}
+                    if topik not in topik_stats[pelajaran]:
+                        topik_stats[pelajaran][topik] = {'benar': 0, 'total': 0}
+                    topik_stats[pelajaran][topik]['total'] += 1
+                    if soal.get('benar', False):
+                        topik_stats[pelajaran][topik]['benar'] += 1
+
+            # Ambil 3 pelajaran dengan kesalahan tertinggi untuk grafik pie
+            pie_data = {k: v['salah'] / v['total'] * 100 for k, v in pelajaran_stats.items() if v['total'] > 0}
+            pie_data = dict(sorted(pie_data.items(), key=lambda x: x[1], reverse=True)[:3])
+            labels = list(pie_data.keys())
+            sizes = list(pie_data.values())
+
+            # Generate grafik pie dengan matplotlib
+            fig, ax = plt.subplots(figsize=(7.8, 7.8))
+            ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=['#FF9999', '#66B2FF', '#99FF99'], startangle=90, textprops={'fontsize': 13}) 
+            ax.axis('equal')
+
+            # Atur padding agar grafik tidak terpotong
+            plt.tight_layout()
+
+            buf = io.BytesIO()
+            fig.savefig(buf, format='png', dpi=150)
+            buf.seek(0)
+            grafik_pie_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+            plt.close(fig)
+
+            # Format timestamp di Python
+            from datetime import datetime
+            tanggal_str = datetime.fromtimestamp(int(time.time())).strftime('%d/%m/%Y')
+
+            # Pastikan topik_stats hanya menyertakan data dengan total > 0 dan hitung persentase_salah
+            cleaned_topik_stats = {}
+            for pelajaran, topiks in topik_stats.items():
+                cleaned_topiks = {}
+                for topik, stats in topiks.items():
+                    if stats['total'] > 0:
+                        cleaned_stats = stats.copy()
+                        cleaned_stats['persentase_salah'] = ((stats['total'] - stats['benar']) / stats['total'] * 100) if stats['total'] > 0 else 0
+                        cleaned_topiks[topik] = cleaned_stats
+                if cleaned_topiks:
+                    cleaned_topik_stats[pelajaran] = cleaned_topiks
+
+            print("Debug topik_stats:", cleaned_topik_stats)
+
+            data = {
+                'kelas': kelas,
+                'paket': paket,
+                'jumlah_siswa': jumlah_siswa,
+                'grafik_pie_base64': grafik_pie_base64,
+                'topik_stats': cleaned_topik_stats,
+                'tanggal': tanggal_str
+            }
+
+            rendered = render_template('laporanKesalahanUmumPDF.html', **data)
+            config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files (x86)\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+            options = {
+                'enable-local-file-access': '',
+                'quiet': ''
+            }
+            pdf = pdfkit.from_string(rendered, False, configuration=config, options=options)
+            if not pdf:
+                raise Exception("Gagal menghasilkan PDF")
+            return Response(pdf, mimetype='application/pdf', headers={'Content-Disposition': f'attachment; filename=laporan_kesalahan_kelas_{kelas}_{paket}.pdf'})
     except Exception as e:
         logger.error(f"Error saat membuat PDF laporan kesalahan kelas: {e}")
         traceback.print_exc()

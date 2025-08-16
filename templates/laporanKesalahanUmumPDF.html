@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Kesalahan Umum - Kelas {{ kelas }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 1cm;
+            font-size: 12pt;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 21cm;
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 1cm;
+            font-weight: bold;
+            font-size: 16pt;
+        }
+
+        .chart-section, .detail-section {
+            margin-bottom: 1cm;
+            page-break-inside: avoid;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 14pt;
+            margin-bottom: 0.5cm;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 0.3cm;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #2d3748;
+            color: white;
+        }
+
+        table td {
+            background-color: #f9f9f9;
+        }
+
+        .chart-section img {
+            width: 65%; /* Tingkatkan dari 50% menjadi 65% (sekitar 30% lebih besar) */
+            max-height: 520px; /* Tingkatkan dari 400px menjadi 520px (sekitar 30% lebih besar) */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+    </style>
+</head>
+<body>
+    <div class="pdf-header">
+        Laporan Kesalahan Umum Kelas {{ kelas }} - Paket {% if paket == 'all' %}Semua{% else %}{{ paket }}{% endif %}
+        <p>Jumlah Siswa: {{ jumlah_siswa }}</p>
+        <p>Tanggal: {{ tanggal }}</p>
+    </div>
+
+    <div class="container">
+        <div class="chart-section">
+            <h2>Grafik Kesalahan per Pelajaran</h2>
+            <img src="data:image/png;base64,{{ grafik_pie_base64 }}" alt="Grafik Kesalahan per Pelajaran">
+        </div>
+
+        {% for pelajaran, topiks in topik_stats.items() %}
+            <div class="detail-section">
+                <h2>Detail Topik untuk {{ pelajaran }}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Topik</th>
+                            <th>Jumlah Soal</th>
+                            <th>Jumlah Salah</th>
+                            <th>Persentase Kesalahan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if topiks and topiks.items() %}
+                            {% set sorted_topiks = topiks.items() | list | sort(attribute='1.persentase_salah', reverse=True) if topiks.items() | list | length > 0 %}
+                            {% if sorted_topiks %}
+                                {% for topik, stats in sorted_topiks[:10] if stats.total > 0 %}
+                                    <tr>
+                                        <td>{{ topik }}</td>
+                                        <td>{{ stats.total }}</td>
+                                        <td>{{ stats.total - stats.benar }}</td>
+                                        <td>{{ '%.2f'|format(stats.persentase_salah) }}%</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td>Tidak Ada Data</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0.00%</td>
+                                </tr>
+                            {% endif %}
+                        {% else %}
+                            <tr>
+                                <td>Tidak Ada Data</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0.00%</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

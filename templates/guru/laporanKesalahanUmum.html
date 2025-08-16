@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Kesalahan Umum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/guruDashboard.css') }}?v={{ timestamp }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/laporanKesalahanUmum.css') }}?v={{ timestamp }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-header">
+            <h1>Laporan Kesalahan Umum - Kelas {{ data.kelas }} - Paket {{ data.paket }}</h1>
+            <div class="navbar-user">
+                <div class="dropdown">
+                    <button class="dropbtn">Selamat datang, {{ nama_guru }} <span class="dropdown-arrow">▼</span></button>
+                    <div class="dropdown-content">
+                        <a href="#" class="info-link" onclick="loadInformasi(event)">Informasi</a>
+                        <a href="#" class="logout" onclick="confirmLogout(event)">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar-menu">
+            <a href="/guru/dashboard" class="menu-item">Beranda</a>
+            <a href="/kelola-soal" class="menu-item">Kelola Soal</a>
+            <a href="/guru/reports" class="menu-item active">Laporan</a>
+        </div>
+    </nav>
+
+    <div class="container" data-topik-stats='{{ data.topik_stats | tojson | safe }}'>
+        <div class="header-section">
+            <button class="btn btn-primary" onclick="window.location.href='/guru/reports'">Kembali</button>
+            <button class="btn btn-primary" onclick="downloadPDF()">Cetak PDF</button>
+        </div>
+        <div class="chart-section">
+            <h2>Grafik Kesalahan per Pelajaran</h2>
+            <canvas id="pieChart" style="max-width: 600px;"></canvas>
+        </div>
+        <div class="detail-section" id="detailSection">
+            <h2 id="detailHeader">Detail Topik untuk <span id="selectedPelajaran"></span></h2>
+            <table class="table table-bordered" id="topikTable">
+                <thead>
+                    <tr>
+                        <th>Topik</th>
+                        <th>Jumlah Soal</th>
+                        <th>Jumlah Salah</th>
+                        <th>Persentase Kesalahan</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Popup untuk konfirmasi logout -->
+    <div id="logoutPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Konfirmasi Logout</h3>
+            <p>Apakah Anda yakin ingin logout?</p>
+            <div class="popup-buttons">
+                <button onclick="performLogout()">Ya</button>
+                <button onclick="closePopup()">Tidak</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup untuk informasi akun -->
+    <div id="informasiPopup" class="popup hidden">
+        <div class="popup-content">
+            <h3>Informasi Akun</h3>
+            <div class="info-grid">
+                <label><strong>Nama Guru:</strong></label>
+                <div class="field-container">
+                    <input type="text" class="info-field" value="{{ nama_guru }}" readonly>
+                </div>
+                <label><strong>Kode Akses:</strong></label>
+                <div class="field-container">
+                    <input type="text" id="popupKodeAkses" class="info-field masked-code" value="{{ kode_akses_initial }}" readonly data-full-code="{{ kode_akses }}">
+                    <span id="togglePassword" class="toggle-password">👁️</span>
+                </div>
+                <label><strong>Tanggal Kadaluarsa:</strong></label>
+                <div class="field-container">
+                    <input type="text" class="info-field" value="{{ kadaluarsa_date }}" readonly>
+                </div>
+            </div>
+            <button id="backInfoBtn" onclick="closePopup()">Kembali</button>
+        </div>
+    </div>
+
+    <div id="customAlert" class="popup hidden">
+        <div class="popup-content">
+            <p id="alertMessage">Data kuis siswa belum tersedia</p>
+            <button onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+    <div id="pageLoadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='js/reports.js') }}?v={{ timestamp }}" type="text/javascript"></script>
+</body>
+</html>

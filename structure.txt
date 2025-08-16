@@ -7,6 +7,7 @@ quiz-app/
     generateKey.py
     generateStatusSoal.py
     generateStructure.py
+    migrate.py
     models.py
     requirements.txt
     structure.txt
@@ -20,10 +21,12 @@ quiz-app/
         1128e51fd4e43070eedead7ef5435d9f
         2029240f6d1128be89ddc32729463129
         5e2d1a2441df3e9444291da4fdbb5adf
+        5e97b4147c3488384b0b462eba3180d7
         7cbd7a28dfef247d757d14fc9c7b708f
         8f424219d2fa85fdff69d90d92a5e7d6
         963213d4736ea59dbbe3f13c6c449685
         9993cfe84d197dc1f501e1110235fe74
+        b8eb326b373ca732a43b159d34d94a4b
         d38c7ffc404bcb291f807378bb19c207
     models/
         cart_asal_model.pkl
@@ -42,7 +45,6 @@ quiz-app/
         soal_kelas5_paket2.json
         soal_kelas5_paket3.json
         soal_kelas5_paket4.json
-        soal_status.json
     static/
         adminDashboard.js
         guruDashboard.js
@@ -58,13 +60,19 @@ quiz-app/
             adminDashboard.css
             guruDashboard.css
             kelolaSoal.css
+            laporanIndividu.css
+            laporanKesalahanUmum.css
+            reports.css
         images/
             Bg1.jpg
         js/
             kelolaSoal.js
+            reports.js
     templates/
         hasil.html
         index.html
+        laporanIndividuPDF.html
+        laporanKesalahanUmumPDF.html
         quiz.html
         admin/
             adminDashboard.html
@@ -76,3 +84,4 @@ quiz-app/
             laporanIndividu.html
             laporanKesalahanUmum.html
             laporanRekomendasi.html
+            reports.html
