@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Perbandingan - Kelas {{ kelas }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; line-height: 1.6; margin: 1cm; font-size: 12pt; }
+        .container { width: 100%; max-width: 21cm; }
+        .pdf-header { text-align: center; margin-bottom: 1cm; font-weight: bold; font-size: 16pt; }
+        .chart-section, .detail-section { margin-bottom: 1cm; page-break-inside: avoid; }
+        h2 { color: #2d3748; font-size: 14pt; margin-bottom: 0.5cm; }
+        table { width: 100%; border-collapse: collapse; }
+        table th, table td { padding: 0.3cm; text-align: left; border: 1px solid #ddd; }
+        table th { background-color: #2d3748; color: white; }
+        table td { background-color: #f9f9f9; }
+        .chart-section img { width: 80%; max-height: 400px; height: auto; display: block; margin: 0 auto; }
+        @page { size: A4; margin: 1cm; }
+    </style>
+</head>
+<body>
+    <div class="pdf-header">
+    Laporan Perbandingan Kelas {{ kelas }} - {{ paket }}
+    <p>Jumlah Siswa: {{ jumlah_siswa }}</p>
+    <p>Tanggal: {{ tanggal }}</p>
+    </div>
+
+
+    <div class="container">
+        <div class="chart-section">
+            <h2>Grafik Perbandingan - {{ pelajaran }}</h2>
+            {% if grafik_bar_base64 %}
+            <img src="data:image/png;base64,{{ grafik_bar_base64 }}" alt="Grafik Perbandingan">
+            {% else %}
+            <p>Tidak ada grafik tersedia.</p>
+            {% endif %}
+        </div>
+
+        <div class="detail-section">
+            <h2>Data Perbandingan Siswa</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Siswa</th>
+                        <th>Jumlah Benar</th>
+                        <th>Persentase</th>
+                        <th>Waktu Rata-rata</th>
+                        <th>Kesulitan Diduga</th>
+                        <th>Performa per Pelajaran</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in student_data %}
+                    <tr>
+                        <td>{{ student.nama }}</td>
+                        <td>{{ student.jumlah_benar }}</td>
+                        <td>{{ '%.2f'|format(student.persentase) }}%</td>
+                        <td>{{ '%.2f'|format(student.waktu_rata2) }} detik</td>
+                        <td>{{ student.kesulitan_diduga }}</td>
+                        <td>
+                            {% for p, val in student.topik_stats.items() %}
+                                {% if val is mapping %}
+                                    {{ p }}: {{ '%.2f'|format(val.get('persentase',0)) }}%
+                                {% else %}
+                                    {{ p }}: {{ '%.2f'|format(val) }}%
+                                {% endif %}
+                                {% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

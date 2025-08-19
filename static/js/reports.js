@@ -1,6 +1,7 @@
 let debounceTimeout;
 let overviewChart = null;
 let pieChart = null;
+let comparisonChart = null;
 
 function showErrorPopup(message) {
     const customAlert = document.getElementById('customAlert');
@@ -326,6 +327,8 @@ function setupPelajaranFilter(topik_stats) {
 
 function downloadPDF() {
     showLoadingOverlay();
+
+    // Jika sedang di laporan individu
     const id_siswa = window.location.pathname.match(/\/guru\/report\/individu\/(\d+)/)?.[1];
     if (id_siswa) {
         console.log(`Mengunduh PDF untuk id_siswa: ${id_siswa}`);
@@ -354,12 +357,46 @@ function downloadPDF() {
             showErrorPopup('Terjadi kesalahan saat mengunduh PDF');
             hideLoadingOverlay();
         });
-    } else {
-        // Ambil kelas dan paket dari URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const kelas = urlParams.get('kelas') || '3';
-        const paket = urlParams.get('paket') || 'all';
-        console.log(`Mengunduh PDF untuk kelas: ${kelas}, paket: ${paket}`);
+        return;
+    }
+
+    // Ambil filter saat ini dari URL halaman perbandingan
+    const params   = new URLSearchParams(window.location.search);
+    const kelas    = params.get('kelas') || '3';
+    const paket    = params.get('paket') || 'all';
+    const page     = params.get('page')  || '1';
+    const limit    = params.get('limit') || '10';
+    const pelajaran= params.get('pelajaran') || 'all';
+
+    // Laporan perbandingan
+    if (window.location.pathname.includes('/guru/report/perbandingan')) {
+        console.log(`Mengunduh PDF untuk kelas=${kelas}, paket=${paket}, pelajaran=${pelajaran}, page=${page}, limit=${limit}`);
+        fetch(`/guru/report/perbandingan/pdf?kelas=${kelas}&paket=${paket}&page=${page}&limit=${limit}&pelajaran=${pelajaran}`, {
+            credentials: 'include'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a   = document.createElement('a');
+            a.href     = url;
+            a.download = `laporan_perbandingan_${kelas}_page_${page}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error saat mengunduh PDF:', error);
+            showErrorPopup('Terjadi kesalahan saat mengunduh PDF');
+        })
+        .finally(() => hideLoadingOverlay());
+    }
+    // Laporan kesalahan kelas
+    else {
+        console.log(`Mengunduh PDF untuk kelas=${kelas}, paket=${paket}`);
         fetch(`/guru/report/kesalahan_kelas/pdf?kelas=${kelas}&paket=${paket}`, { credentials: 'include' })
         .then(response => {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -367,8 +404,8 @@ function downloadPDF() {
         })
         .then(blob => {
             const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
+            const a   = document.createElement('a');
+            a.href     = url;
             a.download = `laporan_kesalahan_kelas_${kelas}_${paket}.pdf`;
             document.body.appendChild(a);
             a.click();
@@ -382,6 +419,7 @@ function downloadPDF() {
         .finally(() => hideLoadingOverlay());
     }
 }
+
 
 function setupSearchAndFilter() {
     const searchInput = document.getElementById('siswaSearch');
@@ -558,6 +596,154 @@ function setupSearchAndFilter() {
     }
 }
 
+async function loadPerbandingan() {
+    console.log("Memuat halaman laporan");
+
+    const kelas     = document.getElementById('kelas')?.value || '3';
+    const paket     = document.getElementById('paket')?.value || 'all';
+    const pelajaran = document.getElementById('pelajaran')?.value || 'all';
+    const page      = parseInt(document.getElementById('page')?.value) || 1;
+    const limit     = parseInt(document.getElementById('limit')?.value) || 10;
+
+    showLoadingOverlay();
+    try {
+        const resp = await fetch(`/guru/report/perbandingan?kelas=${kelas}&paket=${paket}&page=${page}&limit=${limit}&pelajaran=${pelajaran}&format=json`);
+        const data = await resp.json();
+        console.log("Data diterima dari server:", data);
+
+        if (data.status === 'sukses') {
+            const rows = data.data.siswa || [];
+            if (rows.length > 0) {
+                // Update table
+                updatePerbandinganTable(rows, pelajaran);
+                // Update chart
+                updateComparisonChart(rows, pelajaran);
+                // Update judul grafik
+                document.getElementById('chartPelajaran').textContent = (pelajaran === 'all' ? 'Semua Pelajaran' : pelajaran);
+            } else {
+                showErrorPopup('Tidak ada data untuk filter ini');
+                document.getElementById('studentTable').innerHTML = '<tr><td colspan="7">Tidak ada data</td></tr>';
+                if (comparisonChart) comparisonChart.destroy();
+            }
+        } else {
+            showErrorPopup(data.pesan || 'Gagal memuat data');
+            document.getElementById('studentTable').innerHTML = '<tr><td colspan="7">Gagal memuat data</td></tr>';
+            if (comparisonChart) comparisonChart.destroy();
+        }
+
+        const newUrl = `/guru/report/perbandingan?kelas=${kelas}&paket=${paket}&pelajaran=${pelajaran}&page=${page}&limit=${limit}`;
+        window.history.replaceState(null, '', newUrl);
+        
+    } catch (err) {
+        console.error('Error saat memuat perbandingan:', err);
+        showErrorPopup('Terjadi kesalahan saat memuat data');
+        document.getElementById('studentTable').innerHTML = '<tr><td colspan="7">Error</td></tr>';
+        if (comparisonChart) comparisonChart.destroy();
+    } finally {
+        hideLoadingOverlay();
+    }
+}
+
+// table menampilkan persentase semua pelajaran apabila pelajaran==all
+function updatePerbandinganTable(data, pelajaran) {
+    const tbody = document.getElementById('studentTable');
+    tbody.innerHTML = '';
+
+    data.forEach(s => {
+        // Jika all -> tampilkan seluruh pel_stats, jika spesifik -> hanya pelajaran tsb
+        let perfText = '';
+        if(pelajaran === 'all') {
+            perfText = Object.entries(s.topik_stats || {})
+                            .map(([nm,v]) => `${nm}: ${(v.persentase||0).toFixed(2)}%`)
+                            .join(', ');
+        } else {
+            const v = s.topik_stats?.[pelajaran]?.persentase ?? 0;
+            perfText = `${pelajaran}: ${v.toFixed(2)}%`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${s.nama}</td>
+            <td>${s.jumlah_benar ?? 0}</td>
+            <td>${s.jumlah_salah ?? 0}</td>
+            <td>${(s.persentase ?? 0).toFixed(2)}%</td>
+            <td>${(s.waktu_rata2 ?? 0).toFixed(2)} detik</td>
+            <td>${s.kesulitan_diduga ?? '-'}</td>
+            <td>${perfText || 'N/A'}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+
+function updatePerbandinganTable(data) {
+    const tbody = document.getElementById('studentTable');
+    if (tbody) {
+        tbody.innerHTML = '';
+        data.forEach(siswa => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${siswa.nama || 'N/A'}</td>
+                <td>${siswa.jumlah_benar || 0}</td>
+                <td>${siswa.jumlah_salah || 0}</td>
+                <td>${(siswa.persentase || 0).toFixed(2)}%</td>
+                <td>${(siswa.waktu_rata2 || 0).toFixed(2)} detik</td>
+                <td>${siswa.kesulitan_diduga || 'Belum ada data'}</td>
+                <td>${Object.entries(siswa.topik_stats || {}).map(([topik, stats]) => `${topik}: ${(stats.persentase || 0).toFixed(2)}%`).join(', ') || 'N/A'}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+}
+
+function updateComparisonChart(data, pelajaran) {
+    const ctx = document.getElementById('comparisonChart').getContext('2d');
+    if (comparisonChart) comparisonChart.destroy();
+
+    const labels = data.map(s => s.nama);
+    let values   = [];
+
+    if (pelajaran === 'all') {
+        // rata2 dari persentase tiap pelajaran
+        values = data.map(s => {
+            const list = Object.values(s.topik_stats || {});
+            if (list.length === 0) return 0;
+            const total = list.reduce((acc,st) => acc + (st.persentase||0), 0);
+            return total / list.length;
+        });
+    } else {
+        // ambil persentase per pel
+        values = data.map(s => (s.topik_stats?.[pelajaran]?.persentase) || 0);
+    }
+
+    comparisonChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: `Persentase Keberhasilan - ${pelajaran === 'all' ? 'Semua Pelajaran' : pelajaran}`,
+                data:  values,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor:     'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true, max: 100 } },
+            plugins:{ legend:{ display:false } }
+        }
+    });
+}
+
+function setupPerbandinganFilters() {
+    document.getElementById('kelas').addEventListener('change', loadPerbandingan);
+    document.getElementById('paket').addEventListener('change', loadPerbandingan);
+    document.getElementById('pelajaran').addEventListener('change', loadPerbandingan);
+    document.getElementById('limit').addEventListener('change', loadPerbandingan);
+    document.getElementById('page').addEventListener('change', loadPerbandingan);
+    document.getElementById('printPDF').addEventListener('click', downloadPDF);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Memuat halaman laporan');
     if (document.getElementById('siswaTable')) {
@@ -643,5 +829,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const paket = urlParams.get('paket') || 'all';
         console.log(`Inisialisasi laporan kesalahan untuk kelas: ${kelas}, paket: ${paket}`);
         fetchLaporanKesalahan(kelas, paket);
+    }
+
+    // Inisialisasi untuk laporan perbandingan
+    if (document.getElementById('studentTable') && document.getElementById('comparisonChart')) {
+        loadPerbandingan();
+        setupPerbandinganFilters();
     }
 });

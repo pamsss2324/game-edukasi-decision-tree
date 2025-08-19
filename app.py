@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template, session, redirect, url_for, Response
+from flask import Flask, request, jsonify, send_from_directory, render_template, session, redirect, url_for, Response as FlaskResponse, g
 from flask_cors import CORS
 from flask_session import Session
 import json
@@ -18,6 +18,8 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
 import bcrypt
+from traceback import print_exc
+from io import BytesIO
 from functools import wraps
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
@@ -885,84 +887,112 @@ def laporan_kesalahan_kelas():
 @app.route('/guru/report/perbandingan')
 @require_login_guru
 def laporan_perbandingan():
-    if not session.get('user') or session.get('user').get('role') != 'guru':
-        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    if session.get('user', {}).get('role') != 'guru':
+        return jsonify({'status':'gagal','pesan':'Akses ditolak'}),403
     try:
-        kelas = request.args.get('kelas', '3')
-        paket = request.args.get('paket', 'all')
-        page = request.args.get('page', 1, type=int)
-        limit = request.args.get('limit', 10, type=int)  # Default 10 siswa
-        offset = (page - 1) * limit
-        if kelas not in ['3', '4', '5']:
-            return jsonify({'status': 'gagal', 'pesan': 'Kelas tidak valid'}), 400
+        kelas = request.args.get('kelas','3')
+        paket = request.args.get('paket','all')
+        pelajaran = request.args.get('pelajaran','all')
+        page = int(request.args.get('page',1))
+        limit= int(request.args.get('limit',10))
+        offset=(page-1)*limit
 
         with get_db() as db:
-            cursor = db.cursor()
+            cursor=db.cursor()
             query = """
-                SELECT s.id, s.nama, h.jumlah_benar, h.jumlah_salah, h.waktu_rata2_per_soal, h.kesulitan_diduga,
-                       h.daftar_soal_dikerjakan
-                FROM hasil_kuis h JOIN siswa s ON h.id_siswa = s.id
-                WHERE s.kelas = %s
+                SELECT s.id AS id_siswa, s.nama, s.kelas, h.daftar_soal_dikerjakan,
+                       h.jumlah_benar,h.jumlah_salah,h.waktu_rata2_per_soal,h.dideteksi_asal
+                FROM siswa s LEFT JOIN hasil_kuis h ON s.id=h.id_siswa
+                WHERE s.kelas=%s
             """
-            count_query = """
-                SELECT COUNT(DISTINCT s.id) as total
-                FROM hasil_kuis h JOIN siswa s ON h.id_siswa = s.id
-                WHERE s.kelas = %s
-            """
-            params = [kelas]
-            if paket != 'all':
-                query += " AND JSON_EXTRACT(h.daftar_soal_dikerjakan, '$.paket') = %s"
-                count_query += " AND JSON_EXTRACT(h.daftar_soal_dikerjakan, '$.paket') = %s"
+            params=[kelas]
+            if paket!='all':
+                query+=" AND JSON_EXTRACT(h.daftar_soal_dikerjakan,'$.paket')=%s"
                 params.append(paket)
-            query += " ORDER BY h.jumlah_benar DESC LIMIT %s OFFSET %s"
-            params.extend([limit, offset])
+            query+=" ORDER BY h.jumlah_benar DESC LIMIT %s OFFSET %s"
+            params.extend([limit,offset])
 
-            cursor.execute(count_query, params[:-2] if paket != 'all' else params[:-2])
-            total = cursor.fetchone()['total']
+            cursor.execute(query,params)
+            results=cursor.fetchall()
+            cursor.execute("SELECT COUNT(DISTINCT id) FROM siswa WHERE kelas=%s",(kelas,))
+            total=cursor.fetchone()['COUNT(DISTINCT id)']
 
-            cursor.execute(query, params)
-            results = cursor.fetchall()
-            if not results:
-                return jsonify({'status': 'gagal', 'pesan': 'Data tidak ditemukan'}), 404
+        student_data=[]
+        for r in results:
+            soal_data=json.loads(r['daftar_soal_dikerjakan'] or '{}')
+            total_soal=len(soal_data.get('soal',[]))
+            if total_soal==0: continue
 
-            siswa_data = []
-            for result in results:
-                soal_data = json.loads(result['daftar_soal_dikerjakan'])
-                topik_stats = {}
-                for soal in soal_data.get('soal', []):
-                    topik = soal.get('topik', 'Tidak Diketahui')
-                    if topik not in topik_stats:
-                        topik_stats[topik] = {'benar': 0, 'total': 0}
-                    topik_stats[topik]['total'] += 1
-                    if soal.get('benar', False):
-                        topik_stats[topik]['benar'] += 1
-                persentase = (result['jumlah_benar'] / (result['jumlah_benar'] + result['jumlah_salah']) * 100) if (result['jumlah_benar'] + result['jumlah_salah']) > 0 else 0
-                siswa_data.append({
-                    'id': result['id'],
-                    'nama': result['nama'],
-                    'jumlah_benar': result['jumlah_benar'],
-                    'jumlah_salah': result['jumlah_salah'],
-                    'persentase': persentase,
-                    'waktu_rata2': result['waktu_rata2_per_soal'],
-                    'kesulitan_diduga': result['kesulitan_diduga'],
-                    'topik_stats': {k: {'benar': v['benar'], 'total': v['total'], 'persentase': (v['benar'] / v['total'] * 100) if v['total'] > 0 else 0} for k, v in topik_stats.items()}
-                })
+            kes,_,_=analyze_kesulitan(r['daftar_soal_dikerjakan'],'',
+                                      r['jumlah_benar'],r['jumlah_salah'],
+                                      r['waktu_rata2_per_soal'],r['dideteksi_asal'],
+                                      total_soal,cart_kesulitan_model,label_encoder_kesulitan)
 
-            return jsonify({
-                'status': 'sukses',
-                'data': {
-                    'kelas': kelas,
-                    'paket': paket,
-                    'siswa': siswa_data,
-                    'total': total,
-                    'page': page,
-                    'limit': limit
-                }
+            pel_stats={}
+            for soal in soal_data.get('soal',[]):
+                p=soal.get('pelajaran','Tidak Diketahui')
+                pel_stats.setdefault(p,{'benar':0,'total':0})
+                pel_stats[p]['total']+=1
+                if soal.get('benar'): pel_stats[p]['benar']+=1
+
+            if pelajaran=='all':
+                pel_data={p:{'persentase':(v['benar']/v['total']*100 if v['total'] else 0),
+                             'benar':v['benar'],
+                             'total':v['total']} for p,v in pel_stats.items()}
+            else:
+                hit=pel_stats.get(pelajaran,{'benar':0,'total':0})
+                pel_data={pelajaran:{'persentase':(hit['benar']/hit['total']*100 if hit['total'] else 0),
+                                     'benar':hit['benar'],'total':hit['total']}}
+
+            student_data.append({
+                'id':r['id_siswa'],
+                'nama':r['nama'],
+                'jumlah_benar':r['jumlah_benar'] or 0,
+                'jumlah_salah':r['jumlah_salah'] or 0,
+                'persentase':(r['jumlah_benar'] or 0)/total_soal*100,
+                'waktu_rata2':r['waktu_rata2_per_soal'] or 0,
+                'kesulitan_diduga':kes,
+                'topik_stats':pel_data
             })
+
+        # Generate grafik sesuai filter
+        grafik=''
+        if student_data:
+            import matplotlib.pyplot as plt, io, base64
+            names=[d['nama'] for d in student_data]
+            nilai=[]
+            if pelajaran=='all':
+                for d in student_data:
+                    ts = d['topik_stats']
+                    total_benar = sum(v.get('benar',0) for v in ts.values())
+                    total_s = sum(v.get('total',0) for v in ts.values())
+                    nilai.append((total_benar/total_s*100) if total_s else 0)
+            else:
+                for d in student_data:
+                    nilai.append(d['topik_stats'].get(pelajaran,{}).get('persentase',0))
+            plt.figure(figsize=(10,5))
+            plt.bar(names,nilai); plt.xticks(rotation=45); plt.tight_layout()
+            buf=io.BytesIO(); plt.savefig(buf,format='png'); buf.seek(0)
+            grafik=base64.b64encode(buf.read()).decode(); plt.close()
+
+        paket_display = 'Semua Paket' if paket=='all' else f'Paket {paket}'
+        pel_display   = 'Semua Pelajaran' if pelajaran=='all' else pelajaran
+
+        if request.args.get('format')=='json' or request.headers.get('X-Requested-With')=='XMLHttpRequest':
+            return jsonify({'status':'sukses','data':{
+                'kelas':kelas,'paket':paket_display,'pelajaran':pel_display,
+                'siswa':student_data,'total':total,'page':page,'limit':limit,
+                'grafik_bar_base64':grafik
+            }})
+
+        return render_template('guru/laporanPerbandingan.html',
+            kelas=kelas,paket=paket_display,pelajaran=pel_display,
+            siswa=student_data,total=total,page=page,limit=limit,grafik_bar_base64=grafik)
+
     except Exception as e:
-        logger.error(f"Error saat membuat laporan perbandingan: {e}")
-        traceback.print_exc()
-        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+        logger.error(f"[laporan_perbandingan] {e}",exc_info=True)
+        return jsonify({'status':'gagal','pesan':'Terjadi kesalahan server'}),500
+
 
 # Rute untuk membuat PDF laporan individu (disebut dari pratinjau)
 @app.route('/guru/report/individu/pdf/<int:id_siswa>')
@@ -1062,7 +1092,7 @@ def laporan_individu_pdf(id_siswa):
                                      kode_akses=session['user']['kode_akses'], kadaluarsa_date=session['user'].get('kadaluarsa', 'N/A'))
 
             pdf = pdfkit.from_string(rendered, False, options={'enable-local-file-access': '', 'javascript-delay': 1000})
-            return Response(pdf, mimetype='application/pdf',
+            return FlaskResponse(pdf, mimetype='application/pdf',
                            headers={'Content-Disposition': f'attachment;filename=laporan_individu_{id_siswa}.pdf'})
     except Exception as e:
         logger.error(f"Error saat membuat PDF laporan individu untuk id_siswa {id_siswa}: {e}")
@@ -1179,7 +1209,7 @@ def laporan_kesalahan_kelas_pdf():
             pdf = pdfkit.from_string(rendered, False, configuration=config, options=options)
             if not pdf:
                 raise Exception("Gagal menghasilkan PDF")
-            return Response(pdf, mimetype='application/pdf', headers={'Content-Disposition': f'attachment; filename=laporan_kesalahan_kelas_{kelas}_{paket}.pdf'})
+            return FlaskResponse(pdf, mimetype='application/pdf', headers={'Content-Disposition': f'attachment; filename=laporan_kesalahan_kelas_{kelas}_{paket}.pdf'})
     except Exception as e:
         logger.error(f"Error saat membuat PDF laporan kesalahan kelas: {e}")
         traceback.print_exc()
@@ -1189,25 +1219,73 @@ def laporan_kesalahan_kelas_pdf():
 @app.route('/guru/report/perbandingan/pdf')
 @require_login_guru
 def laporan_perbandingan_pdf():
-    if not session.get('user') or session.get('user').get('role') != 'guru':
-        return jsonify({'status': 'gagal', 'pesan': 'Akses ditolak'}), 403
+    if session.get('user',{}).get('role')!='guru':
+        return jsonify({'status':'gagal','pesan':'Akses ditolak'}),403
     try:
-        kelas = request.args.get('kelas', '3')
-        paket = request.args.get('paket', 'all')
-        page = request.args.get('page', 1, type=int)
-        limit = request.args.get('limit', 10, type=int)
-        response = laporan_perbandingan()
-        data = response.json['data'] if 'data' in response.json else {}
-        rendered = render_template('laporanPerbandingan.html', **data)
+        kelas     = request.args.get('kelas','3')
+        paket     = request.args.get('paket','all')
+        page      = request.args.get('page',1,int)
+        limit     = request.args.get('limit',10,int)
+        pelajaran = request.args.get('pelajaran','all')
 
-        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
-        pdf = pdfkit.from_string(rendered, False, configuration=config)
+        # panggil route json sesuai filter
+        current=session.get('user')
+        url=(f'/guru/report/perbandingan?kelas={kelas}&paket={paket}&page={page}&limit={limit}&pelajaran={pelajaran}&format=json')
+        with app.test_request_context(url, headers={'X-Requested-With':'XMLHttpRequest'}):
+            session['user']=current; g.user=current
+            res = laporan_perbandingan()
 
-        return Response(pdf, mimetype='application/pdf', headers={'Content-Disposition': f'attachment; filename=laporan_perbandingan_{kelas}.pdf'})
+        # ambil payload
+        if ((isinstance(res,tuple) and res[1]==200) or (hasattr(res,'status_code') and res.status_code==200)):
+            body=res[0].get_data(as_text=True) if isinstance(res,tuple) else res.get_data(as_text=True)
+            payload = json.loads(body)['data']
+        else:
+            return jsonify({'status':'gagal','pesan':'gagal mendapatkan data json'}),500
+
+        student = payload['siswa']
+
+        # generate grafik sesuai filter pelajaran
+        import matplotlib.pyplot as plt, base64, io
+        grafik_pdf=''
+        if student:
+            names=[s['nama'] for s in student]
+            if pelajaran=='all':
+                # cukup gunakan recap persentase yang sudah dihitung per siswa
+                vals=[s.get('persentase',0) for s in student]
+            else:
+                # gunakan persentase per topik
+                vals=[ s['topik_stats'].get(pelajaran,{}).get('persentase',0) for s in student]
+
+            plt.figure(figsize=(10,5))
+            plt.bar(names,vals)
+            plt.xticks(rotation=45); plt.tight_layout()
+            buf=io.BytesIO(); plt.savefig(buf,format='png'); buf.seek(0)
+            grafik_pdf = base64.b64encode(buf.read()).decode()
+            plt.close()
+
+        # render html
+        html = render_template(
+            'laporanPerbandinganPDF.html',
+            kelas=kelas,
+            paket='Semua Paket' if paket=='all' else f'Paket {paket}',
+            pelajaran=('Semua Pelajaran' if pelajaran=='all' else pelajaran),
+            student_data=student,
+            jumlah_siswa=payload['total'],
+            tanggal=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            grafik_bar_base64=grafik_pdf
+        )
+
+        # konversi ke PDF
+        config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files (x86)\wkhtmltopdf\bin\wkhtmltopdf.exe")
+        pdf = pdfkit.from_string(html, False, configuration=config)
+        return FlaskResponse(
+            pdf, mimetype='application/pdf',
+            headers={'Content-Disposition':f'attachment; filename=laporan_perbandingan_{kelas}_page_{page}.pdf'}
+        )
     except Exception as e:
-        logger.error(f"Error saat membuat PDF laporan perbandingan: {e}")
-        traceback.print_exc()
-        return jsonify({'status': 'gagal', 'pesan': 'Terjadi kesalahan server'}), 500
+        logger.error(f"[PDF] Exception umum: {e}",exc_info=True)
+        return jsonify({'status':'gagal','pesan':'Terjadi kesalahan server'}),500
+
     
 @app.route('/admin/adminDashboard')
 def admin_dashboard():

@@ -20,6 +20,8 @@ quiz-app/
         03bddec04be3f9fafd797c45d9e9973d
         1128e51fd4e43070eedead7ef5435d9f
         2029240f6d1128be89ddc32729463129
+        2d29434a68be163c63f830e212c707d8
+        5800e54ba25ce16a7f68c9c36e04b31e
         5e2d1a2441df3e9444291da4fdbb5adf
         5e97b4147c3488384b0b462eba3180d7
         7cbd7a28dfef247d757d14fc9c7b708f
@@ -28,6 +30,7 @@ quiz-app/
         9993cfe84d197dc1f501e1110235fe74
         b8eb326b373ca732a43b159d34d94a4b
         d38c7ffc404bcb291f807378bb19c207
+        f14df1259a02ba0e7b543a72a10abcd3
     models/
         cart_asal_model.pkl
         cart_kesulitan_model.pkl
@@ -62,6 +65,7 @@ quiz-app/
             kelolaSoal.css
             laporanIndividu.css
             laporanKesalahanUmum.css
+            laporanPerbandingan.css
             reports.css
         images/
             Bg1.jpg
@@ -73,6 +77,7 @@ quiz-app/
         index.html
         laporanIndividuPDF.html
         laporanKesalahanUmumPDF.html
+        laporanPerbandinganPDF.html
         quiz.html
         admin/
             adminDashboard.html
@@ -83,5 +88,5 @@ quiz-app/
             kelolaSoal.html
             laporanIndividu.html
             laporanKesalahanUmum.html
-            laporanRekomendasi.html
+            laporanPerbandingan.html
             reports.html

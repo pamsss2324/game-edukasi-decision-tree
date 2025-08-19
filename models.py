@@ -99,7 +99,11 @@ def train_cart_asal_model():
 def analyze_kesulitan(daftar_soal_dikerjakan, mapel, jumlah_benar, jumlah_salah, waktu_rata2_per_soal, dideteksi_asal, total_soal, cart_kesulitan_model, label_encoder_kesulitan):
     """Menganalisis kesulitan belajar dan memberikan rekomendasi, termasuk per pelajaran."""
     try:
-        soal_data = json.loads(daftar_soal_dikerjakan)
+        # Handle None untuk daftar_soal_dikerjakan dengan nilai default
+        if daftar_soal_dikerjakan is None:
+            soal_data = {"soal": []}
+        else:
+            soal_data = json.loads(daftar_soal_dikerjakan)
         soal_list = soal_data.get('soal', [])
         
         kesalahan_per_kategori = {}
